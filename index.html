@@ -50,7 +50,8 @@
     .logout-btn { color: #ffeaa7; margin-left: 5px; cursor: pointer; text-decoration: underline; font-size: 11px; font-weight: 400; }
 
     .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 12px; background: #fff; border-bottom: 1px solid #eee; cursor: pointer; }
-    .dash-card { padding: 10px 4px; text-align: center; border-radius: var(--radius-panel); background: #f8fafc; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; min-height: 65px; }
+    .dash-card { padding: 10px 4px; text-align: center; border-radius: var(--radius-panel); background: #f8fafc; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; min-height: 65px; transition: transform 0.1s; }
+    .dash-card:active { transform: scale(0.98); }
     .dash-card .title { font-size: 10px; font-weight: 700; color: #7f8c8d; margin-bottom: 4px; letter-spacing: -0.2px; line-height: 1.3; }
     .dash-card .val { font-size: 13px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     
@@ -83,7 +84,6 @@
       font-weight: 400;
     }
 
-    /* Calculator Input Field Group */
     .amount-input-group {
       display: flex;
       gap: 8px;
@@ -131,19 +131,48 @@
     .status-success { background: rgba(5, 196, 107, 0.12); color: var(--income-solid); }
     .status-error { background: rgba(252, 92, 101, 0.12); color: var(--expense-solid); }
 
-    .report-container { display: none; width: 100%; max-width: 550px; background: white; border-radius: var(--radius-panel); padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px;}
-    .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; }
-    .report-header h2 { font-size: 16px; font-weight: 700; }
-    .report-table-wrapper { overflow-x: auto; max-height: 350px; }
+    /* REPORT SECTION STYLES */
+    .report-container { display: none; width: 100%; max-width: 550px; background: white; border-radius: var(--radius-panel); padding: 15px; }
+    .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 2px solid #f4f7f6; padding-bottom: 8px; }
+    .report-header h2 { font-size: 16px; font-weight: 700; color: #2c3e50; }
+    
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      background: #f8fafc;
+      padding: 8px;
+      border-radius: var(--radius-panel);
+    }
+    .filter-select {
+      flex: 1;
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: var(--radius-capsule);
+      border: 1px solid #cbd5e1;
+    }
+    
+    .filter-summary {
+      display: flex;
+      justify-content: space-between;
+      background: #edf2f7;
+      padding: 8px 12px;
+      border-radius: var(--radius-panel);
+      margin-bottom: 12px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    
+    .report-table-wrapper { overflow-x: auto; max-height: 380px; }
     table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
-    th { background: #f8fafc; padding: 8px; color: #7f8c8d; border-bottom: 1px solid #eee; font-weight: 700; }
+    th { background: #f8fafc; padding: 8px; color: #7f8c8d; border-bottom: 1px solid #eee; font-weight: 700; position: sticky; top: 0; }
     td { padding: 8px; border-bottom: 1px solid #f4f7f6; line-height: 1.4; }
     .badge { padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 700; }
     .bg-inc { background: rgba(5, 196, 107, 0.1); color: var(--income-solid); }
     .bg-exp { background: rgba(252, 92, 101, 0.1); color: var(--expense-solid); }
     .bg-user { background: #e2e8f0; color: #4a5568; }
 
-    /* POPUP CALCULATOR MODAL */
+    /* POPUP CALCULATOR */
     .calc-modal {
       display: none;
       position: fixed;
@@ -226,7 +255,7 @@
         <div class="user-badge" id="userBadge"><i class="fa-solid fa-circle-user"></i> Loading...</div>
       </div>
 
-      <!-- DASHBOARD -->
+      <!-- DASHBOARD (Click to open Report) -->
       <div class="dashboard" onclick="toggleReportSection()" title="റിപ്പോർട്ട് കാണാൻ ക്ലിക്ക് ചെയ്യുക">
         <div class="dash-card">
           <div class="title">ഈ മാസത്തെ വരവ്</div>
@@ -242,7 +271,7 @@
         </div>
       </div>
       
-      <!-- FORM -->
+      <!-- FORM SECTION -->
       <div class="app-body" id="formSection">
         <div class="type-selector">
           <button type="button" class="type-btn active" data-type="income" onclick="changeMode('income')">വരവ്</button>
@@ -292,7 +321,7 @@
             <label><i class="fa-solid fa-indian-rupee-sign"></i>തുക (Amount)</label>
             <div class="amount-input-group">
               <input type="number" id="amount" name="amount" step="0.01" class="form-control" placeholder="0.00" required>
-              <button type="button" class="btn-calc-trigger" onclick="openCalculator()" title="കാൽക്കുലേറ്റർ തുറക്കുക">
+              <button type="button" class="btn-calc-trigger" onclick="openCalculator()" title="കാൽക്കുലേറ്റർ">
                 <i class="fa-solid fa-calculator"></i>
               </button>
             </div>
@@ -311,18 +340,42 @@
         <div id="statusMessage" class="status-message"></div>
       </div>
 
-      <!-- REPORT -->
+      <!-- REPORT SECTION WITH FILTERS -->
       <div class="report-container" id="reportContainer">
         <div class="report-header">
-          <h2><i class="fa-solid fa-chart-line" style="color:#11998e;"></i> റിപ്പോർട്ട് വിവരങ്ങൾ</h2>
-          <button type="button" style="background:#eee; border:none; padding:5px 12px; border-radius:var(--radius-pill); cursor:pointer; font-family:'Noto Serif Malayalam';" onclick="toggleReportSection()">Close</button>
+          <h2><i class="fa-solid fa-chart-line" style="color:#11998e;"></i> ഇടപാടുകളുടെ റിപ്പോർട്ട്</h2>
+          <button type="button" style="background:#edf2f7; border:none; padding:5px 12px; border-radius:var(--radius-pill); cursor:pointer; font-weight:700;" onclick="toggleReportSection()">
+            <i class="fa-solid fa-arrow-left"></i> തിരികെ
+          </button>
         </div>
+
+        <!-- ഫിൽറ്ററുകൾ -->
+        <div class="filter-bar">
+          <select id="filterMonth" class="filter-select" onchange="renderReportTable()">
+            <option value="ALL">എല്ലാ മാസവും</option>
+            <option value="THIS_MONTH" selected>ഈ മാസം</option>
+          </select>
+
+          <select id="filterType" class="filter-select" onchange="renderReportTable()">
+            <option value="ALL">എല്ലാ തരം ഇടപാടുകളും</option>
+            <option value="INCOME">വരവ് മാത്രം</option>
+            <option value="EXPENSE">ചെലവ് മാത്രം</option>
+            <option value="LOAN">കടം ഇടപാടുകൾ</option>
+          </select>
+        </div>
+
+        <!-- ഫിൽറ്റർ ചെയ്ത തുക സംഗ്രഹം -->
+        <div class="filter-summary">
+          <span style="color:var(--income-solid);">വരവ്: <strong id="filterSumIncome">₹0.00</strong></span>
+          <span style="color:var(--expense-solid);">ചെലവ്: <strong id="filterSumExpense">₹0.00</strong></span>
+        </div>
+
         <div class="report-table-wrapper">
           <table>
             <thead>
               <tr>
                 <th>തീയതി</th>
-                <th>വിഭാഗം</th>
+                <th>വിഭാഗം & വിവരണം</th>
                 <th>തുക</th>
                 <th>ആര്?</th>
               </tr>
@@ -335,7 +388,7 @@
     </div>
   </div>
 
-  <!-- POPUP CALCULATOR MODAL -->
+  <!-- POPUP CALCULATOR -->
   <div class="calc-modal" id="calcModal">
     <div class="calc-box">
       <input type="text" class="calc-screen" id="calcScreen" readonly value="0">
@@ -382,8 +435,9 @@
     const db = firebase.firestore();
 
     let loggedInUser = "";
+    let rawTransactions = []; // എല്ലാ ഇടപാടുകളും സൂക്ഷിക്കാൻ
     
-    // സെറ്റ് ഇന്നത്തെ തീയതി
+    // തീയതി ഇൻപുട്ട് സെറ്റ് ചെയ്യൽ
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -457,7 +511,7 @@
       document.getElementById('loginPass').value = "";
     }
 
-    // 🌟 റിയൽടൈം കാൽക്കുലേഷൻ & ഡാഷ്‌ബോർഡ്
+    // 🌟 റിയൽടൈം ഡാറ്റാബേസ് കണക്ഷൻ
     function listenToRealtimeData() {
       db.collection("transactions").onSnapshot((snapshot) => {
         let thisMonthIncome = 0;
@@ -465,7 +519,7 @@
         let lifetimeIncome = 0;
         let lifetimeExpense = 0;
         
-        let reportRows = [];
+        rawTransactions = [];
         const now = new Date();
         const currentMonth = now.getMonth();
         const currentYear = now.getFullYear();
@@ -475,7 +529,6 @@
           const amount = parseFloat(data.amount) || 0;
           const type = data.type;
           
-          // തീയതി പരിശോധന (String 'YYYY-MM-DD' സുരക്ഷിതമായി മാറ്റുന്നു)
           let rowDate = new Date();
           if (data.date) {
             const parts = data.date.split('-');
@@ -484,14 +537,12 @@
             }
           }
 
-          // ആകെ കണക്ക് (Lifetime)
           if (type === "വരവ്" || type === "കടം തിരിച്ചു കിട്ടിയത്" || type === "കടം വാങ്ങിയത്") {
             lifetimeIncome += amount;
           } else {
             lifetimeExpense += amount;
           }
 
-          // ഈ മാസത്തെ കണക്ക് (This Month)
           if (rowDate.getMonth() === currentMonth && rowDate.getFullYear() === currentYear) {
             if (type === "വരവ്" || type === "കടം തിരിച്ചു കിട്ടിയത്" || type === "കടം വാങ്ങിയത്") {
               thisMonthIncome += amount;
@@ -500,13 +551,10 @@
             }
           }
 
-          reportRows.push({ ...data, parsedDate: rowDate });
+          rawTransactions.push({ ...data, parsedDate: rowDate });
         });
 
-        // ഏറ്റവും പുതിയത് മുകളിൽ വരാൻ സോർട്ട് ചെയ്യുന്നു
-        reportRows.sort((a, b) => b.parsedDate - a.parsedDate);
-
-        // ഡാഷ്‌ബോർഡ് അപ്‌ഡേറ്റ്
+        // ഡാഷ്‌ബോർഡ് തുകകൾ
         document.getElementById('dashIncome').innerText = '₹' + thisMonthIncome.toFixed(2);
         document.getElementById('dashExpense').innerText = '₹' + thisMonthExpense.toFixed(2);
         
@@ -515,36 +563,77 @@
         balElement.innerText = '₹' + totalBal.toFixed(2);
         balElement.style.color = (totalBal < 0) ? 'var(--expense-solid)' : 'var(--income-solid)';
 
-        // റിപ്പോർട്ട് ടേബിൾ അപ്‌ഡേറ്റ്
-        let tableBody = document.getElementById('reportTableBody');
-        tableBody.innerHTML = '';
-
-        if(reportRows.length === 0) {
-          tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#7f8c8d;">ഇടപാടുകൾ ഒന്നുമില്ല.</td></tr>';
-        } else {
-          reportRows.forEach((row) => {
-            let isInc = (row.type === 'വരവ്' || row.type === 'കടം തിരിച്ചു കിട്ടിയത്' || row.type === 'കടം വാങ്ങിയത്');
-            let badgeClass = isInc ? 'bg-inc' : 'bg-exp';
-            let displayAmount = (isInc ? '+₹' : '-₹') + parseFloat(row.amount).toFixed(2);
-            
-            let displayUser = row.loggedInUser;
-            if (displayUser === 'wife' || displayUser === 'വൈഫ്') displayUser = 'Fasla';
-            if (displayUser === 'ഞാൻ') displayUser = 'Admin';
-
-            let d = row.parsedDate;
-            let formattedDate = String(d.getDate()).padStart(2, '0') + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + d.getFullYear();
-
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${formattedDate}</td>
-              <td><strong>${row.category}</strong><br><small style="color:#7f8c8d;">${row.description || ''} ${row.person && row.person !== '-' ? '('+row.person+')' : ''}</small></td>
-              <td class="${badgeClass}" style="font-weight:bold;">${displayAmount}</td>
-              <td><span class="badge bg-user">${displayUser}</span></td>
-            `;
-            tableBody.appendChild(tr);
-          });
-        }
+        renderReportTable();
       });
+    }
+
+    // 🌟 ഫിൽറ്ററുകൾ അനുസരിച്ച് റിപ്പോർട്ട് റെൻഡർ ചെയ്യൽ
+    function renderReportTable() {
+      const monthFilter = document.getElementById('filterMonth').value;
+      const typeFilter = document.getElementById('filterType').value;
+      
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      let filtered = rawTransactions.filter(item => {
+        // Month Filter
+        if (monthFilter === "THIS_MONTH") {
+          if (item.parsedDate.getMonth() !== currentMonth || item.parsedDate.getFullYear() !== currentYear) {
+            return false;
+          }
+        }
+
+        // Type Filter
+        if (typeFilter === "INCOME") {
+          return item.type === "വരവ്";
+        } else if (typeFilter === "EXPENSE") {
+          return item.type === "ചെലവ്";
+        } else if (typeFilter === "LOAN") {
+          return item.type.includes("കടം");
+        }
+        return true;
+      });
+
+      filtered.sort((a, b) => b.parsedDate - a.parsedDate);
+
+      let sumInc = 0;
+      let sumExp = 0;
+      let tableBody = document.getElementById('reportTableBody');
+      tableBody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#7f8c8d; padding:20px;">ഇടപാടുകൾ ഒന്നുമില്ല.</td></tr>';
+      } else {
+        filtered.forEach((row) => {
+          const amt = parseFloat(row.amount) || 0;
+          let isInc = (row.type === 'വരവ്' || row.type === 'കടം തിരിച്ചു കിട്ടിയത്' || row.type === 'കടം വാങ്ങിയത്');
+          
+          if (isInc) { sumInc += amt; } else { sumExp += amt; }
+
+          let badgeClass = isInc ? 'bg-inc' : 'bg-exp';
+          let displayAmount = (isInc ? '+₹' : '-₹') + amt.toFixed(2);
+          
+          let displayUser = row.loggedInUser;
+          if (displayUser === 'wife' || displayUser === 'വൈഫ്') displayUser = 'Fasla';
+          if (displayUser === 'ഞാൻ') displayUser = 'Admin';
+
+          let d = row.parsedDate;
+          let formattedDate = String(d.getDate()).padStart(2, '0') + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + d.getFullYear();
+
+          let tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${formattedDate}</td>
+            <td><strong>${row.category}</strong><br><small style="color:#7f8c8d;">${row.description && row.description !== '-' ? row.description : ''} ${row.person && row.person !== '-' ? '('+row.person+')' : ''}</small></td>
+            <td class="${badgeClass}" style="font-weight:bold; white-space:nowrap;">${displayAmount}</td>
+            <td><span class="badge bg-user">${displayUser}</span></td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+
+      document.getElementById('filterSumIncome').innerText = '₹' + sumInc.toFixed(2);
+      document.getElementById('filterSumExpense').innerText = '₹' + sumExp.toFixed(2);
     }
 
     function toggleReportSection() {
@@ -557,6 +646,7 @@
       } else {
         reportBox.style.display = 'block';
         formBox.style.display = 'none';
+        renderReportTable();
       }
     }
 
@@ -626,6 +716,7 @@
       }
     }
 
+    // 🌟 ഫോം സബ്മിറ്റ് ചെയ്യുമ്പോൾ
     function handleFormSubmit(event) {
       event.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
@@ -654,16 +745,21 @@
 
       db.collection("transactions").add(formData)
         .then(() => {
+          // സക്സസ് മെസ്സേജ് കാണിക്കുന്നു
           statusMessage.style.display = 'block';
           statusMessage.className = 'status-message status-success';
-          statusMessage.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-right:12px;"></i>വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!';
+          statusMessage.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-right:10px;"></i>വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!';
           
+          // ഫോം റീസെറ്റ്
           document.getElementById('amount').value = '';
           document.getElementById('description').value = '';
           if (document.getElementById('person')) document.getElementById('person').value = '';
           descField.style.height = 'auto';
           
-          setTimeout(() => { statusMessage.style.display = 'none'; }, 3000);
+          // 🌟 3 സെക്കൻഡിന് ശേഷം തനിയെ അപ്രത്യക്ഷമാകുന്നു
+          setTimeout(() => {
+            statusMessage.style.display = 'none';
+          }, 3000);
           
           submitBtn.disabled = false;
           submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>രേഖപ്പെടുത്തുക';
@@ -677,7 +773,7 @@
         });
     }
 
-    /* 🌟 CALCULATOR FUNCTIONS */
+    /* CALCULATOR LOGIC */
     let calcExpression = "";
 
     function openCalculator() {
@@ -711,7 +807,6 @@
           closeCalculator();
           return;
         }
-        // കണക്കുകൂട്ടൽ നടത്തുന്നു
         const result = Function('"use strict";return (' + calcExpression + ')')();
         const finalVal = parseFloat(result).toFixed(2);
         document.getElementById('amount').value = parseFloat(finalVal);
