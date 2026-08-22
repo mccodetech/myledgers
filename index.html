@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Expense Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Malayalam:wght@300;400;700;900&family=Noto+Serif:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      --expense-solid: #fc5c65;
+      --income-solid: #05c46b;
+      --loan-solid: #4b7bec;
+      --body-bg: #f4f7f6;
+      --card-bg: #ffffff;
+      --text-main: #2c3e50;
+      --radius-pill: 50px;
+      --radius-capsule: 30px;
+      --radius-panel: 15px;
+    }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Noto Serif Malayalam', 'Noto Serif', serif; 
+    }
+    
+    body { background-color: var(--body-bg); color: var(--text-main); padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; }
+    
+    .login-container { width: 100%; max-width: 400px; background: white; padding: 30px; border-radius: var(--radius-panel); box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
+    .login-container h2 { font-size: 22px; margin-bottom: 20px; color: #11998e; font-weight: 700; }
+    
+    .app-container { width: 100%; max-width: 550px; background: var(--card-bg); border-radius: var(--radius-panel); box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 20px; }
+    
+    .app-header { background: var(--primary-gradient); padding: 20px 15px; text-align: center; color: white; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .app-header h1 { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
+    
+    .user-badge { background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .logout-btn { color: #ffeaa7; margin-left: 5px; cursor: pointer; text-decoration: underline; font-size: 11px; font-weight: 400; }
+
+    .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 12px; background: #fff; border-bottom: 1px solid #eee; cursor: pointer; }
+    .dash-card { padding: 10px 4px; text-align: center; border-radius: var(--radius-panel); background: #f8fafc; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center; min-height: 65px; }
+    .dash-card .title { font-size: 10px; font-weight: 700; color: #7f8c8d; margin-bottom: 4px; letter-spacing: -0.2px; line-height: 1.3; }
+    .dash-card .val { font-size: 13px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    
+    .dash-inc { color: var(--income-solid); }
+    .dash-exp { color: var(--expense-solid); }
+    .dash-bal { color: #2c3e50; background: #edf2f7; border-color: #cbd5e0; }
+
+    .app-body { padding: 15px; }
+    
+    .type-selector { display: flex; gap: 6px; margin-bottom: 20px; background: #eee; padding: 4px; border-radius: var(--radius-pill); }
+    .type-btn { flex: 1; padding: 10px 5px; border: none; border-radius: var(--radius-pill); cursor: pointer; font-weight: 700; font-size: 13px; background: transparent; color: #7f8c8d; text-align: center; }
+    .type-btn.active[data-type="income"] { background: var(--income-solid); color: white; }
+    .type-btn.active[data-type="expense"] { background: var(--expense-solid); color: white; }
+    .type-btn.active[data-type="loan"] { background: var(--loan-solid); color: white; }
+
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 5px; color: #34495e; }
+    .form-group label i { margin-right: 6px; color: #11998e; width: 16px; text-align: center; }
+    
+    .form-control, select, textarea { 
+      width: 100%; 
+      padding: 10px 18px; 
+      font-size: 14px; 
+      border: 2px solid #e2e8f0; 
+      border-radius: var(--radius-capsule); 
+      outline: none; 
+      background: #ffffff !important; 
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      font-weight: 400;
+    }
+    
+    .select-wrapper { position: relative; }
+    .select-wrapper::after {
+      content: '\f107';
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #a0aec0;
+      pointer-events: none;
+    }
+
+    select { appearance: none; -webkit-appearance: none; }
+    select option { padding: 10px; background: #ffffff; color: var(--text-main); }
+    select:focus, .form-control:focus, textarea:focus { border-color: #11998e; box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1); }
+    textarea.form-control { border-radius: 18px; resize: none; min-height: 42px; max-height: 150px; overflow-y: hidden; line-height: 1.4; }
+    
+    #loanTypeGroup, #personField, #customCategoryGroup { display: none; }
+    
+    .btn-submit { width: 100%; padding: 14px; border: none; background: var(--primary-gradient); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-pill); cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    .btn-submit.expense-mode { background: var(--expense-solid); }
+
+    .status-message { padding: 12px; border-radius: var(--radius-panel); font-weight: 700; font-size: 13px; text-align: center; margin-top: 15px; display: none; }
+    .status-success { background: rgba(5, 196, 107, 0.12); color: var(--income-solid); }
+    .status-error { background: rgba(252, 92, 101, 0.12); color: var(--expense-solid); }
+
+    .report-container { display: none; width: 100%; max-width: 550px; background: white; border-radius: var(--radius-panel); padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px;}
+    .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #f4f7f6; padding-bottom: 10px; }
+    .report-header h2 { font-size: 16px; font-weight: 700; }
+    .report-table-wrapper { overflow-x: auto; max-height: 350px; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 12px; }
+    th { background: #f8fafc; padding: 8px; color: #7f8c8d; border-bottom: 1px solid #eee; font-weight: 700; }
+    td { padding: 8px; border-bottom: 1px solid #f4f7f6; line-height: 1.4; }
+    .badge { padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 700; }
+    .bg-inc { background: rgba(5, 196, 107, 0.1); color: var(--income-solid); }
+    .bg-exp { background: rgba(252, 92, 101, 0.1); color: var(--expense-solid); }
+    .bg-user { background: #e2e8f0; color: #4a5568; }
+
+    @media (max-width: 360px) {
+      .dash-card .title { font-size: 9px; }
+      .dash-card .val { font-size: 11px; }
+      .type-btn { font-size: 11px; padding: 8px 3px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN BOX -->
+  <div class="login-container" id="loginBox">
+    <h2><i class="fa-solid fa-lock" style="margin-right: 10px;"></i>Family Ledger Login</h2>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <input type="text" id="loginUser" class="form-control" placeholder="User Name" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="loginPass" class="form-control" placeholder="Password" required>
+      </div>
+      <button type="submit" class="btn-submit" id="loginBtn">Login</button>
+    </form>
+    <div id="loginError" class="status-message status-error"></div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="mainApp" style="display: none; width: 100%; max-width: 550px;">
+    <div class="app-container">
+      <div class="app-header" id="appHeader">
+        <h1><i class="fa-solid fa-wallet" style="margin-right: 10px;"></i>Family Ledger</h1>
+        <div class="user-badge" id="userBadge"><i class="fa-solid fa-circle-user"></i> Loading...</div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="dashboard" onclick="toggleReportSection()" title="റിപ്പോർട്ട് കാണാൻ ക്ലിക്ക് ചെയ്യുക">
+        <div class="dash-card">
+          <div class="title">ഈ മാസത്തെ വരവ്</div>
+          <div class="val dash-inc" id="dashIncome">₹0.00</div>
+        </div>
+        <div class="dash-card">
+          <div class="title">ഈ മാസത്തെ ചെലവ്</div>
+          <div class="val dash-exp" id="dashExpense">₹0.00</div>
+        </div>
+        <div class="dash-card dash-bal">
+          <div class="title">ആകെ ബാക്കി തുക</div>
+          <div class="val" id="dashBalance">₹0.00</div>
+        </div>
+      </div>
+      
+      <!-- FORM -->
+      <div class="app-body" id="formSection">
+        <div class="type-selector">
+          <button type="button" class="type-btn active" data-type="income" onclick="changeMode('income')">വരവ്</button>
+          <button type="button" class="type-btn" data-type="expense" onclick="changeMode('expense')">ചെലവ്</button>
+          <button type="button" class="type-btn" data-type="loan" onclick="changeMode('loan')">കടം ഇടപാടുകൾ</button>
+        </div>
+
+        <form id="trackerForm" onsubmit="handleFormSubmit(event)">
+          <input type="hidden" id="mainType" name="type" value="വരവ്">
+          
+          <div class="form-group">
+            <label><i class="fa-solid fa-calendar-days"></i>തീയതി</label>
+            <input type="date" id="date" name="date" class="form-control" required>
+          </div>
+
+          <div class="form-group" id="loanTypeGroup">
+            <label><i class="fa-solid fa-money-bill-transfer"></i>കടം ഇടപാട് തരം</label>
+            <div class="select-wrapper">
+              <select id="loanSubtype" onchange="updateMainType()">
+                <option value="കടം വാങ്ങിയത്">കടം വാങ്ങിയത്</option>
+                <option value="കടം കൊടുത്തത്">കടം കൊടുത്തത്</option>
+                <option value="കടം തിരിച്ചു കൊടുത്തത്">കടം തിരിച്ചു കൊടുത്തത്</option>
+                <option value="കടം തിരിച്ചു കിട്ടിയത്">കടം തിരിച്ചു കിട്ടിയത്</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" id="personField">
+            <label><i class="fa-solid fa-id-card"></i>വ്യക്തിയുടെ പേര്</label>
+            <input type="text" id="person" name="person" class="form-control" placeholder="പേര് എഴുതുക...">
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-tags"></i>വിഭാഗം (Category)</label>
+            <div class="select-wrapper">
+              <select id="category" name="category" onchange="checkNewCategory(this)" required>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" id="customCategoryGroup">
+            <label><i class="fa-solid fa-folder-plus"></i>പുതിയ വിഭാഗത്തിന്റെ പേര്</label>
+            <input type="text" id="customCategory" class="form-control" placeholder="പുതിയ കാറ്റഗറി...">
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-indian-rupee-sign"></i>തുക (Amount)</label>
+            <input type="number" id="amount" name="amount" step="0.01" class="form-control" placeholder="0.00" required>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-pen-to-square"></i>വിവരണം</label>
+            <textarea id="description" name="description" class="form-control" placeholder="ചെറിയ കുറിപ്പ്..." rows="1" oninput="autoExpand(this)"></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="fa-solid fa-paper-plane"></i>രേഖപ്പെടുത്തുക
+          </button>
+        </form>
+
+        <div id="statusMessage" class="status-message"></div>
+      </div>
+
+      <!-- REPORT -->
+      <div class="report-container" id="reportContainer">
+        <div class="report-header">
+          <h2><i class="fa-solid fa-chart-line" style="color:#11998e;"></i> റിപ്പോർട്ട് വിവരങ്ങൾ</h2>
+          <button type="button" style="background:#eee; border:none; padding:5px 12px; border-radius:var(--radius-pill); cursor:pointer; font-family:'Noto Serif Malayalam';" onclick="toggleReportSection()">Close</button>
+        </div>
+        <div class="report-table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>തീയതി</th>
+                <th>വിഭാഗം</th>
+                <th>തുക</th>
+                <th>ആര്?</th>
+              </tr>
+            </thead>
+            <tbody id="reportTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ✅ നിങ്ങൾ നൽകിയ Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCFf3lvoWEBsEbFOFR5uKIuZDPEi_I12nE",
+      authDomain: "my-ledgers-471e4.firebaseapp.com",
+      projectId: "my-ledgers-471e4",
+      storageBucket: "my-ledgers-471e4.firebasestorage.app",
+      messagingSenderId: "8614518992",
+      appId: "1:8614518992:web:00d23f236cda38de5b7ed5",
+      measurementId: "G-BMGF5JTBLX"
+    };
+
+    // Firebase Initialize
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let loggedInUser = "";
+    
+    document.getElementById('date').valueAsDate = new Date();
+
+    const categoriesData = {
+      income: ["ശമ്പളം / വരുമാനം", "ബിസിനസ്സ്", "കൃഷി / വിൽപന", "ഗിഫ്റ്റ് / സമ്മാനം", "മറ്റുള്ളവ"],
+      expense: ["പലചരക്ക് / ഭക്ഷണം", "കുട്ടികളുടെ പഠനം", "യാത്ര / ഇന്ധനം", "ആരോഗ്യം / മരുന്ന്", "വീട്ടുചെലവുകൾ", "വസ്ത്രങ്ങൾ / ഷോപ്പിംഗ്", "മൊബൈൽ / ഇന്റർനെറ്റ്", "കറന്റ് ബിൽ / വെള്ളം", "മറ്റുള്ളവ"],
+      loan: ["കടം ഇടപാടുകൾ"]
+    };
+
+    window.onload = function() {
+      const savedUser = localStorage.getItem('ledger_user');
+      if (savedUser) {
+        loggedInUser = savedUser;
+        showMainApp();
+      }
+    };
+
+    function autoExpand(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const u = document.getElementById('loginUser').value.trim().toLowerCase();
+      const p = document.getElementById('loginPass').value;
+      const err = document.getElementById('loginError');
+
+      const users = {
+        "admin": "1234",
+        "fasla": "1234"
+      };
+
+      if (users[u] && users[u] === p) {
+        loggedInUser = (u === "admin") ? "ഞാൻ" : "വൈഫ്";
+        localStorage.setItem('ledger_user', loggedInUser);
+        showMainApp();
+      } else {
+        err.style.display = 'block';
+        err.innerText = "Incorrect User Name or Password!";
+      }
+    }
+
+    function showMainApp() {
+      let displayBadgeUser = loggedInUser;
+      if (displayBadgeUser === 'wife' || displayBadgeUser === 'Wife' || displayBadgeUser === 'വൈഫ്') {
+        displayBadgeUser = 'Fasla';
+      } else if (displayBadgeUser === 'ഞാൻ' || displayBadgeUser === 'ഞാൻ ') {
+        displayBadgeUser = 'Admin';
+      }
+      
+      document.getElementById('userBadge').innerHTML = 
+        `<i class="fa-solid fa-circle-user"></i> ${displayBadgeUser} <span class="logout-btn" onclick="handleLogout()">(Logout)</span>`;
+      
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'block';
+      changeMode('income');
+      listenToRealtimeData();
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('ledger_user');
+      loggedInUser = "";
+      document.getElementById('mainApp').style.display = 'none';
+      document.getElementById('loginBox').style.display = 'block';
+      document.getElementById('loginUser').value = "";
+      document.getElementById('loginPass').value = "";
+    }
+
+    function listenToRealtimeData() {
+      db.collection("transactions").orderBy("date", "desc").onSnapshot((snapshot) => {
+        let thisMonthIncome = 0;
+        let thisMonthExpense = 0;
+        let lifetimeIncome = 0;
+        let lifetimeExpense = 0;
+        
+        let reportRows = [];
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const amount = parseFloat(data.amount) || 0;
+          const type = data.type;
+          
+          const rowDate = new Date(data.date);
+
+          if (type === "വരവ്" || type === "കടം തിരിച്ചു കിട്ടിയത്" || type === "കടം വാങ്ങിയത്") {
+            lifetimeIncome += amount;
+          } else {
+            lifetimeExpense += amount;
+          }
+
+          if (rowDate.getMonth() === currentMonth && rowDate.getFullYear() === currentYear) {
+            if (type === "വരവ്" || type === "കടം തിരിച്ചു കിട്ടിയത്" || type === "കടം വാങ്ങിയത്") {
+              thisMonthIncome += amount;
+            } else {
+              thisMonthExpense += amount;
+            }
+          }
+
+          reportRows.push(data);
+        });
+
+        document.getElementById('dashIncome').innerText = '₹' + thisMonthIncome.toFixed(2);
+        document.getElementById('dashExpense').innerText = '₹' + thisMonthExpense.toFixed(2);
+        
+        const totalBal = lifetimeIncome - lifetimeExpense;
+        const balElement = document.getElementById('dashBalance');
+        balElement.innerText = '₹' + totalBal.toFixed(2);
+        balElement.style.color = (totalBal < 0) ? 'var(--expense-solid)' : 'var(--income-solid)';
+
+        let tableBody = document.getElementById('reportTableBody');
+        tableBody.innerHTML = '';
+
+        if(reportRows.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#7f8c8d;">ഇടപാടുകൾ ഒന്നുമില്ല.</td></tr>';
+        } else {
+          reportRows.forEach((row) => {
+            let badgeClass = (row.type.includes('വരവ്') || row.type.includes('കിട്ടിയത്') || row.type.includes('വാങ്ങിയത്')) ? 'bg-inc' : 'bg-exp';
+            let displayAmount = (badgeClass === 'bg-inc') ? '+₹' + row.amount : '-₹' + row.amount;
+            
+            let displayUser = row.loggedInUser;
+            if (displayUser === 'wife' || displayUser === 'വൈഫ്') displayUser = 'Fasla';
+            if (displayUser === 'ഞാൻ') displayUser = 'Admin';
+
+            let d = new Date(row.date);
+            let formattedDate = String(d.getDate()).padStart(2, '0') + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + d.getFullYear();
+
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${formattedDate}</td>
+              <td><strong>${row.category}</strong><br><small style="color:#7f8c8d;">${row.description || ''} ${row.person && row.person !== '-' ? '('+row.person+')' : ''}</small></td>
+              <td class="${badgeClass}" style="font-weight:bold;">${displayAmount}</td>
+              <td><span class="badge bg-user">${displayUser}</span></td>
+            `;
+            tableBody.appendChild(tr);
+          });
+        }
+      });
+    }
+
+    function toggleReportSection() {
+      const reportBox = document.getElementById('reportContainer');
+      const formBox = document.getElementById('formSection');
+      
+      if (reportBox.style.display === 'block') {
+        reportBox.style.display = 'none';
+        formBox.style.display = 'block';
+      } else {
+        reportBox.style.display = 'block';
+        formBox.style.display = 'none';
+      }
+    }
+
+    function updateCategoryDropdown(mode) {
+      const categorySelect = document.getElementById('category');
+      categorySelect.innerHTML = '<option value="" disabled selected>തിരഞ്ഞെടുക്കുക...</option>';
+      
+      categoriesData[mode].forEach(cat => {
+        let opt = document.createElement('option');
+        opt.value = cat;
+        opt.innerText = cat;
+        categorySelect.appendChild(opt);
+      });
+      
+      let newCatOpt = document.createElement('option');
+      newCatOpt.value = 'NEW_CAT';
+      newCatOpt.innerText = '+ പുതിയ കാറ്റഗറി ചേർക്കുക';
+      categorySelect.appendChild(newCatOpt);
+    }
+
+    function changeMode(mode) {
+      document.querySelectorAll('.type-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`[data-type="${mode}"]`).classList.add('active');
+      
+      const header = document.getElementById('appHeader');
+      const submitBtn = document.getElementById('submitBtn');
+      const loanGroup = document.getElementById('loanTypeGroup');
+      const personField = document.getElementById('personField');
+      const mainTypeInput = document.getElementById('mainType');
+
+      updateCategoryDropdown(mode);
+      document.getElementById('customCategoryGroup').style.display = 'none';
+
+      if (mode === 'expense') {
+        header.style.background = 'linear-gradient(135deg, #ed4264 0%, #ffedbc 100%)';
+        submitBtn.classList.add('expense-mode');
+        loanGroup.style.display = 'none';
+        personField.style.display = 'none';
+        mainTypeInput.value = 'ചെലവ്';
+      } else if (mode === 'income') {
+        header.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+        submitBtn.classList.remove('expense-mode');
+        loanGroup.style.display = 'none';
+        personField.style.display = 'none';
+        mainTypeInput.value = 'വരവ്';
+      } else if (mode === 'loan') {
+        header.style.background = 'linear-gradient(135deg, #4b7bec 0%, #78e08f 100%)';
+        submitBtn.classList.remove('expense-mode');
+        loanGroup.style.display = 'block';
+        personField.style.display = 'block';
+        updateMainType();
+      }
+    }
+
+    function updateMainType() {
+      document.getElementById('mainType').value = document.getElementById('loanSubtype').value;
+    }
+
+    function checkNewCategory(selectObj) {
+      const customCatGroup = document.getElementById('customCategoryGroup');
+      if (selectObj.value === 'NEW_CAT') {
+        customCatGroup.style.display = 'block';
+        document.getElementById('customCategory').required = true;
+      } else {
+        customCatGroup.style.display = 'none';
+        document.getElementById('customCategory').required = false;
+      }
+    }
+
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      const statusMessage = document.getElementById('statusMessage');
+      const descField = document.getElementById('description');
+      
+      const inputAmount = parseFloat(document.getElementById('amount').value) || 0;
+      const currentType = document.getElementById('mainType').value;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> സൂക്ഷിക്കുന്നു...';
+
+      let finalCategory = document.getElementById('category').value;
+      if (finalCategory === 'NEW_CAT') { finalCategory = document.getElementById('customCategory').value; }
+      
+      const formData = {
+        date: document.getElementById('date').value,
+        type: currentType,
+        category: finalCategory,
+        amount: inputAmount,
+        description: descField.value || "-",
+        person: document.getElementById('person').value || "-",
+        loggedInUser: loggedInUser,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      db.collection("transactions").add(formData)
+        .then(() => {
+          statusMessage.style.display = 'block';
+          statusMessage.className = 'status-message status-success';
+          statusMessage.innerHTML = '<i class="fa-solid fa-circle-check" style="margin-right:12px;"></i>വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!';
+          
+          document.getElementById('trackerForm').reset();
+          document.getElementById('date').valueAsDate = new Date();
+          descField.style.height = 'auto';
+          changeMode('income');
+          
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>രേഖപ്പെടുത്തുക';
+        })
+        .catch((error) => {
+          statusMessage.style.display = 'block';
+          statusMessage.className = 'status-message status-error';
+          statusMessage.innerHTML = 'Error: ' + error.message;
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>രേഖപ്പെടുത്തുക';
+        });
+    }
+  </script>
+</body>
+</html>
