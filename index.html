@@ -12,8 +12,8 @@
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 
   <style>
     :root {
@@ -38,8 +38,10 @@
     
     body { background-color: var(--body-bg); color: var(--text-main); padding: 10px; display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; }
     
-    .login-container { width: 100%; max-width: 400px; background: white; padding: 30px; border-radius: var(--radius-panel); box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
-    .login-container h2 { font-size: 22px; margin-bottom: 20px; color: #11998e; font-weight: 700; }
+    .auth-container { width: 100%; max-width: 400px; background: white; padding: 30px; border-radius: var(--radius-panel); box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; }
+    .auth-container h2 { font-size: 22px; margin-bottom: 20px; color: #11998e; font-weight: 700; }
+    .auth-toggle { font-size: 12px; margin-top: 15px; color: #7f8c8d; }
+    .auth-toggle span { color: #11998e; font-weight: 700; cursor: pointer; text-decoration: underline; }
     
     .app-container { width: 100%; max-width: 550px; background: var(--card-bg); border-radius: var(--radius-panel); box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; margin-bottom: 20px; position: relative; }
     
@@ -60,7 +62,7 @@
       cursor: pointer;
     }
     
-    .user-badge { background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: var(--radius-pill); font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .user-badge { background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: var(--radius-pill); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
     .logout-btn { color: #ffeaa7; margin-left: 5px; cursor: pointer; text-decoration: underline; font-size: 11px; font-weight: 400; }
 
     .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 12px; background: #fff; }
@@ -210,7 +212,6 @@
     .badge { padding: 2px 6px; border-radius: 8px; font-size: 10px; font-weight: 700; }
     .bg-inc { background: rgba(5, 196, 107, 0.1); color: var(--income-solid); }
     .bg-exp { background: rgba(252, 92, 101, 0.1); color: var(--expense-solid); }
-    .bg-user { background: #e2e8f0; color: #4a5568; }
 
     /* POPUP CALCULATOR */
     .calc-modal {
@@ -271,19 +272,27 @@
 </head>
 <body>
 
-  <!-- LOGIN BOX -->
-  <div class="login-container" id="loginBox">
-    <h2><i class="fa-solid fa-lock" style="margin-right: 10px;"></i><span data-i18n="login_title">Family Ledger Login</span></h2>
-    <form onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <input type="text" id="loginUser" class="form-control" placeholder="User Name" required>
+  <!-- AUTH BOX (LOGIN / SIGN UP) -->
+  <div class="auth-container" id="authBox">
+    <h2><i class="fa-solid fa-wallet" style="margin-right: 10px;"></i><span id="authTitle" data-i18n="auth_login_title">Family Ledger Login</span></h2>
+    <form onsubmit="handleAuth(event)">
+      <div class="form-group" id="nameFieldGroup" style="display: none;">
+        <input type="text" id="authName" class="form-control" placeholder="Full Name">
       </div>
       <div class="form-group">
-        <input type="password" id="loginPass" class="form-control" placeholder="Password" required>
+        <input type="email" id="authEmail" class="form-control" placeholder="Email Address" required>
       </div>
-      <button type="submit" class="btn-submit" id="loginBtn">Login</button>
+      <div class="form-group">
+        <input type="password" id="authPass" class="form-control" placeholder="Password (min 6 characters)" required>
+      </div>
+      <button type="submit" class="btn-submit" id="authBtn">Login</button>
     </form>
-    <div id="loginError" class="status-message status-error"></div>
+    
+    <div class="auth-toggle">
+      <span id="toggleAuthText" onclick="toggleAuthMode()">പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക (Sign Up)</span>
+    </div>
+    
+    <div id="authError" class="status-message status-error"></div>
   </div>
 
   <!-- MAIN APP -->
@@ -292,7 +301,7 @@
       <div class="app-header" id="appHeader">
         <button type="button" class="lang-switcher" onclick="toggleLanguage()" id="langBtn">English</button>
         <h1><i class="fa-solid fa-wallet" style="margin-right: 10px;"></i><span data-i18n="app_title">Family Ledger</span></h1>
-        <div class="user-badge" id="userBadge"><i class="fa-solid fa-circle-user"></i> Loading...</div>
+        <div class="user-badge" id="userBadge"><i class="fa-solid fa-circle-user"></i> <span id="userNameDisplay">Loading...</span> <span class="logout-btn" onclick="handleLogout()">(Logout)</span></div>
       </div>
 
       <!-- DASHBOARD -->
@@ -422,7 +431,6 @@
                 <th data-i18n="th_date">തീയതി</th>
                 <th data-i18n="th_details">വിഭാഗം & വിവരണം</th>
                 <th data-i18n="th_amount">തുക</th>
-                <th data-i18n="th_by">ആര്?</th>
               </tr>
             </thead>
             <tbody id="reportTableBody"></tbody>
@@ -465,7 +473,6 @@
   </div>
 
   <script>
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCFf3lvoWEBsEbFOFR5uKIuZDPEi_I12nE",
       authDomain: "my-ledgers-471e4.firebaseapp.com",
@@ -477,16 +484,20 @@
     };
 
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.firestore();
 
+    let currentUser = null;
+    let isSignUpMode = false;
     let currentLang = localStorage.getItem('ledger_lang') || 'ml';
-    let loggedInUser = "";
     let rawTransactions = [];
     let currentMode = "income";
+    let unsubscribeSnapshot = null;
 
     const translations = {
       ml: {
-        login_title: "Family Ledger Login",
+        auth_login_title: "ലോഗിൻ ചെയ്യുക",
+        auth_signup_title: "പുതിയ അക്കൗണ്ട് തുടങ്ങുക",
         app_title: "Family Ledger",
         dash_inc: "ഈ മാസത്തെ വരവ്",
         dash_exp: "ഈ മാസത്തെ ചെലവ്",
@@ -510,7 +521,6 @@
         th_date: "തീയതി",
         th_details: "വിഭാഗം & വിവരണം",
         th_amount: "തുക",
-        th_by: "ആര്?",
         success_msg: "വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!",
         select_placeholder: "തിരഞ്ഞെടുക്കുക...",
         new_cat_opt: "+ പുതിയ കാറ്റഗറി ചേർക്കുക",
@@ -527,7 +537,8 @@
         opt_loan_only: "കടം ഇടപാടുകൾ"
       },
       en: {
-        login_title: "Family Ledger Login",
+        auth_login_title: "Login to Ledger",
+        auth_signup_title: "Create an Account",
         app_title: "Family Ledger",
         dash_inc: "This Month Income",
         dash_exp: "This Month Expense",
@@ -551,7 +562,6 @@
         th_date: "Date",
         th_details: "Category & Description",
         th_amount: "Amount",
-        th_by: "User",
         success_msg: "Transaction saved successfully!",
         select_placeholder: "Select category...",
         new_cat_opt: "+ Add New Category",
@@ -588,14 +598,86 @@
     const dd = String(today.getDate()).padStart(2, '0');
     document.getElementById('date').value = `${yyyy}-${mm}-${dd}`;
 
+    // 🌟 Auth State Listener
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        currentUser = user;
+        const name = user.displayName || user.email.split('@')[0];
+        document.getElementById('userNameDisplay').innerText = name;
+        document.getElementById('authBox').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        changeMode('income');
+        listenToUserTransactions(user.uid);
+      } else {
+        currentUser = null;
+        if (unsubscribeSnapshot) unsubscribeSnapshot();
+        document.getElementById('mainApp').style.display = 'none';
+        document.getElementById('authBox').style.display = 'block';
+      }
+    });
+
     window.onload = function() {
       applyLanguage(currentLang);
-      const savedUser = localStorage.getItem('ledger_user');
-      if (savedUser) {
-        loggedInUser = savedUser;
-        showMainApp();
-      }
     };
+
+    function toggleAuthMode() {
+      isSignUpMode = !isSignUpMode;
+      const title = document.getElementById('authTitle');
+      const nameField = document.getElementById('nameFieldGroup');
+      const btn = document.getElementById('authBtn');
+      const toggleText = document.getElementById('toggleAuthText');
+      const err = document.getElementById('authError');
+      err.style.display = 'none';
+
+      if (isSignUpMode) {
+        title.innerText = translations[currentLang].auth_signup_title;
+        nameField.style.display = 'block';
+        btn.innerText = (currentLang === 'ml') ? "അക്കൗണ്ട് തുടങ്ങുക" : "Sign Up";
+        toggleText.innerText = (currentLang === 'ml') ? "നിലവിൽ അക്കൗണ്ട് ഉണ്ടോ? ലോഗിൻ ചെയ്യുക (Login)" : "Already have an account? Login";
+      } else {
+        title.innerText = translations[currentLang].auth_login_title;
+        nameField.style.display = 'none';
+        btn.innerText = (currentLang === 'ml') ? "ലോഗിൻ ചെയ്യുക" : "Login";
+        toggleText.innerText = (currentLang === 'ml') ? "പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക (Sign Up)" : "Create a new account (Sign Up)";
+      }
+    }
+
+    function handleAuth(event) {
+      event.preventDefault();
+      const email = document.getElementById('authEmail').value.trim();
+      const pass = document.getElementById('authPass').value;
+      const name = document.getElementById('authName').value.trim();
+      const btn = document.getElementById('authBtn');
+      const err = document.getElementById('authError');
+
+      btn.disabled = true;
+      err.style.display = 'none';
+
+      if (isSignUpMode) {
+        auth.createUserWithEmailAndPassword(email, pass)
+          .then((cred) => {
+            if (name) {
+              return cred.user.updateProfile({ displayName: name });
+            }
+          })
+          .catch((error) => {
+            err.style.display = 'block';
+            err.innerText = error.message;
+            btn.disabled = false;
+          });
+      } else {
+        auth.signInWithEmailAndPassword(email, pass)
+          .catch((error) => {
+            err.style.display = 'block';
+            err.innerText = error.message;
+            btn.disabled = false;
+          });
+      }
+    }
+
+    function handleLogout() {
+      auth.signOut();
+    }
 
     function toggleLanguage() {
       currentLang = (currentLang === 'ml') ? 'en' : 'ml';
@@ -624,101 +706,64 @@
       textarea.style.height = textarea.scrollHeight + 'px';
     }
 
-    function handleLogin(event) {
-      event.preventDefault();
-      const u = document.getElementById('loginUser').value.trim().toLowerCase();
-      const p = document.getElementById('loginPass').value;
-      const err = document.getElementById('loginError');
+    // 🌟 ഓരോ യൂസറുടെയും സ്വന്തം കളക്ഷൻ മാത്രം ലിസൺ ചെയ്യുന്നു
+    function listenToUserTransactions(uid) {
+      if (unsubscribeSnapshot) unsubscribeSnapshot();
 
-      const users = {
-        "admin": "1234",
-        "rahmani": "1234",
-        "fasla": "1234"
-      };
-
-      if (users[u] && users[u] === p) {
-        loggedInUser = (u === "admin" || u === "rahmani") ? "Admin" : "Fasla";
-        localStorage.setItem('ledger_user', loggedInUser);
-        showMainApp();
-      } else {
-        err.style.display = 'block';
-        err.innerText = "Incorrect User Name or Password!";
-      }
-    }
-
-    function showMainApp() {
-      document.getElementById('userBadge').innerHTML = 
-        `<i class="fa-solid fa-circle-user"></i> ${loggedInUser} <span class="logout-btn" onclick="handleLogout()">(Logout)</span>`;
-      
-      document.getElementById('loginBox').style.display = 'none';
-      document.getElementById('mainApp').style.display = 'block';
-      changeMode('income');
-      listenToRealtimeData();
-    }
-
-    function handleLogout() {
-      localStorage.removeItem('ledger_user');
-      loggedInUser = "";
-      document.getElementById('mainApp').style.display = 'none';
-      document.getElementById('loginBox').style.display = 'block';
-      document.getElementById('loginUser').value = "";
-      document.getElementById('loginPass').value = "";
-    }
-
-    function listenToRealtimeData() {
-      db.collection("transactions").onSnapshot((snapshot) => {
-        let thisMonthIncome = 0;
-        let thisMonthExpense = 0;
-        let lifetimeIncome = 0;
-        let lifetimeExpense = 0;
-        
-        rawTransactions = [];
-        const now = new Date();
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
-
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          const amount = parseFloat(data.amount) || 0;
-          const type = data.type;
+      unsubscribeSnapshot = db.collection("users").doc(uid).collection("transactions")
+        .onSnapshot((snapshot) => {
+          let thisMonthIncome = 0;
+          let thisMonthExpense = 0;
+          let lifetimeIncome = 0;
+          let lifetimeExpense = 0;
           
-          let rowDate = new Date();
-          if (data.date) {
-            const parts = data.date.split('-');
-            if (parts.length === 3) {
-              rowDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+          rawTransactions = [];
+          const now = new Date();
+          const currentMonth = now.getMonth();
+          const currentYear = now.getFullYear();
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const amount = parseFloat(data.amount) || 0;
+            const type = data.type;
+            
+            let rowDate = new Date();
+            if (data.date) {
+              const parts = data.date.split('-');
+              if (parts.length === 3) {
+                rowDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+              }
             }
-          }
 
-          const isIncomeType = (type === "വരവ്" || type === "Income" || type === "കടം തിരിച്ചു കിട്ടിയത്" || type === "കടം വാങ്ങിയത്" || type === "Borrowed Loan" || type === "Received Loan Repayment");
+            const isIncomeType = (type === "വരവ്" || type === "Income" || type === "കടം തിരിച്ചു കിട്ടിയത്" || type === "കടം വാങ്ങിയത്" || type === "Borrowed Loan" || type === "Received Loan Repayment");
 
-          if (isIncomeType) {
-            lifetimeIncome += amount;
-          } else {
-            lifetimeExpense += amount;
-          }
-
-          if (rowDate.getMonth() === currentMonth && rowDate.getFullYear() === currentYear) {
             if (isIncomeType) {
-              thisMonthIncome += amount;
+              lifetimeIncome += amount;
             } else {
-              thisMonthExpense += amount;
+              lifetimeExpense += amount;
             }
-          }
 
-          rawTransactions.push({ ...data, parsedDate: rowDate });
+            if (rowDate.getMonth() === currentMonth && rowDate.getFullYear() === currentYear) {
+              if (isIncomeType) {
+                thisMonthIncome += amount;
+              } else {
+                thisMonthExpense += amount;
+              }
+            }
+
+            rawTransactions.push({ ...data, parsedDate: rowDate });
+          });
+
+          document.getElementById('dashIncome').innerText = '₹' + thisMonthIncome.toFixed(2);
+          document.getElementById('dashExpense').innerText = '₹' + thisMonthExpense.toFixed(2);
+          
+          const totalBal = lifetimeIncome - lifetimeExpense;
+          const balElement = document.getElementById('dashBalance');
+          balElement.innerText = '₹' + totalBal.toFixed(2);
+          balElement.style.color = (totalBal < 0) ? 'var(--expense-solid)' : 'var(--income-solid)';
+
+          renderReportTable();
         });
-
-        document.getElementById('dashIncome').innerText = '₹' + thisMonthIncome.toFixed(2);
-        document.getElementById('dashExpense').innerText = '₹' + thisMonthExpense.toFixed(2);
-        
-        const totalBal = lifetimeIncome - lifetimeExpense;
-        const balElement = document.getElementById('dashBalance');
-        balElement.innerText = '₹' + totalBal.toFixed(2);
-        balElement.style.color = (totalBal < 0) ? 'var(--expense-solid)' : 'var(--income-solid)';
-
-        renderReportTable();
-      });
     }
 
     function renderReportTable() {
@@ -755,7 +800,7 @@
       tableBody.innerHTML = '';
 
       if (filtered.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#7f8c8d; padding:20px;">${translations[currentLang].no_records}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#7f8c8d; padding:20px;">${translations[currentLang].no_records}</td></tr>`;
       } else {
         filtered.forEach((row) => {
           const amt = parseFloat(row.amount) || 0;
@@ -774,7 +819,6 @@
             <td>${formattedDate}</td>
             <td><strong>${row.category}</strong><br><small style="color:#7f8c8d;">${row.description && row.description !== '-' ? row.description : ''} ${row.person && row.person !== '-' ? '('+row.person+')' : ''}</small></td>
             <td class="${badgeClass}" style="font-weight:bold; white-space:nowrap;">${displayAmount}</td>
-            <td><span class="badge bg-user">${row.loggedInUser}</span></td>
           `;
           tableBody.appendChild(tr);
         });
@@ -870,6 +914,8 @@
 
     function handleFormSubmit(event) {
       event.preventDefault();
+      if (!currentUser) return;
+
       const submitBtn = document.getElementById('submitBtn');
       const statusMessage = document.getElementById('statusMessage');
       const descField = document.getElementById('description');
@@ -890,11 +936,11 @@
         amount: inputAmount,
         description: descField.value || "-",
         person: document.getElementById('person').value || "-",
-        loggedInUser: loggedInUser,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      db.collection("transactions").add(formData)
+      // 🌟 വ്യക്തിഗത ഡാറ്റാബേസ് പാത്തിലേക്ക് സേവ് ചെയ്യുന്നു
+      db.collection("users").doc(currentUser.uid).collection("transactions").add(formData)
         .then(() => {
           statusMessage.style.display = 'block';
           statusMessage.className = 'status-message status-success';
