@@ -247,7 +247,7 @@
     .app-topbar {
       background: linear-gradient(135deg, #0f766e, #0d9488);
       color: white;
-      padding: 20px;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -260,8 +260,8 @@
     }
 
     .user-avatar {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       background: rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(8px);
       border-radius: var(--radius-full);
@@ -269,6 +269,7 @@
       align-items: center;
       justify-content: center;
       font-weight: 700;
+      font-size: 16px;
     }
 
     .user-name {
@@ -294,7 +295,9 @@
       display: flex;
       align-items: center;
       gap: 5px;
+      transition: all 0.2s;
     }
+    .btn-chip:hover { background: rgba(255, 255, 255, 0.25); }
 
     /* DASHBOARD */
     .dashboard-overview {
@@ -564,7 +567,7 @@
       <span>ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
     </div>
     <div class="install-banner-btns">
-      <button type="button" class="btn-install-now" id="btnPwaInstall" onclick="triggerPwaInstall()">Install</button>
+      <button type="button" class="btn-install-now" onclick="triggerPwaInstall()">Install</button>
       <button type="button" class="btn-install-close" onclick="closePwaBanner()">✕</button>
     </div>
   </div>
@@ -613,7 +616,8 @@
         <div class="user-name" id="userNameLabel">User</div>
       </div>
       <div class="topbar-actions">
-        <button type="button" class="btn-chip" onclick="triggerPwaInstall()" id="topInstallBtn" style="display: none;">
+        <!-- എപ്പോഴും കാണുന്ന Install ബട്ടൺ -->
+        <button type="button" class="btn-chip" onclick="triggerPwaInstall()" id="topInstallBtn">
           <i class="fa-solid fa-download"></i> Install
         </button>
         <button type="button" class="btn-chip" onclick="toggleLanguage()" id="langToggleBtn">English</button>
@@ -786,22 +790,29 @@
   </div>
 
   <script>
-    // 🌟 Service Worker രജിസ്ട്രേഷൻ (ഓഫ്‌ലൈൻ വർക്കിംഗിനായി)
+    // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
 
-    // 🌟 PWA Install Prompt Listener
+    // PWA Install Handlers
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
       document.getElementById('pwaBanner').style.display = 'flex';
-      const topBtn = document.getElementById('topInstallBtn');
-      if (topBtn) topBtn.style.display = 'flex';
     });
+
+    // ആപ്പ് തുറന്ന് 2 സെക്കൻഡിനുള്ളിൽ ഇൻസ്റ്റാൾ ബാനർ കാണിക്കാൻ
+    setTimeout(() => {
+      // സ്റ്റാൻഡലോൺ മോഡിൽ അല്ലെങ്കിൽ മാത്രം ബാനർ കാണിക്കുക
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+      if (!isStandalone) {
+        document.getElementById('pwaBanner').style.display = 'flex';
+      }
+    }, 2000);
 
     function triggerPwaInstall() {
       if (deferredPrompt) {
@@ -813,8 +824,12 @@
           deferredPrompt = null;
         });
       } else {
-        // iOS Safari ഉപയോക്താക്കൾക്ക്
-        alert("iPhone/iPad-ൽ ഇൻസ്റ്റാൾ ചെയ്യാൻ: Safari ബ്രൗസറിൽ താഴെയുള്ള 'Share' ബട്ടൺ ക്ലിക്ക് ചെയ്ത് 'Add to Home Screen' തിരഞ്ഞെടുക്കുക.");
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          alert("iPhone/iPad-ൽ ഇൻസ്റ്റാൾ ചെയ്യാൻ:\nSafari ബ്രൗസറിൽ താഴെയുള്ള 'Share' ബട്ടൺ ക്ലിക്ക് ചെയ്ത് 'Add to Home Screen' തിരഞ്ഞെടുക്കുക.");
+        } else {
+          alert("ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ:\nബ്രൗസർ മെനു (മൂന്ന് കുത്തുകൾ) തുറന്ന് 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' ക്ലിക്ക് ചെയ്യുക.");
+        }
       }
     }
 
@@ -822,7 +837,7 @@
       document.getElementById('pwaBanner').style.display = 'none';
     }
 
-    // Firebase Init
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCFf3lvoWEBsEbFOFR5uKIuZDPEi_I12nE",
       authDomain: "my-ledgers-471e4.firebaseapp.com",
@@ -841,7 +856,7 @@
 
     let currentUser = null;
     let isSignUp = false;
-    let lang = localStorage.getItem('app_lang') || 'ml';
+    let lang = localStorage.getItem('app_lang') || 'en';
     let currentMode = 'income';
     let rawData = [];
     let unsubSnapshot = null;
@@ -892,10 +907,10 @@
       },
       en: {
         auth_login_title: "Login",
-        auth_signup_title: "Create Account",
-        auth_subtitle: "Manage your personal and family expenses",
-        lbl_name: "Full Name",
-        lbl_email: "Email Address",
+        auth_signup_title: "New account",
+        auth_subtitle: "Keep accurate records of your income and expenses.",
+        lbl_name: "Name",
+        lbl_email: "Email address",
         lbl_pass: "Password",
         lbl_date: "Date",
         lbl_loan_type: "Transaction Type",
@@ -986,7 +1001,7 @@
       if (isSignUp) {
         heading.innerText = dict[lang].auth_signup_title;
         nameGroup.style.display = 'block';
-        btnText.innerText = (lang === 'ml') ? "തുടങ്ങുക" : "Sign Up";
+        btnText.innerText = (lang === 'ml') ? "തുടങ്ങുക" : "Start";
         prompt.innerText = (lang === 'ml') ? "അക്കൗണ്ട് ഉണ്ടോ?" : "Have an account?";
         btn.innerText = (lang === 'ml') ? "ലോഗിൻ ചെയ്യുക" : "Login";
       } else {
