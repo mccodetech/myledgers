@@ -6,7 +6,13 @@
   <meta name="theme-color" content="#0d9488">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Family Ledger">
+  
   <title>Family Ledger</title>
+  
+  <!-- PWA Manifest & Icons -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9554/9554904.png">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,6 +63,65 @@
       justify-content: center;
       align-items: center;
       padding: 16px;
+    }
+
+    /* INSTALL APP BANNER */
+    .install-banner {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 440px;
+      background: #0f172a;
+      color: white;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 10000;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { transform: translate(-50%, 50px); opacity: 0; }
+      to { transform: translate(-50%, 0); opacity: 1; }
+    }
+    .install-banner-text {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .install-banner-text img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+    .install-banner-btns {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-install-now {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-install-close {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 16px;
+      cursor: pointer;
     }
 
     /* AUTH SCREEN */
@@ -492,6 +557,18 @@
 </head>
 <body>
 
+  <!-- PWA INSTALL PROMPT BANNER -->
+  <div class="install-banner" id="pwaBanner">
+    <div class="install-banner-text">
+      <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
+      <span>ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
+    </div>
+    <div class="install-banner-btns">
+      <button type="button" class="btn-install-now" id="btnPwaInstall" onclick="triggerPwaInstall()">Install</button>
+      <button type="button" class="btn-install-close" onclick="closePwaBanner()">✕</button>
+    </div>
+  </div>
+
   <!-- AUTHENTICATION VIEW -->
   <div class="auth-wrapper" id="authView">
     <div class="auth-header">
@@ -536,6 +613,9 @@
         <div class="user-name" id="userNameLabel">User</div>
       </div>
       <div class="topbar-actions">
+        <button type="button" class="btn-chip" onclick="triggerPwaInstall()" id="topInstallBtn" style="display: none;">
+          <i class="fa-solid fa-download"></i> Install
+        </button>
         <button type="button" class="btn-chip" onclick="toggleLanguage()" id="langToggleBtn">English</button>
         <button type="button" class="btn-chip" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
       </div>
@@ -706,6 +786,43 @@
   </div>
 
   <script>
+    // 🌟 Service Worker രജിസ്ട്രേഷൻ (ഓഫ്‌ലൈൻ വർക്കിംഗിനായി)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // 🌟 PWA Install Prompt Listener
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('pwaBanner').style.display = 'flex';
+      const topBtn = document.getElementById('topInstallBtn');
+      if (topBtn) topBtn.style.display = 'flex';
+    });
+
+    function triggerPwaInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            closePwaBanner();
+          }
+          deferredPrompt = null;
+        });
+      } else {
+        // iOS Safari ഉപയോക്താക്കൾക്ക്
+        alert("iPhone/iPad-ൽ ഇൻസ്റ്റാൾ ചെയ്യാൻ: Safari ബ്രൗസറിൽ താഴെയുള്ള 'Share' ബട്ടൺ ക്ലിക്ക് ചെയ്ത് 'Add to Home Screen' തിരഞ്ഞെടുക്കുക.");
+      }
+    }
+
+    function closePwaBanner() {
+      document.getElementById('pwaBanner').style.display = 'none';
+    }
+
+    // Firebase Init
     const firebaseConfig = {
       apiKey: "AIzaSyCFf3lvoWEBsEbFOFR5uKIuZDPEi_I12nE",
       authDomain: "my-ledgers-471e4.firebaseapp.com",
@@ -717,8 +834,6 @@
     };
 
     firebase.initializeApp(firebaseConfig);
-    
-    // 🌟 ഓഫ്‌ലൈൻ വർക്കിംഗ് സപ്പോർട്ട് (Offline Persistence)
     firebase.firestore().enablePersistence({ synchronizeTabs: true }).catch(() => {});
     
     const auth = firebase.auth();
@@ -833,7 +948,6 @@
       }
     };
 
-    // Set today's date
     const d = new Date();
     document.getElementById('entryDate').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
