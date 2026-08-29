@@ -336,7 +336,7 @@
 </head>
 <body>
 
-  <!-- PWA INSTALL BANNER -->
+  <!-- PWA INSTALL BANNER (Only on Login screen) -->
   <div class="install-banner" id="pwaBanner">
     <div class="install-banner-text">
       <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
@@ -449,7 +449,7 @@
     </div>
 
     <div class="app-content">
-      <!-- 1. ENTRY SECTION (WITH SAVE & CANCEL BUTTONS) -->
+      <!-- 1. ENTRY SECTION -->
       <div id="entrySection">
         <div class="type-pill-group">
           <button type="button" class="type-pill active" data-mode="income" onclick="setMode('income')" data-i18n="type_inc">വരവ്</button>
@@ -507,7 +507,6 @@
             <input type="text" id="entryDesc" class="input-box" placeholder="ചെറിയ വിവരണം...">
           </div>
 
-          <!-- 🌟 SAVE & CANCEL BUTTONS GROUP -->
           <div class="form-actions-group">
             <button type="button" class="btn-cancel-action" onclick="resetEntryForm()">
               <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_cancel_entry">റദ്ദാക്കുക</span>
@@ -683,7 +682,7 @@
     </div>
   </div>
 
-  <!-- ADD REMINDER MODAL -->
+  <!-- 🌟 ADD REMINDER MODAL (WITH CANCEL & SAVE BUTTONS) -->
   <div class="modal-overlay" id="addReminderModal">
     <div class="modal-dialog">
       <div class="modal-header">
@@ -719,7 +718,14 @@
             </select>
           </div>
         </div>
-        <button type="submit" class="btn-main" style="background: var(--reminder);" data-i18n="btn_save_reminder">റിമൈൻഡർ സേവ് ചെയ്യുക</button>
+        <div class="form-actions-group">
+          <button type="button" class="btn-cancel-action" onclick="closeAddReminderModal()" data-i18n="btn_cancel">
+            റദ്ദാക്കുക
+          </button>
+          <button type="submit" class="btn-main btn-save-action" style="background: var(--reminder);" data-i18n="btn_save_reminder">
+            റിമൈൻഡർ സേവ് ചെയ്യുക
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -969,12 +975,16 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      document.getElementById('pwaBanner').style.display = 'flex';
+      // Show install banner only if user is NOT logged in
+      if (!currentUser) {
+        document.getElementById('pwaBanner').style.display = 'flex';
+      }
     });
 
     setTimeout(() => {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (!isStandalone) {
+      // Show install banner on initial load ONLY if NOT logged in
+      if (!isStandalone && !currentUser) {
         document.getElementById('pwaBanner').style.display = 'flex';
       }
     }, 2000);
@@ -1451,6 +1461,9 @@
         document.getElementById('avatarInitial').innerText = name.charAt(0).toUpperCase();
         document.getElementById('settingsDisplayName').value = user.displayName || "";
         
+        // Hide PWA banner after login
+        closePwaBanner();
+
         document.getElementById('authView').style.display = 'none';
         document.getElementById('mainAppView').style.display = 'block';
         setMode('income');
