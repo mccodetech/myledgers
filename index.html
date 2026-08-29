@@ -218,13 +218,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 6px 0;
+      padding: 8px 0;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
     }
     .display-check-item:not(:last-child) { border-bottom: 1px dashed #e2e8f0; }
-    .display-check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
+    .display-check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
 
     /* CUSTOM CONFIRM DIALOG */
     .custom-dialog-box { text-align: center; padding: 10px; }
@@ -771,7 +771,7 @@
         <input type="text" id="settingsDisplayName" class="input-box" placeholder="Your Name">
       </div>
 
-      <!-- SAVE SETTINGS BUTTON -->
+      <!-- 🌟 INSTANT SAVE SETTINGS BUTTON -->
       <button type="button" class="btn-main" style="margin-top: 10px; background: linear-gradient(135deg, #059669, #10b981);" onclick="handleSettingsSaveClick()">
         <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_settings">Save Settings</span>
       </button>
@@ -902,7 +902,7 @@
         <button type="button" class="c-btn" onclick="calcPush('.')">.</button>
         
         <button type="button" class="c-btn" onclick="calcPush('0')">0</button>
-        <button type="button" class="c-btn" onclick="calcFinish()">Done</button>
+        <button type="button" class="c-btn c-eq" onclick="calcFinish()">Done</button>
       </div>
     </div>
   </div>
@@ -1010,6 +1010,393 @@
     let unsubFuelHistory = null;
     let unsubCustomCategories = null;
     let unsubReminders = null;
+
+    const dict = {
+      ml: {
+        auth_login_title: "ലോഗിൻ ചെയ്യുക",
+        auth_signup_title: "പുതിയ അക്കൗണ്ട്",
+        auth_subtitle: "നിങ്ങളുടെ വരവ്-ചെലവുകൾ കൃത്യമായി സൂക്ഷിക്കുക",
+        lbl_name: "പേര്",
+        lbl_email: "ഇമെയിൽ വിലാസം",
+        lbl_pass: "പാസ്‌വേഡ്",
+        lbl_confirm_pass: "പാസ്‌വേഡ് വീണ്ടും നൽകുക (Confirm)",
+        lbl_date: "തീയതി",
+        lbl_loan_type: "കടം ഇടപാട് തരം",
+        lbl_person: "ആരുമായി? (വ്യക്തിയുടെ പേര്)",
+        lbl_category: "വിഭാഗം (Category)",
+        lbl_new_category: "പുതിയ വിഭാഗത്തിന്റെ പേര്",
+        lbl_amount: "തുക",
+        lbl_description: "വിവരണം (കുറിപ്പ്)",
+        lbl_bill_name: "ബിൽ / ഇടപാടിന്റെ പേര്",
+        lbl_due_date: "നൽകേണ്ട തീയതി (Due Date)",
+        lbl_recurrence: "ആവർത്തനം (Recurrence)",
+        btn_save: "രേഖപ്പെടുത്തുക",
+        btn_save_reminder: "റിമൈൻഡർ സേവ് ചെയ്യുക",
+        btn_forgot_pass: "പാസ്‌വേഡ് മറന്നുപോയോ?",
+        tab_add: "ഇടപാട്",
+        tab_report: "റിപ്പോർട്ട്",
+        tab_reminders: "റിമൈൻഡർ",
+        tab_vehicle: "വാഹനം",
+        type_inc: "വരവ്",
+        type_exp: "ചെലവ്",
+        type_loan: "കടം",
+        dash_inc: "ഈ മാസത്തെ വരവ്",
+        dash_exp: "ഈ മാസത്തെ ചെലവ്",
+        dash_bal: "ആകെ ബാക്കി തുക",
+        sum_inc: "വരവ്",
+        sum_exp: "ചെലവ്",
+        th_date: "തീയതി",
+        th_details: "വിവരണം",
+        th_amount: "തുക",
+        btn_print_pdf: "Print / Export PDF",
+        lbl_settings_print: "റിപ്പോർട്ട് പ്രിന്റ് / PDF എടുക്കാൻ",
+        success_save: "വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!",
+        select_placeholder: "തിരഞ്ഞെടുക്കുക...",
+        new_cat_opt: "+ പുതിയ കാറ്റഗറി ചേർക്കുക",
+        no_records: "ഇടപാടുകൾ ഒന്നുമില്ല.",
+        no_reminders: "റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല",
+        loan_borrowed: "കടം വാങ്ങിയത്",
+        loan_given: "കടം കൊടുത്തത്",
+        loan_repaid: "കടം തിരിച്ചു കൊടുത്തത്",
+        loan_received: "കടം തിരിച്ചു കിട്ടിയത്",
+        opt_all_months: "എല്ലാ മാസവും",
+        opt_this_month: "ഈ മാസം",
+        opt_all_types: "എല്ലാ ഇടപാടുകളും",
+        opt_inc_only: "വരവ് മാത്രം",
+        opt_exp_only: "ചെലവ് മാത്രം",
+        opt_loan_only: "കടം ഇടപാടുകൾ",
+        opt_once: "ഒരിക്കൽ മാത്രം (One Time)",
+        opt_monthly: "എല്ലാ മാസവും (Monthly)",
+        opt_yearly: "എല്ലാ വർഷവും (Yearly)",
+        settings_title: "സെറ്റിങ്സ് (Settings)",
+        lbl_settings_currency: "കറൻസി (Currency)",
+        lbl_settings_lang: "ഭാഷ (Language)",
+        lbl_settings_name: "പ്രൊഫൈൽ പേര്",
+        btn_save_settings: "സെറ്റിങ്സ് സേവ് ചെയ്യുക",
+        lbl_settings_pass: "പാസ്‌വേഡ് മാറ്റാൻ",
+        btn_send_reset_mail: "റീസെറ്റ് ലിങ്ക് അയക്കുക",
+        lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ",
+        btn_install_app: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക",
+        lbl_settings_reset: "മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക",
+        btn_reset_data: "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യുക",
+        lbl_custom_cats: "നിങ്ങൾ ചേർത്ത പുതിയ കാറ്റഗറികൾ",
+        lbl_display_settings: "Display Settings (കാണിക്കേണ്ടവ തിരഞ്ഞെടുക്കുക)",
+        lbl_share_app: "ആപ്പ് ഷെയർ ചെയ്യാൻ (Share App)",
+        btn_share_whatsapp: "WhatsApp വഴി ഷെയർ ചെയ്യുക",
+        lbl_guide_heading: "ആപ്പ് ഉപയോഗ ക്രമം (User Guide)",
+        btn_user_guide: "ഉപയോഗ ക്രമം കാണുക",
+        title_upcoming_bills: "വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ",
+        btn_add_reminder: "പുതിയ റിമൈൻഡർ",
+        title_edit_tx: "ഇടപാട് എഡിറ്റ് ചെയ്യുക",
+        btn_update: "അപ്‌ഡേറ്റ് ചെയ്യുക",
+        title_add_veh: "പുതിയ വാഹനം ചേർക്കുക",
+        lbl_veh_type: "വാഹന തരം",
+        lbl_veh_name: "വാഹനത്തിന്റെ പേര് / മോഡൽ",
+        lbl_veh_num: "വാഹന നമ്പർ (Reg. Number)",
+        lbl_fuel_type: "ഇന്ധന തരം (Fuel Type)",
+        btn_save_veh: "വാഹനം സേവ് ചെയ്യുക",
+        btn_add_veh: "വാഹനം",
+        lbl_veh_mileage: "വാഹനത്തിന്റെ മൈലേജ്:",
+        lbl_running_cost: "ഒരു Km ഓടാനുള്ള ചെലവ്:",
+        lbl_last_odo: "അവസാനം അടിച്ച ഓഡോമീറ്റർ:",
+        lbl_odo_reading: "ഇപ്പോഴത്തെ മീറ്റർ റീഡിംഗ് (Odometer Km)",
+        lbl_fuel_price: "ഇന്ധന വില (Price/Litre)",
+        btn_save_fuel: "ഇന്ധന വിവരങ്ങൾ സേവ് ചെയ്യുക",
+        title_fuel_history: "ഇന്ധന ചരിത്രം (Fuel History)",
+        btn_cancel: "റദ്ദാക്കുക",
+        btn_yes: "അതെ (Yes)",
+        pwa_banner_text: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?"
+      },
+      en: {
+        auth_login_title: "Login",
+        auth_signup_title: "New Account",
+        auth_subtitle: "Keep accurate records of your income and expenses.",
+        lbl_name: "Name",
+        lbl_email: "Email address",
+        lbl_pass: "Password",
+        lbl_confirm_pass: "Confirm Password",
+        lbl_date: "Date",
+        lbl_loan_type: "Transaction Type",
+        lbl_person: "Person Name",
+        lbl_category: "Category",
+        lbl_new_category: "New Category Name",
+        lbl_amount: "Amount",
+        lbl_description: "Description",
+        lbl_bill_name: "Bill / Payment Name",
+        lbl_due_date: "Due Date",
+        lbl_recurrence: "Recurrence",
+        btn_save: "Save Entry",
+        btn_save_reminder: "Save Reminder",
+        btn_forgot_pass: "Forgot password?",
+        tab_add: "New Entry",
+        tab_report: "Reports",
+        tab_reminders: "Reminders",
+        tab_vehicle: "Vehicles",
+        type_inc: "Income",
+        type_exp: "Expense",
+        type_loan: "Loan / Debt",
+        dash_inc: "This Month Income",
+        dash_exp: "This Month Expense",
+        dash_bal: "Total Balance",
+        sum_inc: "Income",
+        sum_exp: "Expense",
+        th_date: "Date",
+        th_details: "Details",
+        th_amount: "Amount",
+        btn_print_pdf: "Print / Export PDF",
+        lbl_settings_print: "Print / Export Report",
+        success_save: "Transaction saved successfully!",
+        select_placeholder: "Select Category...",
+        new_cat_opt: "+ Add New Category",
+        no_records: "No transactions recorded.",
+        no_reminders: "No active reminders",
+        loan_borrowed: "Borrowed Loan",
+        loan_given: "Given Loan",
+        loan_repaid: "Repaid Loan",
+        loan_received: "Received Loan Repayment",
+        opt_all_months: "All Months",
+        opt_this_month: "This Month",
+        opt_all_types: "All Transactions",
+        opt_inc_only: "Income Only",
+        opt_exp_only: "Expense Only",
+        opt_loan_only: "Loans / Debts",
+        opt_once: "One Time",
+        opt_monthly: "Monthly",
+        opt_yearly: "Yearly",
+        settings_title: "Settings",
+        lbl_settings_currency: "Currency",
+        lbl_settings_lang: "Language",
+        lbl_settings_name: "Profile Display Name",
+        btn_save_settings: "Save Settings",
+        lbl_settings_pass: "Change Password",
+        btn_send_reset_mail: "Send Reset Link",
+        lbl_settings_install: "Install Application",
+        btn_install_app: "Install App",
+        lbl_settings_reset: "Reset All Data",
+        btn_reset_data: "Clear All Data",
+        lbl_custom_cats: "Your Custom Categories",
+        lbl_display_settings: "Display Settings (Choose visible modules)",
+        lbl_share_app: "Share Application",
+        btn_share_whatsapp: "Share via WhatsApp",
+        lbl_guide_heading: "Application User Guide",
+        btn_user_guide: "View User Guide",
+        title_upcoming_bills: "Upcoming Bills & Reminders",
+        btn_add_reminder: "New Reminder",
+        title_edit_tx: "Edit Transaction",
+        btn_update: "Update Entry",
+        title_add_veh: "Add New Vehicle",
+        lbl_veh_type: "Vehicle Type",
+        lbl_veh_name: "Vehicle Name / Model",
+        lbl_veh_num: "Reg. Number",
+        lbl_fuel_type: "Fuel Type",
+        btn_save_veh: "Save Vehicle",
+        btn_add_veh: "Vehicle",
+        lbl_veh_mileage: "Vehicle Mileage:",
+        lbl_running_cost: "Running Cost / Km:",
+        lbl_last_odo: "Last Odometer:",
+        lbl_odo_reading: "Current Odometer (Km)",
+        lbl_fuel_price: "Fuel Price/Litre",
+        btn_save_fuel: "Save Fuel Log",
+        title_fuel_history: "Fuel Log History",
+        btn_cancel: "Cancel",
+        btn_yes: "Yes",
+        pwa_banner_text: "Install app for quick access?"
+      },
+      ar: {
+        auth_login_title: "تسجيل الدخول",
+        auth_signup_title: "حساب جديد",
+        auth_subtitle: "سجل مصروفاتك ومداخيلك بكل سهولة ودقة",
+        lbl_name: "الاسم",
+        lbl_email: "البريد الإلكتروني",
+        lbl_pass: "كلمة المرور",
+        lbl_confirm_pass: "تأكيد كلمة المرور",
+        lbl_date: "التاريخ",
+        lbl_loan_type: "نوع المعاملة",
+        lbl_person: "اسم الشخص",
+        lbl_category: "الفئة",
+        lbl_new_category: "اسم الفئة الجديدة",
+        lbl_amount: "المبلغ",
+        lbl_description: "الوصف",
+        lbl_bill_name: "اسم الفاتورة / الالتزام",
+        lbl_due_date: "تاريخ الاستحقاق",
+        lbl_recurrence: "التكرار",
+        btn_save: "حفظ المعاملة",
+        btn_save_reminder: "حفظ التذكير",
+        btn_forgot_pass: "نسيت كلمة المرور؟",
+        tab_add: "إضافة",
+        tab_report: "التقارير",
+        tab_reminders: "التذكيرات",
+        tab_vehicle: "المركبات",
+        type_inc: "دخل",
+        type_exp: "مصروف",
+        type_loan: "ديون / قروض",
+        dash_inc: "دخل هذا الشهر",
+        dash_exp: "مصروف هذا الشهر",
+        dash_bal: "الرصيد الإجمالي",
+        sum_inc: "الدخل",
+        sum_exp: "المصروف",
+        th_date: "التاريخ",
+        th_details: "التفاصيل",
+        th_amount: "المبلغ",
+        btn_print_pdf: "طباعة / تصدير PDF",
+        lbl_settings_print: "طباعة / تصدير التقرير",
+        success_save: "تم الحفظ بنجاح!",
+        select_placeholder: "اختر الفئة...",
+        new_cat_opt: "+ إضافة فئة جديدة",
+        no_records: "لا توجد معاملات مسجلة.",
+        no_reminders: "لا توجد تذكيرات مسجلة",
+        loan_borrowed: "اقتراض دين",
+        loan_given: "إعطاء دين",
+        loan_repaid: "سداد دين",
+        loan_received: "استرداد دين",
+        opt_all_months: "جميع الأشهر",
+        opt_this_month: "هذا الشهر",
+        opt_all_types: "جميع المعاملات",
+        opt_inc_only: "الدخل فقط",
+        opt_exp_only: "المصروفات فقط",
+        opt_loan_only: "الديون والقروض",
+        opt_once: "مرة واحدة فقط",
+        opt_monthly: "شهرياً",
+        opt_yearly: "سنوياً",
+        settings_title: "الإعدادات",
+        lbl_settings_currency: "العملة",
+        lbl_settings_lang: "اللغة",
+        lbl_settings_name: "اسم المستخدم",
+        btn_save_settings: "حفظ الإعدادات",
+        lbl_settings_pass: "تغيير كلمة المرور",
+        btn_send_reset_mail: "إرسال رابط التعيين",
+        lbl_settings_install: "تثبيت التطبيق",
+        btn_install_app: "تثبيت التطبيق",
+        lbl_settings_reset: "حذف جميع البيانات",
+        btn_reset_data: "مسح كافة البيانات",
+        lbl_custom_cats: "الفئات المخصصة",
+        lbl_display_settings: "إعدادات العرض (تخصيص الواجهة)",
+        lbl_share_app: "مشاركة التطبيق",
+        btn_share_whatsapp: "مشاركة عبر واتساب",
+        lbl_guide_heading: "دليل الاستخدام",
+        btn_user_guide: "عرض دليل الاستخدام",
+        title_upcoming_bills: "الفواتير القادمة والتذكيرات",
+        btn_add_reminder: "إضافة تذكير",
+        title_edit_tx: "تعديل المعاملة",
+        btn_update: "تحديث",
+        title_add_veh: "إضافة مركبة جديدة",
+        lbl_veh_type: "نوع المركبة",
+        lbl_veh_name: "اسم / موديل المركبة",
+        lbl_veh_num: "رقم اللوحة",
+        lbl_fuel_type: "نوع الوقود",
+        btn_save_veh: "حفظ المركبة",
+        btn_add_veh: "مركبة",
+        lbl_veh_mileage: "معدل الاستهلاك:",
+        lbl_running_cost: "تكلفة الكيلومتر:",
+        lbl_last_odo: "آخر قراءة عداد:",
+        lbl_odo_reading: "قراءة العداد الحالية (كم)",
+        lbl_fuel_price: "سعر اللتر",
+        btn_save_fuel: "حفظ تعبئة الوقود",
+        title_fuel_history: "سجل الوقود",
+        btn_cancel: "إلغاء",
+        btn_yes: "نعم",
+        pwa_banner_text: "تثبيت التطبيق للوصول السريع؟"
+      }
+    };
+
+    const guideData = {
+      ml: `
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-wallet"></i> 1. വരവ്-ചെലവുകൾ രേഖപ്പെടുത്തൽ</h4>
+          <p>വരവ് (Income), ചെലവ് (Expense), കടം ഇടപാടുകൾ (Loans) എന്നിവ തിരഞ്ഞെടുത്ത് തീയതി, വിഭാഗം, തുക എന്നിവ നൽകി രേഖപ്പെടുത്താം. തുക കണക്കുകൂട്ടാൻ കാൽക്കുലേറ്റർ ഐക്കൺ ഉപയോഗിക്കാം.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-folder-plus"></i> 2. പുതിയ കാറ്റഗറി ചേർക്കൽ</h4>
+          <p>വിഭാഗം ഡ്രോപ്പ്ഡൗണിൽ നിന്ന് '+ പുതിയ കാറ്റഗറി ചേർക്കുക' തിരഞ്ഞെടുത്ത് പേര് നൽകിയാൽ അത് നിങ്ങളുടെ അക്കൗണ്ടിൽ സ്ഥിരമായി സേവ് ആകും.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-chart-pie"></i> 3. റിപ്പോർട്ടുകളും PDF പ്രിന്റും</h4>
+          <p>മാസം തിരിച്ചോ ഇടപാട് തരം തിരിച്ചോ ഫിൽറ്റർ ചെയ്യാം. ഓരോ ഇടപാടും എഡിറ്റ് ചെയ്യാനും ഡിലീറ്റ് ചെയ്യാനും സാധിക്കും. Settings-ൽ നിന്ന് PDF ആയി പ്രിന്റ് എടുക്കാം.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-bell"></i> 4. ബിൽ റിമൈൻഡറുകൾ (Reminders)</h4>
+          <p>മാസാന്ത ബില്ലുകൾ, വാടക, സ്കൂൾ ഫീസ് എന്നിവ നിശ്ചിത തീയതിയും കാറ്റഗറിയും നൽകി റിമൈൻഡർ സെറ്റ് ചെയ്യാം. അടച്ചു കഴിഞ്ഞാൽ 'Mark as Paid' ക്ലിക്ക് ചെയ്താൽ അത് തനിയെ ചെലവ് ലിസ്റ്റിലേക്ക് മാറും.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-gas-pump"></i> 5. വാഹന ട്രാക്കർ & മൈലേജ്</h4>
+          <p>നിങ്ങളുടെ കാർ/ബൈക്ക് രജിസ്റ്റർ ചെയ്ത് ഇന്ധനം അടിക്കുമ്പോൾ ഓഡോമീറ്റർ റീഡിംഗ് നൽകുക. ആപ്പ് തനിയെ വാഹനത്തിന്റെ മൈലേജും ഒരു കിലോമീറ്ററിന് വരുന്ന ചെലവും കണക്കാക്കും.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-sliders"></i> 6. ഡിസ്‌പ്ലേ സെറ്റിങ്സ്</h4>
+          <p>Settings-ലെ Display Settings വഴി നിങ്ങൾക്ക് ആവശ്യമുള്ള ടാബുകൾ മാത്രം ഓൺ ചെയ്ത് വെക്കാവുന്നതാണ്.</p>
+        </div>
+      `,
+      en: `
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-wallet"></i> 1. Recording Transactions</h4>
+          <p>Select Income, Expense, or Loan transaction. Enter the Date, Category, and Amount. Use the built-in calculator icon beside the amount field for calculations.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-folder-plus"></i> 2. Custom Categories</h4>
+          <p>Select '+ Add New Category' from the dropdown. Once saved, it permanently becomes available for your future entries.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-chart-pie"></i> 3. Reports, Edit & PDF Export</h4>
+          <p>Filter entries by month or type. Edit or delete any entry using the action icons. Export or print clean PDF statements from Settings.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-bell"></i> 4. Bill & Payment Reminders</h4>
+          <p>Set recurring or one-time payment reminders with category. Click 'Mark as Paid' to automatically add it to your expense ledger.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-gas-pump"></i> 5. Vehicle Fuel & Mileage Tracker</h4>
+          <p>Register your vehicles. Log odometer reading and fuel cost every time you refuel. The app automatically calculates mileage (Km/L) and running cost per Km.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-sliders"></i> 6. Display Settings & Customization</h4>
+          <p>Configure which modules (Entry, Reports, Reminders, Vehicles) appear on your dashboard through Settings > Display Settings.</p>
+        </div>
+      `,
+      ar: `
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-wallet"></i> ١. تسجيل المعاملات</h4>
+          <p>اختر نوع المعاملة (دخل، مصروف، ديون)، أدخل التاريخ، الفئة، والمبلغ. يمكنك استخدام الآلة الحاسبة المدمجة بجانب حقل المبلغ.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-folder-plus"></i> ٢. الفئات المخصصة</h4>
+          <p>اختر '+ إضافة فئة جديدة' من القائمة لكتابة وحفظ فئاتك الخاصة بشكل دائم في حسابك.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-chart-pie"></i> ٣. التقارير وتصدير PDF</h4>
+          <p>قم بفرز المعاملات حسب الشهر أو النوع، وتعديل أو حذف المعاملات، وطباعة تقرير PDF من الإعدادات.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-bell"></i> ٤. تذكير الفواتير</h4>
+          <p>أضف تذكيرات بمواعيد الإيجار أو الفواتير مع تحديد الفئة. عند السداد، اضغط 'تم الدفع' لتحويلها مباشرة إلى سجل المصروفات.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-gas-pump"></i> ٥. متتبع وقود واستهلاك المركبات</h4>
+          <p>سجل مركباتك وقم بتدوين قراءة العداد وتكلفة الوقود عند التعبئة ليقوم التطبيق بحساب معدل الاستهلاك والتكلفة لكل كم تلقائياً.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-sliders"></i> ٦. إعدادات العرض</h4>
+          <p>خصص واجهة التطبيق عن طريق تفعيل أو إخفاء التبويبات حسب رغبتك من صفحة الإعدادات.</p>
+        </div>
+      `
+    };
+
+    const defaultCategories = {
+      ml: {
+        income: ["ശമ്പളം / വരുമാനം", "ബിസിനസ്സ്", "കൃഷി / വിൽപന", "സമ്മാനം", "മറ്റുള്ളവ"],
+        expense: ["പലചരക്ക് / ഭക്ഷണം", "പഠനം / സ്കൂൾ", "യാത്ര / ഇന്ധനം", "ആരോഗ്യം / മരുന്ന്", "വീട്ടുചെലവുകൾ", "ഷോപ്പിംഗ്", "റീചാർജ് / നെറ്റ്", "കറന്റ് / വെള്ളം", "മറ്റുള്ളവ"],
+        loan: ["കടം ഇടപാടുകൾ"]
+      },
+      en: {
+        income: ["Salary / Income", "Business", "Sales", "Gift", "Others"],
+        expense: ["Groceries / Food", "Education", "Travel / Fuel", "Medical / Health", "Home / Rent", "Shopping", "Bills / Recharge", "Others"],
+        loan: ["Loan Transactions"]
+      },
+      ar: {
+        income: ["راتب / دخل", "تجارة", "مبيعات", "هدية", "أخرى"],
+        expense: ["بقالة / طعام", "تعليم / دراسة", "سفر / وقود", "صحة / دواء", "مصاريف منزل", "تسوق", "فواتير / إنترنت", "أخرى"],
+        loan: ["معاملات الديون"]
+      }
+    };
 
     const d = new Date();
     const todayFormatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -1224,48 +1611,43 @@
       document.getElementById('displayCheckPrint').checked = displayConfig.print !== false;
     }
 
+    // 🌟 DIRECT INSTANT SAVE SETTINGS (NO INNER CONFIRMATION - INSTANT CLOSE)
     function handleSettingsSaveClick() {
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-floppy-disk" style="color:var(--primary);"></i>',
-        title: (lang === 'ml') ? "സെറ്റിങ്സ് സേവ് ചെയ്യുക" : (lang === 'ar' ? "حفظ الإعدادات" : "Save Settings"),
-        msg: (lang === 'ml') ? "സെറ്റിങ്സിലെ മാറ്റങ്ങൾ സേവ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?" : (lang === 'ar' ? "هل أنت متأكد من حفظ التغييرات؟" : "Are you sure you want to apply these settings?"),
-        onConfirm: () => {
-          const newLang = document.getElementById('settingsLangSelect').value;
-          const newCurr = document.getElementById('settingsCurrencySelect').value;
-          const newName = document.getElementById('settingsDisplayName').value.trim();
+      const newLang = document.getElementById('settingsLangSelect').value;
+      const newCurr = document.getElementById('settingsCurrencySelect').value;
+      const newName = document.getElementById('settingsDisplayName').value.trim();
 
-          displayConfig = {
-            entry: document.getElementById('displayCheckEntry').checked,
-            report: document.getElementById('displayCheckReport').checked,
-            reminder: document.getElementById('displayCheckReminder').checked,
-            vehicle: document.getElementById('displayCheckVehicle').checked,
-            print: document.getElementById('displayCheckPrint').checked
-          };
-          localStorage.setItem('app_display_config', JSON.stringify(displayConfig));
+      displayConfig = {
+        entry: document.getElementById('displayCheckEntry').checked,
+        report: document.getElementById('displayCheckReport').checked,
+        reminder: document.getElementById('displayCheckReminder').checked,
+        vehicle: document.getElementById('displayCheckVehicle').checked,
+        print: document.getElementById('displayCheckPrint').checked
+      };
+      localStorage.setItem('app_display_config', JSON.stringify(displayConfig));
 
-          lang = newLang;
-          localStorage.setItem('app_lang', lang);
-          applyLanguage(lang);
+      lang = newLang;
+      localStorage.setItem('app_lang', lang);
+      applyLanguage(lang);
 
-          userCurrency = newCurr;
-          localStorage.setItem('app_currency', userCurrency);
+      userCurrency = newCurr;
+      localStorage.setItem('app_currency', userCurrency);
 
-          if (currentUser && newName && newName !== currentUser.displayName) {
-            currentUser.updateProfile({ displayName: newName }).then(() => {
-              document.getElementById('userNameLabel').innerText = newName;
-              document.getElementById('avatarInitial').innerText = newName.charAt(0).toUpperCase();
-            });
-          }
+      if (currentUser && newName && newName !== currentUser.displayName) {
+        currentUser.updateProfile({ displayName: newName }).then(() => {
+          document.getElementById('userNameLabel').innerText = newName;
+          document.getElementById('avatarInitial').innerText = newName.charAt(0).toUpperCase();
+        });
+      }
 
-          applyDisplayPreferences();
-          updateCategoryList();
-          updateReminderCategoryDropdown();
-          bindUserTransactions(currentUser.uid);
-          if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
+      applyDisplayPreferences();
+      updateCategoryList();
+      updateReminderCategoryDropdown();
+      bindUserTransactions(currentUser.uid);
+      if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
 
-          closeSettingsModal();
-        }
-      });
+      // 🌟 വിൻഡോ ഉടൻ ക്ലോസ് ആകുന്നു
+      closeSettingsModal();
     }
 
     function applyDisplayPreferences() {
@@ -1336,7 +1718,6 @@
       });
     }
 
-    // 🌟 COMPLETE DATA WIPE FUNCTION (DELETES ALL TRANSACTIONS, FUEL, REMINDERS, VEHICLES, CATEGORIES)
     function promptResetAllData() {
       showAppConfirm({
         icon: '<i class="fa-solid fa-triangle-exclamation" style="color:var(--expense);"></i>',
@@ -1347,14 +1728,12 @@
           
           closeSettingsModal();
           const userDoc = db.collection("users").doc(currentUser.uid);
-
           const collections = ["transactions", "reminders", "categories", "vehicles"];
 
           const deletePromises = collections.map(col => {
             return userDoc.collection(col).get().then(snap => {
               const batch = db.batch();
               snap.forEach(doc => {
-                // If vehicles, delete fuel_logs subcollection too
                 if (col === "vehicles") {
                   doc.ref.collection("fuel_logs").get().then(fuelSnap => {
                     const fBatch = db.batch();
@@ -1373,13 +1752,6 @@
               icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
               title: (lang === 'ml') ? "ഡാറ്റ ക്ലിയർ ചെയ്തു" : "Reset Complete",
               msg: (lang === 'ml') ? "എല്ലാ വിവരങ്ങളും വിജയകരമായി ഡിലീറ്റ് ചെയ്തു!" : "All data has been cleared successfully!",
-              hideCancel: true
-            });
-          }).catch(err => {
-            showAppConfirm({
-              icon: '<i class="fa-solid fa-triangle-exclamation" style="color:var(--expense);"></i>',
-              title: "Error",
-              msg: err.message,
               hideCancel: true
             });
           });
