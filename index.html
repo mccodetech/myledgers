@@ -34,6 +34,7 @@
       --income: #10b981;
       --loan: #3b82f6;
       --vehicle: #8b5cf6;
+      --vehicle-dark: #7c3aed;
       --reminder: #f59e0b;
       --whatsapp: #25d366;
       --bg: #f8fafc;
@@ -575,7 +576,7 @@
         </div>
       </div>
 
-      <!-- 4. VEHICLE SECTION -->
+      <!-- 4. VEHICLE SECTION (WITH SAVE & CANCEL BUTTONS) -->
       <div id="vehicleSection" style="display: none;">
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <div class="select-wrap" style="flex: 1;">
@@ -601,7 +602,7 @@
           </div>
         </div>
 
-        <form onsubmit="handleFuelEntrySubmit(event)">
+        <form id="fuelLogForm" onsubmit="handleFuelEntrySubmit(event)">
           <div class="form-group">
             <label data-i18n="lbl_date">തീയതി</label>
             <input type="date" id="fuelDate" class="input-box" required>
@@ -623,9 +624,16 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn-main" style="background: var(--vehicle);">
-            <i class="fa-solid fa-gas-pump"></i> <span data-i18n="btn_save_fuel">ഇന്ധന വിവരങ്ങൾ സേവ് ചെയ്യുക</span>
-          </button>
+          
+          <!-- 🌟 SAVE FUEL LOG & CANCEL BUTTONS GROUP -->
+          <div class="form-actions-group">
+            <button type="button" class="btn-cancel-action" onclick="resetFuelForm()">
+              <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_cancel_entry">റദ്ദാക്കുക</span>
+            </button>
+            <button type="submit" class="btn-main btn-save-action" style="background: var(--vehicle);" id="saveFuelSubmitBtn">
+              <i class="fa-solid fa-gas-pump"></i> <span data-i18n="btn_save_fuel">ഇന്ധന വിവരങ്ങൾ സേവ് ചെയ്യുക</span>
+            </button>
+          </div>
         </form>
 
         <div id="fuelAlert" class="status-alert"></div>
@@ -682,7 +690,7 @@
     </div>
   </div>
 
-  <!-- 🌟 ADD REMINDER MODAL (WITH CANCEL & SAVE BUTTONS) -->
+  <!-- ADD REMINDER MODAL (WITH CANCEL & SAVE BUTTONS) -->
   <div class="modal-overlay" id="addReminderModal">
     <div class="modal-dialog">
       <div class="modal-header">
@@ -975,7 +983,6 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      // Show install banner only if user is NOT logged in
       if (!currentUser) {
         document.getElementById('pwaBanner').style.display = 'flex';
       }
@@ -983,7 +990,6 @@
 
     setTimeout(() => {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      // Show install banner on initial load ONLY if NOT logged in
       if (!isStandalone && !currentUser) {
         document.getElementById('pwaBanner').style.display = 'flex';
       }
@@ -1368,7 +1374,7 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> 5. വാഹന ട്രാക്കർ & മൈലേജ്</h4>
-          <p>നിങ്ങളുടെ കാർ/ബൈക്ക് രജിസ്റ്റർ ചെയ്ത് ഇന്ധനം അടിക്കുമ്പോൾ ഓഡോമീറ്റർ റീഡിംഗ് നൽകുക. ആപ്പ് തനിയെ വാഹനത്തിന്റെ മൈലേജും ഒരു കിലോമീറ്ററിന് വരുന്ന ചെലവും കണക്കാക്കും.</p>
+          <p>നിങ്ങളുടെ കാർ/ബൈക്ക് രജിസ്റ്റർ ചെയ്ത് ഇന്ധനം അടിക്കുമ്പോൾ ഓഡോമീറ്റർ റീഡിംഗ് നൽകുക. ആപ്പ് തനിയെ വാഹനത്തിന്റെ മൈലേജും ഒരു കിലോമീറ്ററിന് വരുന്ന ചെലവും കണക്കാക്കും. തെറ്റിയാൽ 'റദ്ദാക്കുക' വഴി ഫോം ക്ലിയർ ചെയ്യാം.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-sliders"></i> 6. ഡിസ്‌പ്ലേ സെറ്റിങ്സ്</h4>
@@ -1461,7 +1467,6 @@
         document.getElementById('avatarInitial').innerText = name.charAt(0).toUpperCase();
         document.getElementById('settingsDisplayName').value = user.displayName || "";
         
-        // Hide PWA banner after login
         closePwaBanner();
 
         document.getElementById('authView').style.display = 'none';
@@ -1841,6 +1846,13 @@
       updateCategoryList();
     }
 
+    // 🌟 RESET FUEL FORM
+    function resetFuelForm() {
+      document.getElementById('fuelOdo').value = '';
+      document.getElementById('fuelPricePerLiter').value = '';
+      document.getElementById('fuelTotalAmount').value = '';
+    }
+
     function bindCustomCategories(uid) {
       if (unsubCustomCategories) unsubCustomCategories();
       unsubCustomCategories = db.collection("users").doc(uid).collection("categories").onSnapshot((snapshot) => {
@@ -2141,7 +2153,7 @@
       proceedSave();
     }
 
-    /* REMINDERS SYSTEM WITH DIRECT CATEGORY */
+    /* REMINDERS SYSTEM */
     function openAddReminderModal() {
       updateReminderCategoryDropdown();
       document.getElementById('addReminderModal').style.display = 'flex';
@@ -2427,8 +2439,7 @@
           alertBox.className = "status-alert status-success";
           alertBox.innerText = dict[lang].success_save;
           alertBox.style.display = "block";
-          document.getElementById('fuelOdo').value = '';
-          document.getElementById('fuelTotalAmount').value = '';
+          resetFuelForm();
           setTimeout(() => alertBox.style.display = "none", 3000);
         });
     }
