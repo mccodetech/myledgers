@@ -137,7 +137,7 @@
 
     .auth-header {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .brand-icon {
@@ -195,6 +195,22 @@
       background: #ffffff;
       box-shadow: 0 0 0 4px var(--primary-light);
     }
+
+    .forgot-link-wrap {
+      text-align: right;
+      margin-top: -8px;
+      margin-bottom: 16px;
+    }
+
+    .forgot-btn {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .forgot-btn:hover { text-decoration: underline; }
 
     .btn-main {
       width: 100%;
@@ -488,6 +504,7 @@
       text-align: center;
       margin-top: 14px;
       display: none;
+      line-height: 1.4;
     }
     .status-success { background: #dcfce7; color: #15803d; }
     .status-error { background: #ffe4e6; color: #be123c; }
@@ -594,6 +611,11 @@
         <input type="password" id="authPass" class="input-box" placeholder="••••••••" required>
       </div>
 
+      <!-- Forgot Password Link -->
+      <div class="forgot-link-wrap" id="forgotPassWrap">
+        <button type="button" class="forgot-btn" onclick="handleForgotPassword()" data-i18n="btn_forgot_pass">Forgot password?</button>
+      </div>
+
       <button type="submit" class="btn-main" id="authSubmitBtn">
         <span id="authBtnText">ലോഗിൻ</span>
       </button>
@@ -604,7 +626,7 @@
       <button type="button" class="btn-text" id="switchBtn" onclick="toggleAuthMode()">പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക</button>
     </div>
 
-    <div id="authAlert" class="status-alert status-error"></div>
+    <div id="authAlert" class="status-alert"></div>
   </div>
 
   <!-- MAIN APP VIEW -->
@@ -616,7 +638,6 @@
         <div class="user-name" id="userNameLabel">User</div>
       </div>
       <div class="topbar-actions">
-        <!-- എപ്പോഴും കാണുന്ന Install ബട്ടൺ -->
         <button type="button" class="btn-chip" onclick="triggerPwaInstall()" id="topInstallBtn">
           <i class="fa-solid fa-download"></i> Install
         </button>
@@ -805,9 +826,7 @@
       document.getElementById('pwaBanner').style.display = 'flex';
     });
 
-    // ആപ്പ് തുറന്ന് 2 സെക്കൻഡിനുള്ളിൽ ഇൻസ്റ്റാൾ ബാനർ കാണിക്കാൻ
     setTimeout(() => {
-      // സ്റ്റാൻഡലോൺ മോഡിൽ അല്ലെങ്കിൽ മാത്രം ബാനർ കാണിക്കുക
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
       if (!isStandalone) {
         document.getElementById('pwaBanner').style.display = 'flex';
@@ -856,7 +875,7 @@
 
     let currentUser = null;
     let isSignUp = false;
-    let lang = localStorage.getItem('app_lang') || 'en';
+    let lang = localStorage.getItem('app_lang') || 'ml';
     let currentMode = 'income';
     let rawData = [];
     let unsubSnapshot = null;
@@ -877,6 +896,7 @@
         lbl_amount: "തുക",
         lbl_description: "വിവരണം (കുറിപ്പ്)",
         btn_save: "രേഖപ്പെടുത്തുക",
+        btn_forgot_pass: "പാസ്‌വേഡ് മറന്നുപോയോ?",
         tab_add: "പുതിയ ഇടപാട്",
         tab_report: "റിപ്പോർട്ട്",
         type_inc: "വരവ്",
@@ -920,6 +940,7 @@
         lbl_amount: "Amount",
         lbl_description: "Description",
         btn_save: "Save Entry",
+        btn_forgot_pass: "Forgot password?",
         tab_add: "New Entry",
         tab_report: "Reports",
         type_inc: "Income",
@@ -996,21 +1017,49 @@
       const btnText = document.getElementById('authBtnText');
       const prompt = document.getElementById('switchPrompt');
       const btn = document.getElementById('switchBtn');
+      const forgotWrap = document.getElementById('forgotPassWrap');
       document.getElementById('authAlert').style.display = 'none';
 
       if (isSignUp) {
         heading.innerText = dict[lang].auth_signup_title;
         nameGroup.style.display = 'block';
+        forgotWrap.style.display = 'none';
         btnText.innerText = (lang === 'ml') ? "തുടങ്ങുക" : "Start";
         prompt.innerText = (lang === 'ml') ? "അക്കൗണ്ട് ഉണ്ടോ?" : "Have an account?";
         btn.innerText = (lang === 'ml') ? "ലോഗിൻ ചെയ്യുക" : "Login";
       } else {
         heading.innerText = dict[lang].auth_login_title;
         nameGroup.style.display = 'none';
+        forgotWrap.style.display = 'block';
         btnText.innerText = (lang === 'ml') ? "ലോഗിൻ" : "Login";
         prompt.innerText = (lang === 'ml') ? "അക്കൗണ്ട് ഇല്ലേ?" : "No account?";
         btn.innerText = (lang === 'ml') ? "പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക" : "Create Account";
       }
+    }
+
+    // 🌟 ഫോർഗോട്ട് പാസ്‌വേഡ് ഫങ്ക്ഷൻ
+    function handleForgotPassword() {
+      const email = document.getElementById('authEmail').value.trim();
+      const alertBox = document.getElementById('authAlert');
+
+      if (!email) {
+        alertBox.className = "status-alert status-error";
+        alertBox.innerText = (lang === 'ml') ? "ദയവായി നിങ്ങളുടെ ഇമെയിൽ വിലാസം ടൈപ്പ് ചെയ്യുക!" : "Please enter your email address first!";
+        alertBox.style.display = 'block';
+        return;
+      }
+
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          alertBox.className = "status-alert status-success";
+          alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡ് റീസെറ്റ് ചെയ്യാനുള്ള ലിങ്ക് ഇമെയിലിലേക്ക് അയച്ചിട്ടുണ്ട്. മെയിൽ പരിശോധിക്കുക!" : "Password reset link has been sent to your email!";
+          alertBox.style.display = 'block';
+        })
+        .catch((err) => {
+          alertBox.className = "status-alert status-error";
+          alertBox.innerText = err.message;
+          alertBox.style.display = 'block';
+        });
     }
 
     function handleAuth(e) {
@@ -1030,6 +1079,7 @@
             if (name) cred.user.updateProfile({ displayName: name });
           })
           .catch((err) => {
+            alertBox.className = "status-alert status-error";
             alertBox.style.display = 'block';
             alertBox.innerText = err.message;
             btn.disabled = false;
@@ -1037,8 +1087,14 @@
       } else {
         auth.signInWithEmailAndPassword(email, pass)
           .catch((err) => {
+            alertBox.className = "status-alert status-error";
             alertBox.style.display = 'block';
-            alertBox.innerText = err.message;
+            // ഉപയോക്താവിന് മനസ്സിലാകുന്ന രീതിയിലുള്ള എറർ മെസ്സേജ്
+            if (err.code === 'auth/invalid-login-credentials' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+              alertBox.innerText = (lang === 'ml') ? "ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്. പരിശോധിക്കുക!" : "Incorrect email or password. Please check!";
+            } else {
+              alertBox.innerText = err.message;
+            }
             btn.disabled = false;
           });
       }
