@@ -10,7 +10,6 @@
   
   <title>Family Ledger</title>
   
-  <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9554/9554904.png">
   
@@ -19,7 +18,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manjari:wght@400;700&display=swap" rel="stylesheet">
   
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -33,583 +31,92 @@
       --expense: #f43f5e;
       --income: #10b981;
       --loan: #3b82f6;
+      --vehicle: #8b5cf6;
       --bg: #f8fafc;
       --surface: #ffffff;
       --text: #0f172a;
       --text-muted: #64748b;
       --border: #e2e8f0;
-      --radius-sm: 8px;
       --radius-md: 14px;
       --radius-lg: 20px;
       --radius-full: 9999px;
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.07);
-      --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', 'Manjari', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Manjari', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
+    /* AUTH */
+    .auth-wrapper { width: 100%; max-width: 420px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 36px 28px; border: 1px solid var(--border); }
+    .auth-header { text-align: center; margin-bottom: 24px; }
+    .brand-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; }
+    .auth-header h2 { font-size: 22px; font-weight: 700; }
+    .auth-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-    /* INSTALL APP BANNER */
-    .install-banner {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 32px);
-      max-width: 440px;
-      background: #0f172a;
-      color: white;
-      padding: 12px 16px;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      z-index: 10000;
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { transform: translate(-50%, 50px); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
-    }
-    .install-banner-text {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .install-banner-text img {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-    }
-    .install-banner-btns {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn-install-now {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 7px 14px;
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-install-close {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      font-size: 16px;
-      cursor: pointer;
-    }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .input-box { width: 100%; padding: 12px 16px; font-size: 14px; border: 1.5px solid var(--border); border-radius: var(--radius-md); outline: none; background: #f8fafc; color: var(--text); }
+    .input-box:focus { border-color: var(--primary); background: #ffffff; }
 
-    /* AUTH SCREEN */
-    .auth-wrapper {
-      width: 100%;
-      max-width: 420px;
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      padding: 36px 28px;
-      border: 1px solid var(--border);
-    }
-
-    .auth-header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
-
-    .brand-icon {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      border-radius: var(--radius-md);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 12px;
-      box-shadow: 0 8px 16px -4px rgba(13, 148, 136, 0.4);
-    }
-
-    .auth-header h2 {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .auth-header p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .input-box {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
-      outline: none;
-      background: #f8fafc;
-      color: var(--text);
-      transition: all 0.2s ease;
-    }
-
-    .input-box:focus {
-      border-color: var(--primary);
-      background: #ffffff;
-      box-shadow: 0 0 0 4px var(--primary-light);
-    }
-
-    .forgot-link-wrap {
-      text-align: right;
-      margin-top: -8px;
-      margin-bottom: 16px;
-    }
-
-    .forgot-btn {
-      background: none;
-      border: none;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .forgot-btn:hover { text-decoration: underline; }
-
-    .btn-main {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      font-size: 15px;
-      font-weight: 700;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
-      transition: transform 0.1s, opacity 0.2s;
-    }
-
+    .btn-main { width: 100%; padding: 13px; border: none; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .btn-main:active { transform: scale(0.98); }
-    .btn-main:disabled { opacity: 0.7; cursor: not-allowed; }
 
-    .switch-auth-mode {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
+    /* APP LAYOUT */
+    .app-shell { width: 100%; max-width: 600px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border); }
+    .app-topbar { background: linear-gradient(135deg, #0f766e, #0d9488); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .user-info { display: flex; align-items: center; gap: 10px; }
+    .user-avatar { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.2); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .btn-icon-top { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: white; width: 38px; height: 38px; border-radius: var(--radius-full); cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-    .btn-text {
-      background: none;
-      border: none;
-      color: var(--primary);
-      font-weight: 700;
-      cursor: pointer;
-      margin-left: 4px;
-    }
+    .dashboard-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 16px; background: #f8fafc; border-bottom: 1px solid var(--border); }
+    .metric-card { background: var(--surface); padding: 12px 10px; border-radius: var(--radius-md); border: 1px solid var(--border); text-align: center; }
+    .metric-label { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+    .metric-value { font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .val-inc { color: var(--income); } .val-exp { color: var(--expense); } .val-bal { color: var(--text); }
 
-    /* MAIN APP LAYOUT */
-    .app-shell {
-      width: 100%;
-      max-width: 600px;
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
+    /* NAVIGATION TABS */
+    .nav-tabs { display: flex; padding: 12px 16px 0 16px; gap: 8px; border-bottom: 1px solid var(--border); }
+    .nav-tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+    .nav-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-    .app-topbar {
-      background: linear-gradient(135deg, #0f766e, #0d9488);
-      color: white;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    .app-content { padding: 20px 16px; }
 
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .user-avatar {
-      width: 38px;
-      height: 38px;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(8px);
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-    }
-
-    .user-name {
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-icon-top {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: white;
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-full);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    .btn-icon-top:hover { background: rgba(255, 255, 255, 0.25); }
-
-    /* DASHBOARD */
-    .dashboard-overview {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      padding: 16px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .metric-card {
-      background: var(--surface);
-      padding: 12px 10px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .metric-value {
-      font-size: 15px;
-      font-weight: 800;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .val-inc { color: var(--income); }
-    .val-exp { color: var(--expense); }
-    .val-bal { color: var(--text); }
-
-    /* ACTION BAR */
-    .nav-tabs {
-      display: flex;
-      padding: 12px 16px 0 16px;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-tab-btn {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      background: transparent;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .nav-tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .app-content {
-      padding: 20px 16px;
-    }
-
-    /* TRANSACTION FORM */
-    .type-pill-group {
-      display: flex;
-      background: #f1f5f9;
-      padding: 4px;
-      border-radius: var(--radius-full);
-      gap: 4px;
-      margin-bottom: 20px;
-    }
-
-    .type-pill {
-      flex: 1;
-      border: none;
-      padding: 8px;
-      border-radius: var(--radius-full);
-      font-size: 13px;
-      font-weight: 700;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
+    /* TYPE PILLS */
+    .type-pill-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-full); gap: 4px; margin-bottom: 20px; }
+    .type-pill { flex: 1; border: none; padding: 8px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; background: transparent; color: var(--text-muted); cursor: pointer; }
     .type-pill.active[data-mode="income"] { background: var(--income); color: white; }
     .type-pill.active[data-mode="expense"] { background: var(--expense); color: white; }
     .type-pill.active[data-mode="loan"] { background: var(--loan); color: white; }
 
-    .amount-calc-wrap {
-      display: flex;
-      gap: 8px;
-    }
+    .select-wrap { position: relative; }
+    .select-wrap select { appearance: none; -webkit-appearance: none; }
+    .select-wrap::after { content: '\f107'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 
-    .btn-calc {
-      padding: 0 16px;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border: 1.5px solid var(--primary);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-size: 16px;
-    }
+    .table-responsive { overflow-x: auto; max-height: 380px; border: 1px solid var(--border); border-radius: var(--radius-md); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    th { background: #f8fafc; padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border); position: sticky; top: 0; }
+    td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
 
-    .select-wrap {
-      position: relative;
-    }
-    .select-wrap select {
-      appearance: none;
-      -webkit-appearance: none;
-    }
-    .select-wrap::after {
-      content: '\f107';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      pointer-events: none;
-    }
+    .status-alert { padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; text-align: center; margin-top: 14px; display: none; }
+    .status-success { background: #dcfce7; color: #15803d; } .status-error { background: #ffe4e6; color: #be123c; }
 
-    /* REPORT SECTION */
-    .filter-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 9999; padding: 16px; }
+    .modal-dialog { background: var(--surface); width: 100%; max-width: 380px; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .modal-close-btn { background: transparent; border: none; font-size: 18px; cursor: pointer; }
 
-    .filter-summary-box {
-      display: flex;
-      justify-content: space-between;
-      background: #f1f5f9;
-      padding: 10px 14px;
-      border-radius: var(--radius-md);
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 14px;
-    }
+    /* VEHICLE CARD */
+    .vehicle-stat-card { background: #f5f3ff; border: 1.5px solid #ddd6fe; border-radius: var(--radius-md); padding: 12px; margin-bottom: 16px; }
+    .stat-row { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    .stat-row strong { color: var(--vehicle); font-size: 13px; }
 
-    .table-responsive {
-      overflow-x: auto;
-      max-height: 380px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      text-align: left;
-    }
-
-    th {
-      background: #f8fafc;
-      padding: 10px 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-    }
-
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .badge-amt {
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .status-alert {
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      margin-top: 14px;
-      display: none;
-      line-height: 1.4;
-    }
-    .status-success { background: #dcfce7; color: #15803d; }
-    .status-error { background: #ffe4e6; color: #be123c; }
-
-    /* MODALS */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 16px;
-    }
-
-    .modal-dialog {
-      background: var(--surface);
-      width: 100%;
-      max-width: 380px;
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-lg);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
-    }
-    .modal-header h3 { font-size: 17px; font-weight: 700; }
-    .modal-close-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    /* CALCULATOR */
-    .calc-display {
-      width: 100%;
-      height: 48px;
-      background: #f8fafc;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
-      text-align: right;
-      padding: 8px 14px;
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 14px;
-      outline: none;
-    }
-
-    .calc-pad {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .c-btn {
-      padding: 12px;
-      font-size: 16px;
-      font-weight: 700;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      cursor: pointer;
-    }
-    .c-btn:active { background: #e2e8f0; }
-    .c-btn.c-op { background: var(--primary-light); color: var(--primary-dark); border-color: transparent; }
-    .c-btn.c-eq { background: var(--primary); color: white; border-color: transparent; grid-column: span 2; }
-    .c-btn.c-del { background: #fee2e2; color: #ef4444; border-color: transparent; }
-
-    @media (max-width: 480px) {
-      body { padding: 0; }
-      .app-shell, .auth-wrapper {
-        border-radius: 0;
-        min-height: 100vh;
-        border: none;
-      }
-    }
+    @media (max-width: 480px) { body { padding: 0; } .app-shell, .auth-wrapper { border-radius: 0; min-height: 100vh; border: none; } }
   </style>
 </head>
 <body>
 
-  <!-- PWA INSTALL BANNER -->
-  <div class="install-banner" id="pwaBanner">
-    <div class="install-banner-text">
-      <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
-      <span data-i18n="pwa_banner_text">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
-    </div>
-    <div class="install-banner-btns">
-      <button type="button" class="btn-install-now" onclick="triggerPwaInstall()">Install</button>
-      <button type="button" class="btn-install-close" onclick="closePwaBanner()">✕</button>
-    </div>
-  </div>
-
-  <!-- AUTHENTICATION VIEW -->
+  <!-- AUTH VIEW -->
   <div class="auth-wrapper" id="authView">
     <div class="auth-header">
       <div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
@@ -631,9 +138,8 @@
         <input type="password" id="authPass" class="input-box" placeholder="••••••••" required>
       </div>
 
-      <!-- Forgot Password Link -->
-      <div class="forgot-link-wrap" id="forgotPassWrap">
-        <button type="button" class="forgot-btn" onclick="handleForgotPassword()" data-i18n="btn_forgot_pass">Forgot password?</button>
+      <div style="text-align: right; margin-bottom: 14px;" id="forgotPassWrap">
+        <button type="button" style="background:none; border:none; color:var(--primary); font-size:12px; cursor:pointer;" onclick="handleForgotPassword()" data-i18n="btn_forgot_pass">Forgot password?</button>
       </div>
 
       <button type="submit" class="btn-main" id="authSubmitBtn">
@@ -641,9 +147,9 @@
       </button>
     </form>
 
-    <div class="switch-auth-mode">
+    <div style="margin-top: 18px; text-align: center; font-size: 13px; color: var(--text-muted);">
       <span id="switchPrompt">അക്കൗണ്ട് ഇല്ലേ?</span>
-      <button type="button" class="btn-text" id="switchBtn" onclick="toggleAuthMode()">പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക</button>
+      <button type="button" style="background:none; border:none; color:var(--primary); font-weight:700; cursor:pointer;" id="switchBtn" onclick="toggleAuthMode()">പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക</button>
     </div>
 
     <div id="authAlert" class="status-alert"></div>
@@ -657,13 +163,9 @@
         <div class="user-avatar" id="avatarInitial">U</div>
         <div class="user-name" id="userNameLabel">User</div>
       </div>
-      <div class="topbar-actions">
-        <button type="button" class="btn-icon-top" onclick="openSettingsModal()" title="Settings">
-          <i class="fa-solid fa-gear"></i>
-        </button>
-        <button type="button" class="btn-icon-top" onclick="handleLogout()" title="Logout">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </button>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn-icon-top" onclick="openSettingsModal()" title="Settings"><i class="fa-solid fa-gear"></i></button>
+        <button type="button" class="btn-icon-top" onclick="handleLogout()" title="Logout"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
       </div>
     </div>
 
@@ -683,13 +185,16 @@
       </div>
     </div>
 
-    <!-- NAVIGATION TABS -->
+    <!-- TABS -->
     <div class="nav-tabs">
       <button type="button" class="nav-tab-btn active" id="tabEntryBtn" onclick="switchView('entry')">
-        <i class="fa-solid fa-plus-circle"></i> <span data-i18n="tab_add">പുതിയ ഇടപാട്</span>
+        <i class="fa-solid fa-plus-circle"></i> <span data-i18n="tab_add">ഇടപാട്</span>
       </button>
       <button type="button" class="nav-tab-btn" id="tabReportBtn" onclick="switchView('report')">
         <i class="fa-solid fa-chart-pie"></i> <span data-i18n="tab_report">റിപ്പോർട്ട്</span>
+      </button>
+      <button type="button" class="nav-tab-btn" id="tabVehicleBtn" style="display: none;" onclick="switchView('vehicle')">
+        <i class="fa-solid fa-gas-pump"></i> <span data-i18n="tab_vehicle">വാഹനം</span>
       </button>
     </div>
 
@@ -699,10 +204,10 @@
         <div class="type-pill-group">
           <button type="button" class="type-pill active" data-mode="income" onclick="setMode('income')" data-i18n="type_inc">വരവ്</button>
           <button type="button" class="type-pill" data-mode="expense" onclick="setMode('expense')" data-i18n="type_exp">ചെലവ്</button>
-          <button type="button" class="type-pill" data-mode="loan" onclick="setMode('loan')" data-i18n="type_loan">കടം ഇടപാട്</button>
+          <button type="button" class="type-pill" data-mode="loan" onclick="setMode('loan')" data-i18n="type_loan">കടം</button>
         </div>
 
-        <form id="ledgerForm" onsubmit="handleTransactionSubmit(event)">
+        <form onsubmit="handleTransactionSubmit(event)">
           <input type="hidden" id="entryType" value="വരവ്">
 
           <div class="form-group">
@@ -723,7 +228,7 @@
           </div>
 
           <div class="form-group" id="personGroupField">
-            <label data-i18n="lbl_person">ആരുമായി? (വ്യക്തിയുടെ പേര്)</label>
+            <label data-i18n="lbl_person">വ്യക്തിയുടെ പേര്</label>
             <input type="text" id="entryPerson" class="input-box" placeholder="പേര് എഴുതുക...">
           </div>
 
@@ -741,15 +246,12 @@
 
           <div class="form-group">
             <label data-i18n="lbl_amount">തുക</label>
-            <div class="amount-calc-wrap">
-              <input type="number" id="entryAmount" step="0.01" class="input-box" placeholder="0.00" required>
-              <button type="button" class="btn-calc" onclick="openCalc()"><i class="fa-solid fa-calculator"></i></button>
-            </div>
+            <input type="number" id="entryAmount" step="0.01" class="input-box" placeholder="0.00" required>
           </div>
 
           <div class="form-group">
-            <label data-i18n="lbl_description">വിവരണം (കുറിപ്പ്)</label>
-            <input type="text" id="entryDesc" class="input-box" placeholder="ചെറിയ വിവരണം...">
+            <label data-i18n="lbl_description">വിവരണം</label>
+            <input type="text" id="entryDesc" class="input-box" placeholder="കുറിപ്പ്...">
           </div>
 
           <button type="submit" class="btn-main" id="saveSubmitBtn">
@@ -762,7 +264,7 @@
 
       <!-- 2. REPORT SECTION -->
       <div id="reportSection" style="display: none;">
-        <div class="filter-grid">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
           <div class="select-wrap">
             <select id="filterMonth" class="input-box" onchange="renderReport()">
               <option value="THIS_MONTH" selected data-i18n-opt="opt_this_month">ഈ മാസം</option>
@@ -779,11 +281,6 @@
           </div>
         </div>
 
-        <div class="filter-summary-box">
-          <span style="color: var(--income);"><span data-i18n="sum_inc">വരവ്</span>: <strong id="repIncSum">0.00</strong></span>
-          <span style="color: var(--expense);"><span data-i18n="sum_exp">ചെലവ്</span>: <strong id="repExpSum">0.00</strong></span>
-        </div>
-
         <div class="table-responsive">
           <table>
             <thead>
@@ -797,6 +294,78 @@
           </table>
         </div>
       </div>
+
+      <!-- 3. VEHICLE FUEL & MILEAGE SECTION -->
+      <div id="vehicleSection" style="display: none;">
+        <!-- Vehicle Selector & Add -->
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <div class="select-wrap" style="flex: 1;">
+            <select id="activeVehicleSelect" class="input-box" onchange="onVehicleSelectChange()"></select>
+          </div>
+          <button type="button" class="btn-main" style="width: auto; padding: 0 16px; background: var(--vehicle);" onclick="openAddVehicleModal()">
+            <i class="fa-solid fa-plus"></i> വാഹനം
+          </button>
+        </div>
+
+        <!-- Latest Stats Card -->
+        <div class="vehicle-stat-card" id="vehicleStatsBox" style="display: none;">
+          <div class="stat-row">
+            <span>വാഹനത്തിന്റെ മൈലേജ്:</span>
+            <strong id="statMileage">0.00 Km/L</strong>
+          </div>
+          <div class="stat-row">
+            <span>ഒരു Km ഓടാനുള്ള ചെലവ്:</span>
+            <strong id="statRunningCost">₹0.00 / Km</strong>
+          </div>
+          <div class="stat-row">
+            <span>അവസാനം അടിച്ച ഓഡോമീറ്റർ:</span>
+            <span id="statLastOdo">0 Km</span>
+          </div>
+        </div>
+
+        <!-- Fuel Entry Form -->
+        <form onsubmit="handleFuelEntrySubmit(event)">
+          <div class="form-group">
+            <label>തീയതി</label>
+            <input type="date" id="fuelDate" class="input-box" required>
+          </div>
+          <div class="form-group">
+            <label>ഇപ്പോഴത്തെ മീറ്റർ റീഡിംഗ് (Odometer Km)</label>
+            <input type="number" id="fuelOdo" class="input-box" placeholder="ഉദാ: 45200" required>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="form-group">
+              <label>ഇന്ധന വില (Price/Litre)</label>
+              <input type="number" step="0.01" id="fuelPricePerLiter" class="input-box" placeholder="105.50" required>
+            </div>
+            <div class="form-group">
+              <label>അടിച്ച ആകെ തുക</label>
+              <input type="number" step="0.01" id="fuelTotalAmount" class="input-box" placeholder="2000" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-main" style="background: var(--vehicle);">
+            <i class="fa-solid fa-gas-pump"></i> ഇന്ധന വിവരങ്ങൾ സേവ് ചെയ്യുക
+          </button>
+        </form>
+
+        <div id="fuelAlert" class="status-alert"></div>
+
+        <!-- Fuel History Table -->
+        <h4 style="margin: 20px 0 10px 0; font-size: 14px;">ഇന്ധന ചരിത്രം (Fuel History)</h4>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>തീയതി</th>
+                <th>Km</th>
+                <th>തുക</th>
+                <th>മൈലേജ്</th>
+              </tr>
+            </thead>
+            <tbody id="fuelHistoryTableRows"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -804,30 +373,37 @@
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-dialog">
       <div class="modal-header">
-        <h3 data-i18n="settings_title"><i class="fa-solid fa-gear" style="margin-right: 8px;"></i>Settings</h3>
+        <h3 data-i18n="settings_title"><i class="fa-solid fa-gear"></i> Settings</h3>
         <button type="button" class="modal-close-btn" onclick="closeSettingsModal()">✕</button>
       </div>
 
-      <!-- Currency Selector -->
+      <!-- Vehicle Module Toggle -->
+      <div class="form-group">
+        <label style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;">
+          <span>വാഹന ട്രാക്കർ (Vehicle Fuel Tracker)</span>
+          <input type="checkbox" id="settingsVehicleToggle" onchange="toggleVehicleModule(this.checked)" style="width: 18px; height: 18px;">
+        </label>
+      </div>
+
+      <!-- Currency -->
       <div class="form-group">
         <label data-i18n="lbl_settings_currency">കറൻസി (Currency)</label>
         <div class="select-wrap">
           <select id="settingsCurrencySelect" class="input-box" onchange="changeCurrency(this.value)">
-            <option value="₹">₹ (INR - ഇന്ത്യൻ രൂപ)</option>
-            <option value="AED ">AED (യു.എ.ഇ ദിർഹം)</option>
-            <option value="SAR ">SAR (സൗദി റിയാൽ)</option>
-            <option value="QAR ">QAR (ഖത്തർ റിയാൽ)</option>
-            <option value="OMR ">OMR (ഒമാൻ റിയാൽ)</option>
-            <option value="KWD ">KWD (കുവൈറ്റ് ദിനാർ)</option>
-            <option value="BHD ">BHD (ബഹ്‌റൈൻ ദിനാർ)</option>
-            <option value="$">$ (USD - ഡോളർ)</option>
-            <option value="€">€ (EUR - യൂറോ)</option>
-            <option value="£">£ (GBP - പൗണ്ട്)</option>
+            <option value="₹">₹ (INR)</option>
+            <option value="AED ">AED (UAE Dirham)</option>
+            <option value="SAR ">SAR (Saudi Riyal)</option>
+            <option value="QAR ">QAR (Qatar Riyal)</option>
+            <option value="OMR ">OMR (Oman Rial)</option>
+            <option value="KWD ">KWD (Kuwait Dinar)</option>
+            <option value="BHD ">BHD (Bahrain Dinar)</option>
+            <option value="$">$ (USD)</option>
+            <option value="€">€ (EUR)</option>
           </select>
         </div>
       </div>
 
-      <!-- Change Language -->
+      <!-- Language -->
       <div class="form-group">
         <label data-i18n="lbl_settings_lang">ഭാഷ (Language)</label>
         <div class="select-wrap">
@@ -838,7 +414,7 @@
         </div>
       </div>
 
-      <!-- Update Display Name -->
+      <!-- Display Name -->
       <div class="form-group">
         <label data-i18n="lbl_settings_name">പ്രൊഫൈൽ പേര് മാറ്റാൻ</label>
         <input type="text" id="settingsDisplayName" class="input-box" placeholder="Your Name">
@@ -847,19 +423,11 @@
         </button>
       </div>
 
-      <!-- Send Password Reset Email -->
+      <!-- Password Reset Mail -->
       <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
         <label data-i18n="lbl_settings_pass">പാസ്‌വേഡ് മാറ്റാൻ</label>
         <button type="button" class="btn-main" style="padding: 10px; background: #334155;" onclick="sendSettingsResetMail()">
           <i class="fa-solid fa-envelope"></i> <span data-i18n="btn_send_reset_mail">റീസെറ്റ് ലിങ്ക് അയക്കുക</span>
-        </button>
-      </div>
-
-      <!-- Install App from Settings -->
-      <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
-        <label data-i18n="lbl_settings_install">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ</label>
-        <button type="button" class="btn-main" style="padding: 10px; background: var(--accent);" onclick="triggerPwaInstall()">
-          <i class="fa-solid fa-download"></i> <span data-i18n="btn_install_app">Install Application</span>
         </button>
       </div>
 
@@ -875,80 +443,47 @@
     </div>
   </div>
 
-  <!-- CALCULATOR MODAL -->
-  <div class="modal-overlay" id="calcPopup">
-    <div class="modal-dialog" style="max-width: 320px;">
-      <input type="text" id="calcScreen" class="calc-display" readonly value="0">
-      <div class="calc-pad">
-        <button type="button" class="c-btn c-del" onclick="calcClear()">C</button>
-        <button type="button" class="c-btn c-op" onclick="calcPush('/')">÷</button>
-        <button type="button" class="c-btn c-op" onclick="calcPush('*')">×</button>
-        <button type="button" class="c-btn c-op" onclick="calcPush('-')">-</button>
-        
-        <button type="button" class="c-btn" onclick="calcPush('7')">7</button>
-        <button type="button" class="c-btn" onclick="calcPush('8')">8</button>
-        <button type="button" class="c-btn" onclick="calcPush('9')">9</button>
-        <button type="button" class="c-btn c-op" onclick="calcPush('+')">+</button>
-        
-        <button type="button" class="c-btn" onclick="calcPush('4')">4</button>
-        <button type="button" class="c-btn" onclick="calcPush('5')">5</button>
-        <button type="button" class="c-btn" onclick="calcPush('6')">6</button>
-        <button type="button" class="c-btn c-del" onclick="closeCalc()">✕</button>
-        
-        <button type="button" class="c-btn" onclick="calcPush('1')">1</button>
-        <button type="button" class="c-btn" onclick="calcPush('2')">2</button>
-        <button type="button" class="c-btn" onclick="calcPush('3')">3</button>
-        <button type="button" class="c-btn" onclick="calcPush('.')">.</button>
-        
-        <button type="button" class="c-btn" onclick="calcPush('0')">0</button>
-        <button type="button" class="c-btn c-eq" onclick="calcFinish()">Done</button>
+  <!-- ADD VEHICLE MODAL -->
+  <div class="modal-overlay" id="addVehicleModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>പുതിയ വാഹനം ചേർക്കുക</h3>
+        <button type="button" class="modal-close-btn" onclick="closeAddVehicleModal()">✕</button>
       </div>
+      <form onsubmit="handleNewVehicleSubmit(event)">
+        <div class="form-group">
+          <label>വാഹന തരം</label>
+          <div class="select-wrap">
+            <select id="newVehType" class="input-box">
+              <option value="Car">കാർ (Car)</option>
+              <option value="Bike">ബൈക്ക് / സ്കൂട്ടർ (Bike)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>വാഹനത്തിന്റെ പേര് / മോഡൽ</label>
+          <input type="text" id="newVehName" class="input-box" placeholder="ഉദാ: Swift / Activa" required>
+        </div>
+        <div class="form-group">
+          <label>വാഹന നമ്പർ (Reg. Number)</label>
+          <input type="text" id="newVehNumber" class="input-box" placeholder="KL 10 AW 1234">
+        </div>
+        <div class="form-group">
+          <label>ഇന്ധന തരം (Fuel Type)</label>
+          <div class="select-wrap">
+            <select id="newVehFuelType" class="input-box">
+              <option value="Petrol">പെട്രോൾ (Petrol)</option>
+              <option value="Diesel">ഡീസൽ (Diesel)</option>
+              <option value="CNG">CNG</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-main" style="background: var(--vehicle);">വാഹനം സേവ് ചെയ്യുക</button>
+      </form>
     </div>
   </div>
 
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
-
-    let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById('pwaBanner').style.display = 'flex';
-    });
-
-    setTimeout(() => {
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (!isStandalone) {
-        document.getElementById('pwaBanner').style.display = 'flex';
-      }
-    }, 2000);
-
-    function triggerPwaInstall() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') closePwaBanner();
-          deferredPrompt = null;
-        });
-      } else {
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        if (isIOS) {
-          alert("iPhone/iPad-ൽ ഇൻസ്റ്റാൾ ചെയ്യാൻ:\nSafari ബ്രൗസറിൽ താഴെയുള്ള 'Share' ബട്ടൺ ക്ലിക്ക് ചെയ്ത് 'Add to Home Screen' തിരഞ്ഞെടുക്കുക.");
-        } else {
-          alert("ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ:\nബ്രൗസർ മെനു (മൂന്ന് കുത്തുകൾ) തുറന്ന് 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' ക്ലിക്ക് ചെയ്യുക.");
-        }
-      }
-    }
-
-    function closePwaBanner() {
-      document.getElementById('pwaBanner').style.display = 'none';
-    }
-
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyCFf3lvoWEBsEbFOFR5uKIuZDPEi_I12nE",
       authDomain: "my-ledgers-471e4.firebaseapp.com",
@@ -969,9 +504,14 @@
     let isSignUp = false;
     let lang = localStorage.getItem('app_lang') || 'ml';
     let userCurrency = localStorage.getItem('app_currency') || '₹';
+    let isVehicleModuleEnabled = localStorage.getItem('app_vehicle_enabled') === 'true';
     let currentMode = 'income';
     let rawData = [];
+    let userVehicles = [];
+    let activeVehicleId = null;
     let unsubSnapshot = null;
+    let unsubVehicles = null;
+    let unsubFuelHistory = null;
 
     const dict = {
       ml: {
@@ -983,23 +523,22 @@
         lbl_pass: "പാസ്‌വേഡ്",
         lbl_date: "തീയതി",
         lbl_loan_type: "കടം ഇടപാട് തരം",
-        lbl_person: "ആരുമായി? (വ്യക്തിയുടെ പേര്)",
+        lbl_person: "വ്യക്തിയുടെ പേര്",
         lbl_category: "വിഭാഗം",
         lbl_new_category: "പുതിയ വിഭാഗത്തിന്റെ പേര്",
         lbl_amount: "തുക",
-        lbl_description: "വിവരണം (കുറിപ്പ്)",
+        lbl_description: "വിവരണം",
         btn_save: "രേഖപ്പെടുത്തുക",
         btn_forgot_pass: "പാസ്‌വേഡ് മറന്നുപോയോ?",
-        tab_add: "പുതിയ ഇടപാട്",
+        tab_add: "ഇടപാട്",
         tab_report: "റിപ്പോർട്ട്",
+        tab_vehicle: "വാഹനം",
         type_inc: "വരവ്",
         type_exp: "ചെലവ്",
-        type_loan: "കടം ഇടപാട്",
+        type_loan: "കടം",
         dash_inc: "ഈ മാസത്തെ വരവ്",
         dash_exp: "ഈ മാസത്തെ ചെലവ്",
         dash_bal: "ആകെ ബാക്കി തുക",
-        sum_inc: "വരവ്",
-        sum_exp: "ചെലവ്",
         th_date: "തീയതി",
         th_details: "വിവരണം",
         th_amount: "തുക",
@@ -1017,18 +556,15 @@
         opt_inc_only: "വരവ് മാത്രം",
         opt_exp_only: "ചെലവ് മാത്രം",
         opt_loan_only: "കടം ഇടപാടുകൾ",
-        settings_title: "സെറ്റിങ്സ് (Settings)",
+        settings_title: "Settings",
         lbl_settings_currency: "കറൻസി (Currency)",
         lbl_settings_lang: "ഭാഷ (Language)",
         lbl_settings_name: "പ്രൊഫൈൽ പേര് മാറ്റാൻ",
         btn_update_name: "പേര് സേവ് ചെയ്യുക",
         lbl_settings_pass: "പാസ്‌വേഡ് മാറ്റാൻ",
         btn_send_reset_mail: "റീസെറ്റ് ലിങ്ക് അയക്കുക",
-        lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ",
-        btn_install_app: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക",
         lbl_settings_reset: "മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക",
-        btn_reset_data: "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യുക",
-        pwa_banner_text: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?"
+        btn_reset_data: "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യുക"
       },
       en: {
         auth_login_title: "Login",
@@ -1048,14 +584,13 @@
         btn_forgot_pass: "Forgot password?",
         tab_add: "New Entry",
         tab_report: "Reports",
+        tab_vehicle: "Vehicles",
         type_inc: "Income",
         type_exp: "Expense",
         type_loan: "Loan / Debt",
         dash_inc: "This Month Income",
         dash_exp: "This Month Expense",
         dash_bal: "Total Balance",
-        sum_inc: "Income",
-        sum_exp: "Expense",
         th_date: "Date",
         th_details: "Details",
         th_amount: "Amount",
@@ -1080,11 +615,8 @@
         btn_update_name: "Save Name",
         lbl_settings_pass: "Change Password",
         btn_send_reset_mail: "Send Reset Link",
-        lbl_settings_install: "Install Application",
-        btn_install_app: "Install App",
         lbl_settings_reset: "Reset All Data",
-        btn_reset_data: "Clear All Data",
-        pwa_banner_text: "Install app for quick access?"
+        btn_reset_data: "Clear All Data"
       }
     };
 
@@ -1102,7 +634,9 @@
     };
 
     const d = new Date();
-    document.getElementById('entryDate').value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const todayFormatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    document.getElementById('entryDate').value = todayFormatted;
+    document.getElementById('fuelDate').value = todayFormatted;
 
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -1116,9 +650,13 @@
         document.getElementById('mainAppView').style.display = 'block';
         setMode('income');
         bindUserTransactions(user.uid);
+        applyVehicleModuleVisibility();
+        bindUserVehicles(user.uid);
       } else {
         currentUser = null;
         if (unsubSnapshot) unsubSnapshot();
+        if (unsubVehicles) unsubVehicles();
+        if (unsubFuelHistory) unsubFuelHistory();
         document.getElementById('mainAppView').style.display = 'none';
         document.getElementById('authView').style.display = 'block';
       }
@@ -1128,6 +666,7 @@
       applyLanguage(lang);
       document.getElementById('settingsLangSelect').value = lang;
       document.getElementById('settingsCurrencySelect').value = userCurrency;
+      document.getElementById('settingsVehicleToggle').checked = isVehicleModuleEnabled;
     };
 
     function toggleAuthMode() {
@@ -1160,21 +699,19 @@
     function handleForgotPassword() {
       const email = document.getElementById('authEmail').value.trim();
       const alertBox = document.getElementById('authAlert');
-
       if (!email) {
         alertBox.className = "status-alert status-error";
         alertBox.innerText = (lang === 'ml') ? "ദയവായി നിങ്ങളുടെ ഇമെയിൽ വിലാസം ടൈപ്പ് ചെയ്യുക!" : "Please enter your email address first!";
         alertBox.style.display = 'block';
         return;
       }
-
       auth.sendPasswordResetEmail(email)
         .then(() => {
           alertBox.className = "status-alert status-success";
           alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ഇമെയിലിലേക്ക് അയച്ചിട്ടുണ്ട്. മെയിൽ പരിശോധിക്കുക!" : "Password reset link sent to your email!";
           alertBox.style.display = 'block';
         })
-        .catch((err) => {
+        .catch(err => {
           alertBox.className = "status-alert status-error";
           alertBox.innerText = err.message;
           alertBox.style.display = 'block';
@@ -1197,49 +734,47 @@
           .then((cred) => {
             if (name) cred.user.updateProfile({ displayName: name });
           })
-          .catch((err) => {
+          .catch(err => {
             alertBox.className = "status-alert status-error";
-            alertBox.style.display = 'block';
             alertBox.innerText = err.message;
+            alertBox.style.display = 'block';
             btn.disabled = false;
           });
       } else {
         auth.signInWithEmailAndPassword(email, pass)
-          .catch((err) => {
+          .catch(err => {
             alertBox.className = "status-alert status-error";
+            alertBox.innerText = (err.code === 'auth/invalid-login-credentials' || err.code === 'auth/wrong-password') ? "ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്. പരിശോധിക്കുക!" : err.message;
             alertBox.style.display = 'block';
-            if (err.code === 'auth/invalid-login-credentials' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
-              alertBox.innerText = (lang === 'ml') ? "ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്. പരിശോധിക്കുക!" : "Incorrect email or password. Please check!";
-            } else {
-              alertBox.innerText = err.message;
-            }
             btn.disabled = false;
           });
       }
     }
 
-    function handleLogout() {
-      auth.signOut();
-    }
+    function handleLogout() { auth.signOut(); }
 
-    /* SETTINGS FUNCTIONS */
     function openSettingsModal() {
       document.getElementById('settingsModal').style.display = 'flex';
       document.getElementById('settingsAlert').style.display = 'none';
-      if (currentUser) {
-        document.getElementById('settingsDisplayName').value = currentUser.displayName || "";
-      }
-      document.getElementById('settingsCurrencySelect').value = userCurrency;
+      if (currentUser) document.getElementById('settingsDisplayName').value = currentUser.displayName || "";
+    }
+    function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
+
+    function toggleVehicleModule(checked) {
+      isVehicleModuleEnabled = checked;
+      localStorage.setItem('app_vehicle_enabled', checked);
+      applyVehicleModuleVisibility();
     }
 
-    function closeSettingsModal() {
-      document.getElementById('settingsModal').style.display = 'none';
+    function applyVehicleModuleVisibility() {
+      document.getElementById('tabVehicleBtn').style.display = isVehicleModuleEnabled ? 'block' : 'none';
     }
 
     function changeCurrency(curr) {
       userCurrency = curr;
       localStorage.setItem('app_currency', curr);
       bindUserTransactions(currentUser.uid);
+      if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
     }
 
     function changeLanguageFromSettings(newLang) {
@@ -1271,7 +806,7 @@
           document.getElementById('userNameLabel').innerText = newName;
           document.getElementById('avatarInitial').innerText = newName.charAt(0).toUpperCase();
           alertBox.className = "status-alert status-success";
-          alertBox.innerText = (lang === 'ml') ? "പേര് വിജയകരമായി മാറ്റി!" : "Display name updated successfully!";
+          alertBox.innerText = (lang === 'ml') ? "പേര് വിജയകരമായി മാറ്റി!" : "Display name updated!";
           alertBox.style.display = "block";
           setTimeout(() => alertBox.style.display = "none", 3000);
         })
@@ -1289,7 +824,7 @@
       auth.sendPasswordResetEmail(currentUser.email)
         .then(() => {
           alertBox.className = "status-alert status-success";
-          alertBox.innerText = (lang === 'ml') ? `പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ${currentUser.email} എന്ന ഇമെയിലിലേക്ക് അയച്ചിട്ടുണ്ട്. മെയിൽ പരിശോധിക്കുക!` : `Password reset link sent to ${currentUser.email}!`;
+          alertBox.innerText = (lang === 'ml') ? `പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ${currentUser.email}-ലേക്ക് അയച്ചിട്ടുണ്ട്!` : `Password reset link sent to ${currentUser.email}!`;
           alertBox.style.display = "block";
         })
         .catch(err => {
@@ -1299,57 +834,37 @@
         });
     }
 
-    // 🌟 മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യൽ (Double Confirmation)
     function confirmResetAllData() {
-      const firstConfirm = confirm(lang === 'ml' ? "ശ്രദ്ധിക്കുക: നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?" : "Warning: All your recorded transactions will be permanently deleted. Do you want to continue?");
-      if (!firstConfirm) return;
-
-      const secondConfirm = confirm(lang === 'ml' ? "ഇത് തിരിച്ചെടുക്കാൻ കഴിയില്ല! ഉറപ്പായും എല്ലാ വിവരങ്ങളും ക്ലിയർ ചെയ്യണമെന്നുണ്ടോ?" : "Are you absolutely sure? This action cannot be undone!");
-      if (!secondConfirm) return;
+      if (!confirm("മുന്നറിയിപ്പ്: നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും ഇന്ധന വിവരങ്ങളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?")) return;
+      if (!confirm("ഉറപ്പാണോ? ഈ മാറ്റം ഒരിക്കലും തിരിച്ചെടുക്കാൻ കഴിയില്ല!")) return;
 
       const alertBox = document.getElementById('settingsAlert');
       alertBox.className = "status-alert status-error";
-      alertBox.innerText = (lang === 'ml') ? "ഡാറ്റ ഡിലീറ്റ് ചെയ്യുന്നു..." : "Deleting all data...";
+      alertBox.innerText = "ഡാറ്റ ഡിലീറ്റ് ചെയ്യുന്നു...";
       alertBox.style.display = "block";
 
-      const collectionRef = db.collection("users").doc(currentUser.uid).collection("transactions");
-      collectionRef.get().then((querySnapshot) => {
+      const txRef = db.collection("users").doc(currentUser.uid).collection("transactions");
+      txRef.get().then((snap) => {
         const batch = db.batch();
-        querySnapshot.forEach((doc) => {
-          batch.delete(doc.ref);
-        });
+        snap.forEach((doc) => batch.delete(doc.ref));
         return batch.commit();
       }).then(() => {
         alertBox.className = "status-alert status-success";
-        alertBox.innerText = (lang === 'ml') ? "എല്ലാ ഡാറ്റയും വിജയകരമായി ക്ലിയർ ചെയ്തു!" : "All data cleared successfully!";
-        setTimeout(() => {
-          alertBox.style.display = "none";
-          closeSettingsModal();
-        }, 2000);
-      }).catch((err) => {
-        alertBox.className = "status-alert status-error";
-        alertBox.innerText = err.message;
+        alertBox.innerText = "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്തു!";
+        setTimeout(() => { alertBox.style.display = "none"; closeSettingsModal(); }, 2000);
       });
     }
 
     function switchView(view) {
-      const entry = document.getElementById('entrySection');
-      const report = document.getElementById('reportSection');
-      const tabEntry = document.getElementById('tabEntryBtn');
-      const tabReport = document.getElementById('tabReportBtn');
+      document.getElementById('entrySection').style.display = (view === 'entry') ? 'block' : 'none';
+      document.getElementById('reportSection').style.display = (view === 'report') ? 'block' : 'none';
+      document.getElementById('vehicleSection').style.display = (view === 'vehicle') ? 'block' : 'none';
 
-      if (view === 'entry') {
-        entry.style.display = 'block';
-        report.style.display = 'none';
-        tabEntry.classList.add('active');
-        tabReport.classList.remove('active');
-      } else {
-        entry.style.display = 'none';
-        report.style.display = 'block';
-        tabEntry.classList.remove('active');
-        tabReport.classList.add('active');
-        renderReport();
-      }
+      document.getElementById('tabEntryBtn').classList.toggle('active', view === 'entry');
+      document.getElementById('tabReportBtn').classList.toggle('active', view === 'report');
+      document.getElementById('tabVehicleBtn').classList.toggle('active', view === 'vehicle');
+
+      if (view === 'report') renderReport();
     }
 
     function setMode(m) {
@@ -1357,113 +872,76 @@
       document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
       document.querySelector(`[data-mode="${m}"]`).classList.add('active');
 
-      const loanField = document.getElementById('loanGroupField');
-      const personField = document.getElementById('personGroupField');
-      const inputType = document.getElementById('entryType');
+      document.getElementById('loanGroupField').style.display = (m === 'loan') ? 'block' : 'none';
+      document.getElementById('personGroupField').style.display = (m === 'loan') ? 'block' : 'none';
+
+      if (m === 'expense') document.getElementById('entryType').value = (lang === 'ml') ? 'ചെലവ്' : 'Expense';
+      else if (m === 'income') document.getElementById('entryType').value = (lang === 'ml') ? 'വരവ്' : 'Income';
+      else if (m === 'loan') updateEntryType();
 
       updateCategoryList();
       document.getElementById('customCatGroup').style.display = 'none';
-
-      if (m === 'expense') {
-        loanField.style.display = 'none';
-        personField.style.display = 'none';
-        inputType.value = (lang === 'ml') ? 'ചെലവ്' : 'Expense';
-      } else if (m === 'income') {
-        loanField.style.display = 'none';
-        personField.style.display = 'none';
-        inputType.value = (lang === 'ml') ? 'വരവ്' : 'Income';
-      } else if (m === 'loan') {
-        loanField.style.display = 'block';
-        personField.style.display = 'block';
-        updateEntryType();
-      }
     }
 
-    function updateEntryType() {
-      document.getElementById('entryType').value = document.getElementById('loanSubtype').value;
-    }
+    function updateEntryType() { document.getElementById('entryType').value = document.getElementById('loanSubtype').value; }
 
     function updateCategoryList() {
       const select = document.getElementById('entryCategory');
       select.innerHTML = `<option value="" disabled selected>${dict[lang].select_placeholder}</option>`;
-      
       categories[lang][currentMode].forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat;
-        opt.innerText = cat;
-        select.appendChild(opt);
+        const opt = document.createElement('option'); opt.value = cat; opt.innerText = cat; select.appendChild(opt);
       });
-
-      const newOpt = document.createElement('option');
-      newOpt.value = 'NEW_CAT';
-      newOpt.innerText = dict[lang].new_cat_opt;
-      select.appendChild(newOpt);
+      const newOpt = document.createElement('option'); newOpt.value = 'NEW_CAT'; newOpt.innerText = dict[lang].new_cat_opt; select.appendChild(newOpt);
     }
 
     function handleCategoryChange(sel) {
       const customGroup = document.getElementById('customCatGroup');
       if (sel.value === 'NEW_CAT') {
-        customGroup.style.display = 'block';
-        document.getElementById('customCategoryInput').required = true;
+        customGroup.style.display = 'block'; document.getElementById('customCategoryInput').required = true;
       } else {
-        customGroup.style.display = 'none';
-        document.getElementById('customCategoryInput').required = false;
+        customGroup.style.display = 'none'; document.getElementById('customCategoryInput').required = false;
       }
     }
 
     function bindUserTransactions(uid) {
       if (unsubSnapshot) unsubSnapshot();
+      unsubSnapshot = db.collection("users").doc(uid).collection("transactions").onSnapshot((snapshot) => {
+        let mInc = 0, mExp = 0, tInc = 0, tExp = 0;
+        rawData = [];
+        const now = new Date();
+        const currM = now.getMonth(), currY = now.getFullYear();
 
-      unsubSnapshot = db.collection("users").doc(uid).collection("transactions")
-        .onSnapshot((snapshot) => {
-          let mInc = 0, mExp = 0, tInc = 0, tExp = 0;
-          rawData = [];
-          
-          const now = new Date();
-          const currM = now.getMonth();
-          const currY = now.getFullYear();
-
-          snapshot.forEach((doc) => {
-            const data = doc.data();
-            const amt = parseFloat(data.amount) || 0;
-            const type = data.type;
-            
-            let rowDate = new Date();
-            if (data.date) {
-              const parts = data.date.split('-');
-              if (parts.length === 3) rowDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-            }
-
-            const isInc = (type === "വരവ്" || type === "Income" || type === "കടം തിരിച്ചു കിട്ടിയത്" || type === "കടം വാങ്ങിയത്" || type === "Borrowed Loan" || type === "Received Loan Repayment");
-
-            if (isInc) tInc += amt; else tExp += amt;
-
-            if (rowDate.getMonth() === currM && rowDate.getFullYear() === currY) {
-              if (isInc) mInc += amt; else mExp += amt;
-            }
-
-            rawData.push({ ...data, parsedDate: rowDate });
-          });
-
-          document.getElementById('dashInc').innerText = userCurrency + mInc.toFixed(2);
-          document.getElementById('dashExp').innerText = userCurrency + mExp.toFixed(2);
-          
-          const bal = tInc - tExp;
-          const balEl = document.getElementById('dashBal');
-          balEl.innerText = userCurrency + bal.toFixed(2);
-          balEl.className = 'metric-value ' + (bal < 0 ? 'val-exp' : 'val-inc');
-
-          renderReport();
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          const amt = parseFloat(data.amount) || 0;
+          let rowDate = new Date();
+          if (data.date) {
+            const parts = data.date.split('-');
+            if (parts.length === 3) rowDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+          }
+          const isInc = (data.type === "വരവ്" || data.type === "Income" || data.type === "കടം തിരിച്ചു കിട്ടിയത്" || data.type === "കടം വാങ്ങിയത്");
+          if (isInc) tInc += amt; else tExp += amt;
+          if (rowDate.getMonth() === currM && rowDate.getFullYear() === currY) {
+            if (isInc) mInc += amt; else mExp += amt;
+          }
+          rawData.push({ ...data, parsedDate: rowDate });
         });
+
+        document.getElementById('dashInc').innerText = userCurrency + mInc.toFixed(2);
+        document.getElementById('dashExp').innerText = userCurrency + mExp.toFixed(2);
+        const bal = tInc - tExp;
+        const balEl = document.getElementById('dashBal');
+        balEl.innerText = userCurrency + bal.toFixed(2);
+        balEl.className = 'metric-value ' + (bal < 0 ? 'val-exp' : 'val-inc');
+        renderReport();
+      });
     }
 
     function renderReport() {
       const mFilter = document.getElementById('filterMonth').value;
       const tFilter = document.getElementById('filterType').value;
-      
       const now = new Date();
-      const currM = now.getMonth();
-      const currY = now.getFullYear();
+      const currM = now.getMonth(), currY = now.getFullYear();
 
       let list = rawData.filter(i => {
         if (mFilter === "THIS_MONTH" && (i.parsedDate.getMonth() !== currM || i.parsedDate.getFullYear() !== currY)) return false;
@@ -1474,50 +952,39 @@
       });
 
       list.sort((a, b) => b.parsedDate - a.parsedDate);
-
-      let sumI = 0, sumE = 0;
       const tbody = document.getElementById('reportTableRows');
       tbody.innerHTML = '';
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 24px; color: var(--text-muted);">${dict[lang].no_records}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:24px; color:var(--text-muted);">${dict[lang].no_records}</td></tr>`;
       } else {
         list.forEach(r => {
           const amt = parseFloat(r.amount) || 0;
-          const isInc = (r.type === "വരവ്" || r.type === "Income" || r.type === "കടം തിരിച്ചു കിട്ടിയത്" || r.type === "കടം വാങ്ങിയത്" || r.type === "Borrowed Loan" || r.type === "Received Loan Repayment");
-          
-          if (isInc) sumI += amt; else sumE += amt;
-
+          const isInc = (r.type === "വരവ്" || r.type === "Income" || r.type === "കടം തിരിച്ചു കിട്ടിയത്" || r.type === "കടം വാങ്ങിയത്");
           const d = r.parsedDate;
           const dtStr = String(d.getDate()).padStart(2, '0') + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + d.getFullYear();
 
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td style="color: var(--text-muted);">${dtStr}</td>
-            <td><strong>${r.category}</strong><br><small style="color: var(--text-muted);">${r.description || ''} ${r.person && r.person !== '-' ? '('+r.person+')' : ''}</small></td>
-            <td class="badge-amt" style="color: ${isInc ? 'var(--income)' : 'var(--expense)'};">${isInc ? '+' : '-'}${userCurrency}${amt.toFixed(2)}</td>
+            <td style="color:var(--text-muted);">${dtStr}</td>
+            <td><strong>${r.category}</strong><br><small style="color:var(--text-muted);">${r.description || ''} ${r.person && r.person !== '-' ? '('+r.person+')' : ''}</small></td>
+            <td style="font-weight:800; color:${isInc ? 'var(--income)' : 'var(--expense)'};">${isInc ? '+' : '-'}${userCurrency}${amt.toFixed(2)}</td>
           `;
           tbody.appendChild(tr);
         });
       }
-
-      document.getElementById('repIncSum').innerText = userCurrency + sumI.toFixed(2);
-      document.getElementById('repExpSum').innerText = userCurrency + sumE.toFixed(2);
     }
 
     function handleTransactionSubmit(e) {
       e.preventDefault();
       if (!currentUser) return;
-
       const btn = document.getElementById('saveSubmitBtn');
       const alert = document.getElementById('formAlert');
       const amt = parseFloat(document.getElementById('entryAmount').value) || 0;
-      
       let cat = document.getElementById('entryCategory').value;
       if (cat === 'NEW_CAT') cat = document.getElementById('customCategoryInput').value;
 
       btn.disabled = true;
-
       const payload = {
         date: document.getElementById('entryDate').value,
         type: document.getElementById('entryType').value,
@@ -1528,56 +995,176 @@
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      db.collection("users").doc(currentUser.uid).collection("transactions").add(payload)
-        .then(() => {
-          alert.className = "status-alert status-success";
-          alert.innerText = dict[lang].success_save;
-          alert.style.display = "block";
+      db.collection("users").doc(currentUser.uid).collection("transactions").add(payload).then(() => {
+        alert.className = "status-alert status-success";
+        alert.innerText = dict[lang].success_save;
+        alert.style.display = "block";
+        document.getElementById('entryAmount').value = '';
+        document.getElementById('entryDesc').value = '';
+        document.getElementById('entryPerson').value = '';
+        setTimeout(() => alert.style.display = "none", 3000);
+        btn.disabled = false;
+      });
+    }
 
-          document.getElementById('entryAmount').value = '';
-          document.getElementById('entryDesc').value = '';
-          document.getElementById('entryPerson').value = '';
-          
-          setTimeout(() => alert.style.display = "none", 3000);
-          btn.disabled = false;
-        })
-        .catch(err => {
-          alert.className = "status-alert status-error";
-          alert.innerText = err.message;
-          alert.style.display = "block";
-          btn.disabled = false;
+    /* 🌟 VEHICLE & FUEL LOGIC */
+    function openAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'flex'; }
+    function closeAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'none'; }
+
+    function handleNewVehicleSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const vehData = {
+        type: document.getElementById('newVehType').value,
+        name: document.getElementById('newVehName').value.trim(),
+        number: document.getElementById('newVehNumber').value.trim() || "-",
+        fuelType: document.getElementById('newVehFuelType').value,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      db.collection("users").doc(currentUser.uid).collection("vehicles").add(vehData).then(() => {
+        closeAddVehicleModal();
+        document.getElementById('newVehName').value = '';
+        document.getElementById('newVehNumber').value = '';
+      });
+    }
+
+    function bindUserVehicles(uid) {
+      if (unsubVehicles) unsubVehicles();
+      unsubVehicles = db.collection("users").doc(uid).collection("vehicles").onSnapshot((snap) => {
+        userVehicles = [];
+        const select = document.getElementById('activeVehicleSelect');
+        select.innerHTML = '';
+
+        snap.forEach(doc => {
+          userVehicles.push({ id: doc.id, ...doc.data() });
+        });
+
+        if (userVehicles.length === 0) {
+          select.innerHTML = '<option value="">വാഹനങ്ങൾ ഒന്നും ചേർത്തിട്ടില്ല</option>';
+          activeVehicleId = null;
+          document.getElementById('vehicleStatsBox').style.display = 'none';
+          document.getElementById('fuelHistoryTableRows').innerHTML = '<tr><td colspan="4" style="text-align:center; padding:16px;">വാഹനങ്ങൾ ചേർക്കുക</td></tr>';
+        } else {
+          userVehicles.forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v.id;
+            opt.innerText = `${v.name} (${v.number !== '-' ? v.number : v.fuelType})`;
+            select.appendChild(opt);
+          });
+          activeVehicleId = userVehicles[0].id;
+          loadVehicleFuelHistory(activeVehicleId);
+        }
+      });
+    }
+
+    function onVehicleSelectChange() {
+      activeVehicleId = document.getElementById('activeVehicleSelect').value;
+      if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
+    }
+
+    function loadVehicleFuelHistory(vehId) {
+      if (unsubFuelHistory) unsubFuelHistory();
+      unsubFuelHistory = db.collection("users").doc(currentUser.uid).collection("vehicles").doc(vehId).collection("fuel_logs")
+        .orderBy("odometer", "desc").onSnapshot((snap) => {
+          const logs = [];
+          snap.forEach(doc => logs.push({ id: doc.id, ...doc.data() }));
+
+          const tbody = document.getElementById('fuelHistoryTableRows');
+          tbody.innerHTML = '';
+
+          if (logs.length === 0) {
+            document.getElementById('vehicleStatsBox').style.display = 'none';
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:16px; color:var(--text-muted);">ഇന്ധന വിവരങ്ങൾ ഒന്നും രേഖപ്പെടുത്തിയിട്ടില്ല</td></tr>';
+            return;
+          }
+
+          document.getElementById('vehicleStatsBox').style.display = 'block';
+          document.getElementById('statLastOdo').innerText = logs[0].odometer + ' Km';
+
+          // Mileage calculation from latest 2 entries
+          if (logs.length >= 2) {
+            const latest = logs[0];
+            const prev = logs[1];
+            const dist = latest.odometer - prev.odometer;
+            const liters = latest.amount / latest.pricePerLiter;
+
+            if (dist > 0 && liters > 0) {
+              const mileage = (dist / liters).toFixed(2);
+              const costPerKm = (latest.amount / dist).toFixed(2);
+              document.getElementById('statMileage').innerText = `${mileage} Km/L`;
+              document.getElementById('statRunningCost').innerText = `${userCurrency}${costPerKm} / Km`;
+            }
+          } else {
+            document.getElementById('statMileage').innerText = 'അടുത്ത എൻട്രിയിൽ കണക്കാക്കും';
+            document.getElementById('statRunningCost').innerText = '-';
+          }
+
+          logs.forEach((log, idx) => {
+            let mBadge = '-';
+            if (idx < logs.length - 1) {
+              const nextLog = logs[idx + 1];
+              const d = log.odometer - nextLog.odometer;
+              const l = log.amount / log.pricePerLiter;
+              if (d > 0 && l > 0) mBadge = `${(d / l).toFixed(1)} Km/L`;
+            }
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${log.date}</td>
+              <td>${log.odometer}</td>
+              <td style="font-weight:700;">${userCurrency}${log.amount}</td>
+              <td style="color:var(--vehicle); font-weight:700;">${mBadge}</td>
+            `;
+            tbody.appendChild(tr);
+          });
         });
     }
 
-    /* POPUP CALCULATOR */
-    let expr = "";
-    function openCalc() {
-      const val = document.getElementById('entryAmount').value;
-      expr = val ? val.toString() : "";
-      document.getElementById('calcScreen').value = expr || "0";
-      document.getElementById('calcPopup').style.display = "flex";
-    }
-    function closeCalc() {
-      document.getElementById('calcPopup').style.display = "none";
-    }
-    function calcPush(ch) {
-      if (expr === "0" && ch !== ".") expr = ch; else expr += ch;
-      document.getElementById('calcScreen').value = expr;
-    }
-    function calcClear() {
-      expr = "";
-      document.getElementById('calcScreen').value = "0";
-    }
-    function calcFinish() {
-      try {
-        if (!expr) { closeCalc(); return; }
-        const res = Function('"use strict";return (' + expr + ')')();
-        document.getElementById('entryAmount').value = parseFloat(res).toFixed(2);
-        closeCalc();
-      } catch {
-        document.getElementById('calcScreen').value = "Error";
-        expr = "";
+    function handleFuelEntrySubmit(e) {
+      e.preventDefault();
+      if (!currentUser || !activeVehicleId) {
+        alert("ദയവായി ആദ്യം ഒരു വാഹനം തിരഞ്ഞെടുക്കുക!");
+        return;
       }
+
+      const odo = parseFloat(document.getElementById('fuelOdo').value);
+      const price = parseFloat(document.getElementById('fuelPricePerLiter').value);
+      const amt = parseFloat(document.getElementById('fuelTotalAmount').value);
+      const alertBox = document.getElementById('fuelAlert');
+
+      const payload = {
+        date: document.getElementById('fuelDate').value,
+        odometer: odo,
+        pricePerLiter: price,
+        amount: amt,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      // 1. Save to Vehicle Fuel Logs
+      db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).collection("fuel_logs").add(payload)
+        .then(() => {
+          // 2. Automatically record in Main Ledger under 'യാത്ര / ഇന്ധനം'
+          const vehObj = userVehicles.find(v => v.id === activeVehicleId);
+          const vehName = vehObj ? vehObj.name : "Vehicle";
+          
+          db.collection("users").doc(currentUser.uid).collection("transactions").add({
+            date: payload.date,
+            type: (lang === 'ml') ? 'ചെലവ്' : 'Expense',
+            category: (lang === 'ml') ? 'യാത്ര / ഇന്ധനം' : 'Travel / Fuel',
+            amount: amt,
+            description: `${vehName} - Fuel (${odo} Km)`,
+            person: "-",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          alertBox.className = "status-alert status-success";
+          alertBox.innerText = "ഇന്ധന വിവരങ്ങളും ചെലവും വിജയകരമായി രേഖപ്പെടുത്തി!";
+          alertBox.style.display = "block";
+          document.getElementById('fuelOdo').value = '';
+          document.getElementById('fuelTotalAmount').value = '';
+          setTimeout(() => alertBox.style.display = "none", 3000);
+        });
     }
   </script>
 </body>
