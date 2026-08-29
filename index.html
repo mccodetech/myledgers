@@ -299,21 +299,21 @@
       gap: 8px;
     }
 
-    .btn-chip {
+    .btn-icon-top {
       background: rgba(255, 255, 255, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: white;
-      padding: 6px 12px;
+      width: 38px;
+      height: 38px;
       border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
+      font-size: 14px;
       transition: all 0.2s;
     }
-    .btn-chip:hover { background: rgba(255, 255, 255, 0.25); }
+    .btn-icon-top:hover { background: rgba(255, 255, 255, 0.25); }
 
     /* DASHBOARD */
     .dashboard-overview {
@@ -509,8 +509,8 @@
     .status-success { background: #dcfce7; color: #15803d; }
     .status-error { background: #ffe4e6; color: #be123c; }
 
-    /* CALCULATOR MODAL */
-    .calc-modal {
+    /* MODAL POPUPS (SETTINGS & CALCULATOR) */
+    .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
@@ -522,15 +522,35 @@
       padding: 16px;
     }
 
-    .calc-dialog {
+    .modal-dialog {
       background: var(--surface);
       width: 100%;
-      max-width: 320px;
+      max-width: 360px;
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 20px;
       box-shadow: var(--shadow-lg);
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    .modal-header h3 { font-size: 17px; font-weight: 700; }
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* CALCULATOR */
     .calc-display {
       width: 100%;
       height: 48px;
@@ -581,7 +601,7 @@
   <div class="install-banner" id="pwaBanner">
     <div class="install-banner-text">
       <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
-      <span>ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
+      <span data-i18n="pwa_banner_text">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
     </div>
     <div class="install-banner-btns">
       <button type="button" class="btn-install-now" onclick="triggerPwaInstall()">Install</button>
@@ -638,11 +658,14 @@
         <div class="user-name" id="userNameLabel">User</div>
       </div>
       <div class="topbar-actions">
-        <button type="button" class="btn-chip" onclick="triggerPwaInstall()" id="topInstallBtn">
-          <i class="fa-solid fa-download"></i> Install
+        <!-- Settings Button -->
+        <button type="button" class="btn-icon-top" onclick="openSettingsModal()" title="Settings">
+          <i class="fa-solid fa-gear"></i>
         </button>
-        <button type="button" class="btn-chip" onclick="toggleLanguage()" id="langToggleBtn">English</button>
-        <button type="button" class="btn-chip" onclick="handleLogout()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        <!-- Logout Button -->
+        <button type="button" class="btn-icon-top" onclick="handleLogout()" title="Logout">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
       </div>
     </div>
 
@@ -779,9 +802,58 @@
     </div>
   </div>
 
+  <!-- SETTINGS MODAL -->
+  <div class="modal-overlay" id="settingsModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 data-i18n="settings_title"><i class="fa-solid fa-gear" style="margin-right: 8px;"></i>Settings</h3>
+        <button type="button" class="modal-close-btn" onclick="closeSettingsModal()">✕</button>
+      </div>
+
+      <!-- Change Language -->
+      <div class="form-group">
+        <label data-i18n="lbl_settings_lang">ഭാഷ (Language)</label>
+        <div class="select-wrap">
+          <select id="settingsLangSelect" class="input-box" onchange="changeLanguageFromSettings(this.value)">
+            <option value="ml">മലയാളം</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Update Display Name -->
+      <div class="form-group">
+        <label data-i18n="lbl_settings_name">പ്രൊഫൈൽ പേര് മാറ്റാൻ</label>
+        <input type="text" id="settingsDisplayName" class="input-box" placeholder="Your Name">
+        <button type="button" class="btn-main" style="margin-top: 8px; padding: 10px;" onclick="updateProfileName()">
+          <span data-i18n="btn_update_name">പേര് സേവ് ചെയ്യുക</span>
+        </button>
+      </div>
+
+      <!-- Update Password -->
+      <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
+        <label data-i18n="lbl_settings_pass">പുതിയ പാസ്‌വേഡ്</label>
+        <input type="password" id="settingsNewPass" class="input-box" placeholder="New Password (min 6 chars)">
+        <button type="button" class="btn-main" style="margin-top: 8px; padding: 10px; background: #334155;" onclick="updateUserPassword()">
+          <span data-i18n="btn_update_pass">പാസ്‌വേഡ് മാറ്റുക</span>
+        </button>
+      </div>
+
+      <!-- Install App from Settings -->
+      <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
+        <label data-i18n="lbl_settings_install">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ</label>
+        <button type="button" class="btn-main" style="padding: 10px; background: var(--accent);" onclick="triggerPwaInstall()">
+          <i class="fa-solid fa-download"></i> <span data-i18n="btn_install_app">Install Application</span>
+        </button>
+      </div>
+
+      <div id="settingsAlert" class="status-alert"></div>
+    </div>
+  </div>
+
   <!-- CALCULATOR MODAL -->
-  <div class="calc-modal" id="calcPopup">
-    <div class="calc-dialog">
+  <div class="modal-overlay" id="calcPopup">
+    <div class="modal-dialog" style="max-width: 320px;">
       <input type="text" id="calcScreen" class="calc-display" readonly value="0">
       <div class="calc-pad">
         <button type="button" class="c-btn c-del" onclick="calcClear()">C</button>
@@ -923,7 +995,16 @@
         opt_all_types: "എല്ലാ ഇടപാടുകളും",
         opt_inc_only: "വരവ് മാത്രം",
         opt_exp_only: "ചെലവ് മാത്രം",
-        opt_loan_only: "കടം ഇടപാടുകൾ"
+        opt_loan_only: "കടം ഇടപാടുകൾ",
+        settings_title: "സെറ്റിങ്സ് (Settings)",
+        lbl_settings_lang: "ഭാഷ (Language)",
+        lbl_settings_name: "പ്രൊഫൈൽ പേര് മാറ്റാൻ",
+        btn_update_name: "പേര് സേവ് ചെയ്യുക",
+        lbl_settings_pass: "പുതിയ പാസ്‌വേഡ്",
+        btn_update_pass: "പാസ്‌വേഡ് മാറ്റുക",
+        lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ",
+        btn_install_app: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക",
+        pwa_banner_text: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?"
       },
       en: {
         auth_login_title: "Login",
@@ -967,7 +1048,16 @@
         opt_all_types: "All Transactions",
         opt_inc_only: "Income Only",
         opt_exp_only: "Expense Only",
-        opt_loan_only: "Loans / Debts"
+        opt_loan_only: "Loans / Debts",
+        settings_title: "Settings",
+        lbl_settings_lang: "Language",
+        lbl_settings_name: "Change Display Name",
+        btn_update_name: "Save Name",
+        lbl_settings_pass: "New Password",
+        btn_update_pass: "Update Password",
+        lbl_settings_install: "Install Application",
+        btn_install_app: "Install App",
+        pwa_banner_text: "Install app for quick access?"
       }
     };
 
@@ -993,6 +1083,7 @@
         const name = user.displayName || user.email.split('@')[0];
         document.getElementById('userNameLabel').innerText = name;
         document.getElementById('avatarInitial').innerText = name.charAt(0).toUpperCase();
+        document.getElementById('settingsDisplayName').value = user.displayName || "";
         
         document.getElementById('authView').style.display = 'none';
         document.getElementById('mainAppView').style.display = 'block';
@@ -1008,6 +1099,7 @@
 
     window.onload = function() {
       applyLanguage(lang);
+      document.getElementById('settingsLangSelect').value = lang;
     };
 
     function toggleAuthMode() {
@@ -1037,7 +1129,6 @@
       }
     }
 
-    // 🌟 ഫോർഗോട്ട് പാസ്‌വേഡ് ഫങ്ക്ഷൻ
     function handleForgotPassword() {
       const email = document.getElementById('authEmail').value.trim();
       const alertBox = document.getElementById('authAlert');
@@ -1089,7 +1180,6 @@
           .catch((err) => {
             alertBox.className = "status-alert status-error";
             alertBox.style.display = 'block';
-            // ഉപയോക്താവിന് മനസ്സിലാകുന്ന രീതിയിലുള്ള എറർ മെസ്സേജ്
             if (err.code === 'auth/invalid-login-credentials' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
               alertBox.innerText = (lang === 'ml') ? "ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്. പരിശോധിക്കുക!" : "Incorrect email or password. Please check!";
             } else {
@@ -1104,8 +1194,21 @@
       auth.signOut();
     }
 
-    function toggleLanguage() {
-      lang = (lang === 'ml') ? 'en' : 'ml';
+    /* SETTINGS MODAL FUNCTIONS */
+    function openSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'flex';
+      document.getElementById('settingsAlert').style.display = 'none';
+      if (currentUser) {
+        document.getElementById('settingsDisplayName').value = currentUser.displayName || "";
+      }
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function changeLanguageFromSettings(newLang) {
+      lang = newLang;
       localStorage.setItem('app_lang', lang);
       applyLanguage(lang);
       updateCategoryList();
@@ -1113,7 +1216,6 @@
     }
 
     function applyLanguage(l) {
-      document.getElementById('langToggleBtn').innerText = (l === 'ml') ? 'English' : 'മലയാളം';
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[l][key]) el.innerText = dict[l][key];
@@ -1122,6 +1224,54 @@
         const key = el.getAttribute('data-i18n-opt');
         if (dict[l][key]) el.innerText = dict[l][key];
       });
+    }
+
+    function updateProfileName() {
+      const newName = document.getElementById('settingsDisplayName').value.trim();
+      const alertBox = document.getElementById('settingsAlert');
+      if (!newName || !currentUser) return;
+
+      currentUser.updateProfile({ displayName: newName })
+        .then(() => {
+          document.getElementById('userNameLabel').innerText = newName;
+          document.getElementById('avatarInitial').innerText = newName.charAt(0).toUpperCase();
+          alertBox.className = "status-alert status-success";
+          alertBox.innerText = (lang === 'ml') ? "പേര് വിജയകരമായി മാറ്റി!" : "Display name updated successfully!";
+          alertBox.style.display = "block";
+          setTimeout(() => alertBox.style.display = "none", 3000);
+        })
+        .catch(err => {
+          alertBox.className = "status-alert status-error";
+          alertBox.innerText = err.message;
+          alertBox.style.display = "block";
+        });
+    }
+
+    function updateUserPassword() {
+      const newPass = document.getElementById('settingsNewPass').value;
+      const alertBox = document.getElementById('settingsAlert');
+      if (!newPass || !currentUser) return;
+
+      if (newPass.length < 6) {
+        alertBox.className = "status-alert status-error";
+        alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡിൽ കുറഞ്ഞത് 6 അക്ഷരങ്ങൾ വേണം!" : "Password must be at least 6 characters!";
+        alertBox.style.display = "block";
+        return;
+      }
+
+      currentUser.updatePassword(newPass)
+        .then(() => {
+          document.getElementById('settingsNewPass').value = '';
+          alertBox.className = "status-alert status-success";
+          alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡ് വിജയകരമായി മാറ്റി!" : "Password updated successfully!";
+          alertBox.style.display = "block";
+          setTimeout(() => alertBox.style.display = "none", 3000);
+        })
+        .catch(err => {
+          alertBox.className = "status-alert status-error";
+          alertBox.innerText = (lang === 'ml') ? "സുരക്ഷാ കാരണങ്ങളാൽ ഒരിക്കൽ ലോഗൗട്ട് ചെയ്ത് വീണ്ടും ലോഗിൻ ചെയ്ത ശേഷം ശ്രമിക്കുക." : err.message;
+          alertBox.style.display = "block";
+        });
     }
 
     function switchView(view) {
