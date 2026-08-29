@@ -10,6 +10,7 @@
   
   <title>My Ledgers</title>
   
+  <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9554/9554904.png">
   
@@ -206,7 +207,7 @@
     .modal-header h3 { font-size: 17px; font-weight: 700; }
     .modal-close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
 
-    /* DISPLAY SETTINGS CHECKBOX BOX */
+    /* DISPLAY SETTINGS */
     .display-settings-box {
       background: #f8fafc;
       border: 1px solid var(--border);
@@ -235,7 +236,7 @@
     .btn-dialog-cancel { flex: 1; padding: 12px; background: #e2e8f0; border: none; color: var(--text); font-weight: 700; border-radius: var(--radius-md); cursor: pointer; }
     .btn-dialog-confirm { flex: 1; padding: 12px; background: var(--primary); border: none; color: white; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; }
 
-    /* REMINDER CARD STYLES */
+    /* REMINDER CARDS */
     .reminder-card {
       background: #fffbeb;
       border: 1.5px solid #fde68a;
@@ -265,7 +266,7 @@
       margin-top: 4px;
     }
 
-    /* USER GUIDE STYLES */
+    /* USER GUIDE */
     .guide-section { margin-bottom: 18px; }
     .guide-section h4 { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
     .guide-section p, .guide-section li { font-size: 12.5px; line-height: 1.6; color: var(--text); margin-bottom: 4px; }
@@ -535,12 +536,12 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <h3 style="font-size: 15px; font-weight: 700;" data-i18n="title_upcoming_bills">വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ</h3>
           <button type="button" class="btn-main" style="width: auto; padding: 6px 14px; background: var(--reminder); font-size: 13px;" onclick="openAddReminderModal()">
-            <i class="fa-solid fa-plus"></i> <span data-i18n="btn_add_reminder">പുതിയത്</span>
+            <i class="fa-solid fa-plus"></i> <span data-i18n="btn_add_reminder">പുതിയ റിമൈൻഡർ</span>
           </button>
         </div>
 
         <div id="remindersListContainer">
-          <p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല</p>
+          <p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;" data-i18n="no_reminders">റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല</p>
         </div>
       </div>
 
@@ -651,7 +652,7 @@
     </div>
   </div>
 
-  <!-- ADD REMINDER MODAL -->
+  <!-- 🌟 ADD REMINDER MODAL (WITH CATEGORY SELECTION) -->
   <div class="modal-overlay" id="addReminderModal">
     <div class="modal-dialog">
       <div class="modal-header">
@@ -660,46 +661,35 @@
       </div>
       <form onsubmit="handleNewReminderSubmit(event)">
         <div class="form-group">
-          <label>ബിൽ / ഇടപാടിന്റെ പേര്</label>
+          <label data-i18n="lbl_bill_name">ബിൽ / ഇടപാടിന്റെ പേര്</label>
           <input type="text" id="remindTitle" class="input-box" placeholder="ഉദാ: വീട്ടുവാടക, കറന്റ് ബിൽ" required>
         </div>
         <div class="form-group">
-          <label>നൽകേണ്ട തീയതി (Due Date)</label>
+          <label data-i18n="lbl_category">വിഭാഗം (Category)</label>
+          <div class="select-wrap">
+            <select id="remindCategory" class="input-box" required></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_due_date">നൽകേണ്ട തീയതി (Due Date)</label>
           <input type="date" id="remindDueDate" class="input-box" required>
         </div>
         <div class="form-group">
-          <label>തുക (Amount)</label>
+          <label data-i18n="lbl_amount">തുക (Amount)</label>
           <input type="number" step="0.01" id="remindAmount" class="input-box" placeholder="0.00" required>
         </div>
         <div class="form-group">
-          <label>ആവർത്തനം (Recurrence)</label>
+          <label data-i18n="lbl_recurrence">ആവർത്തനം (Recurrence)</label>
           <div class="select-wrap">
             <select id="remindFrequency" class="input-box">
-              <option value="once">ഒരിക്കൽ മാത്രം (One Time)</option>
-              <option value="monthly">എല്ലാ മാസവും (Monthly)</option>
-              <option value="yearly">എല്ലാ വർഷവും (Yearly)</option>
+              <option value="once" data-i18n-opt="opt_once">ഒരിക്കൽ മാത്രം (One Time)</option>
+              <option value="monthly" data-i18n-opt="opt_monthly">എല്ലാ മാസവും (Monthly)</option>
+              <option value="yearly" data-i18n-opt="opt_yearly">എല്ലാ വർഷവും (Yearly)</option>
             </select>
           </div>
         </div>
-        <button type="submit" class="btn-main" style="background: var(--reminder);">റിമൈൻഡർ സേവ് ചെയ്യുക</button>
+        <button type="submit" class="btn-main" style="background: var(--reminder);" data-i18n="btn_save_reminder">റിമൈൻഡർ സേവ് ചെയ്യുക</button>
       </form>
-    </div>
-  </div>
-
-  <!-- REMINDER PAYMENT CATEGORY SELECTION MODAL -->
-  <div class="modal-overlay" id="reminderPaymentCatModal">
-    <div class="modal-dialog" style="max-width: 320px;">
-      <div class="modal-header">
-        <h3 style="font-size: 15px;">ഏത് കാറ്റഗറിയിൽ സേവ് ചെയ്യണം?</h3>
-        <button type="button" class="modal-close-btn" onclick="closeReminderPaymentCatModal()">✕</button>
-      </div>
-      <div class="form-group">
-        <label>കാറ്റഗറി തിരഞ്ഞെടുക്കുക</label>
-        <div class="select-wrap">
-          <select id="reminderExpenseCatSelect" class="input-box"></select>
-        </div>
-      </div>
-      <button type="button" class="btn-main" onclick="confirmReminderPaymentWithCat()">സേവ് ചെയ്യുക</button>
     </div>
   </div>
 
@@ -710,9 +700,7 @@
         <h3 data-i18n="btn_user_guide"><i class="fa-solid fa-book-open" style="margin-right: 8px;"></i>ഉപയോഗ ക്രമം (User Guide)</h3>
         <button type="button" class="modal-close-btn" onclick="closeGuideModal()">✕</button>
       </div>
-      <div id="guideContentBody">
-        <!-- Dynamic based on language -->
-      </div>
+      <div id="guideContentBody"></div>
     </div>
   </div>
 
@@ -1010,8 +998,6 @@
     let isSignUp = false;
     let lang = localStorage.getItem('app_lang') || 'ml';
     let userCurrency = localStorage.getItem('app_currency') || '₹';
-    
-    // Display Preferences
     let displayConfig = JSON.parse(localStorage.getItem('app_display_config') || '{"entry":true,"report":true,"reminder":true,"vehicle":false,"print":true}');
 
     let currentMode = 'income';
@@ -1022,7 +1008,6 @@
     let activeVehicleId = null;
     let calcTargetInputId = 'entryAmount';
     let currentConfirmCallback = null;
-    let tempReminderToPay = null;
 
     let unsubSnapshot = null;
     let unsubVehicles = null;
@@ -1042,11 +1027,15 @@
         lbl_date: "തീയതി",
         lbl_loan_type: "കടം ഇടപാട് തരം",
         lbl_person: "ആരുമായി? (വ്യക്തിയുടെ പേര്)",
-        lbl_category: "വിഭാഗം",
+        lbl_category: "വിഭാഗം (Category)",
         lbl_new_category: "പുതിയ വിഭാഗത്തിന്റെ പേര്",
         lbl_amount: "തുക",
         lbl_description: "വിവരണം (കുറിപ്പ്)",
+        lbl_bill_name: "ബിൽ / ഇടപാടിന്റെ പേര്",
+        lbl_due_date: "നൽകേണ്ട തീയതി (Due Date)",
+        lbl_recurrence: "ആവർത്തനം (Recurrence)",
         btn_save: "രേഖപ്പെടുത്തുക",
+        btn_save_reminder: "റിമൈൻഡർ സേവ് ചെയ്യുക",
         btn_forgot_pass: "പാസ്‌വേഡ് മറന്നുപോയോ?",
         tab_add: "ഇടപാട്",
         tab_report: "റിപ്പോർട്ട്",
@@ -1069,6 +1058,7 @@
         select_placeholder: "തിരഞ്ഞെടുക്കുക...",
         new_cat_opt: "+ പുതിയ കാറ്റഗറി ചേർക്കുക",
         no_records: "ഇടപാടുകൾ ഒന്നുമില്ല.",
+        no_reminders: "റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല",
         loan_borrowed: "കടം വാങ്ങിയത്",
         loan_given: "കടം കൊടുത്തത്",
         loan_repaid: "കടം തിരിച്ചു കൊടുത്തത്",
@@ -1079,6 +1069,9 @@
         opt_inc_only: "വരവ് മാത്രം",
         opt_exp_only: "ചെലവ് മാത്രം",
         opt_loan_only: "കടം ഇടപാടുകൾ",
+        opt_once: "ഒരിക്കൽ മാത്രം (One Time)",
+        opt_monthly: "എല്ലാ മാസവും (Monthly)",
+        opt_yearly: "എല്ലാ വർഷവും (Yearly)",
         settings_title: "സെറ്റിങ്സ് (Settings)",
         lbl_settings_currency: "കറൻസി (Currency)",
         lbl_settings_lang: "ഭാഷ (Language)",
@@ -1133,7 +1126,11 @@
         lbl_new_category: "New Category Name",
         lbl_amount: "Amount",
         lbl_description: "Description",
+        lbl_bill_name: "Bill / Payment Name",
+        lbl_due_date: "Due Date",
+        lbl_recurrence: "Recurrence",
         btn_save: "Save Entry",
+        btn_save_reminder: "Save Reminder",
         btn_forgot_pass: "Forgot password?",
         tab_add: "New Entry",
         tab_report: "Reports",
@@ -1156,6 +1153,7 @@
         select_placeholder: "Select Category...",
         new_cat_opt: "+ Add New Category",
         no_records: "No transactions recorded.",
+        no_reminders: "No active reminders",
         loan_borrowed: "Borrowed Loan",
         loan_given: "Given Loan",
         loan_repaid: "Repaid Loan",
@@ -1166,6 +1164,9 @@
         opt_inc_only: "Income Only",
         opt_exp_only: "Expense Only",
         opt_loan_only: "Loans / Debts",
+        opt_once: "One Time",
+        opt_monthly: "Monthly",
+        opt_yearly: "Yearly",
         settings_title: "Settings",
         lbl_settings_currency: "Currency",
         lbl_settings_lang: "Language",
@@ -1220,7 +1221,11 @@
         lbl_new_category: "اسم الفئة الجديدة",
         lbl_amount: "المبلغ",
         lbl_description: "الوصف",
+        lbl_bill_name: "اسم الفاتورة / الالتزام",
+        lbl_due_date: "تاريخ الاستحقاق",
+        lbl_recurrence: "التكرار",
         btn_save: "حفظ المعاملة",
+        btn_save_reminder: "حفظ التذكير",
         btn_forgot_pass: "نسيت كلمة المرور؟",
         tab_add: "إضافة",
         tab_report: "التقارير",
@@ -1243,6 +1248,7 @@
         select_placeholder: "اختر الفئة...",
         new_cat_opt: "+ إضافة فئة جديدة",
         no_records: "لا توجد معاملات مسجلة.",
+        no_reminders: "لا توجد تذكيرات مسجلة",
         loan_borrowed: "اقتراض دين",
         loan_given: "إعطاء دين",
         loan_repaid: "سداد دين",
@@ -1253,6 +1259,9 @@
         opt_inc_only: "الدخل فقط",
         opt_exp_only: "المصروفات فقط",
         opt_loan_only: "الديون والقروض",
+        opt_once: "مرة واحدة فقط",
+        opt_monthly: "شهرياً",
+        opt_yearly: "سنوياً",
         settings_title: "الإعدادات",
         lbl_settings_currency: "العملة",
         lbl_settings_lang: "اللغة",
@@ -1310,7 +1319,7 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-bell"></i> 4. ബിൽ റിമൈൻഡറുകൾ (Reminders)</h4>
-          <p>മാസാന്ത ബില്ലുകൾ, വാടക, സ്കൂൾ ഫീസ് എന്നിവ നിശ്ചിത തീയതിയിൽ ഓർമ്മിപ്പിക്കാൻ റിമൈൻഡർ സെറ്റ് ചെയ്യാം. അടച്ചു കഴിഞ്ഞാൽ 'Mark as Paid' ക്ലിക്ക് ചെയ്താൽ അത് തനിയെ ചെലവ് ലിസ്റ്റിലേക്ക് മാറും.</p>
+          <p>മാസാന്ത ബില്ലുകൾ, വാടക, സ്കൂൾ ഫീസ് എന്നിവ നിശ്ചിത തീയതിയും കാറ്റഗറിയും നൽകി റിമൈൻഡർ സെറ്റ് ചെയ്യാം. അടച്ചു കഴിഞ്ഞാൽ 'Mark as Paid' ക്ലിക്ക് ചെയ്താൽ അത് തനിയെ ചെലവ് ലിസ്റ്റിലേക്ക് മാറും.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> 5. വാഹന ട്രാക്കർ & മൈലേജ്</h4>
@@ -1336,7 +1345,7 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-bell"></i> 4. Bill & Payment Reminders</h4>
-          <p>Set recurring or one-time payment reminders for rent, utility bills, EMI, etc. Click 'Mark as Paid' to automatically add it to your expense ledger.</p>
+          <p>Set recurring or one-time payment reminders with category. Click 'Mark as Paid' to automatically add it to your expense ledger.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> 5. Vehicle Fuel & Mileage Tracker</h4>
@@ -1362,7 +1371,7 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-bell"></i> ٤. تذكير الفواتير</h4>
-          <p>أضف تذكيرات بمواعيد الإيجار أو الفواتير. عند السداد، اضغط 'تم الدفع' لتحويلها مباشرة إلى سجل المصروفات.</p>
+          <p>أضف تذكيرات بمواعيد الإيجار أو الفواتير مع تحديد الفئة. عند السداد، اضغط 'تم الدفع' لتحويلها مباشرة إلى سجل المصروفات.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> ٥. متتبع وقود واستهلاك المركبات</h4>
@@ -1582,7 +1591,6 @@
     }
     function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
 
-    // 🌟 DIRECT USER GUIDE POPUP AVOIDING DOUBLE MODALS
     function openGuideModalDirectly() {
       closeSettingsModal();
       setTimeout(() => {
@@ -1635,6 +1643,7 @@
 
           applyDisplayPreferences();
           updateCategoryList();
+          updateReminderCategoryDropdown();
           bindUserTransactions(currentUser.uid);
           if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
 
@@ -1776,6 +1785,7 @@
           userCustomCategories.push({ id: doc.id, ...doc.data() });
         });
         updateCategoryList();
+        updateReminderCategoryDropdown();
         renderCustomCategoryChipsInSettings();
       });
     }
@@ -1798,11 +1808,9 @@
       });
     }
 
-    // 🌟 3. SAFE CATEGORY DELETION LOGIC
     function promptDeleteCustomCategory(catDocId, catName) {
       if (!currentUser) return;
 
-      // Check if any transaction exists with this category
       const isUsed = rawData.some(r => r.category.toLowerCase() === catName.toLowerCase());
 
       if (isUsed) {
@@ -1850,6 +1858,20 @@
       newOpt.value = 'NEW_CAT';
       newOpt.innerText = dict[lang].new_cat_opt;
       select.appendChild(newOpt);
+    }
+
+    // 🌟 REMINDER CATEGORY DROPDOWN UPDATE
+    function updateReminderCategoryDropdown() {
+      const select = document.getElementById('remindCategory');
+      if (!select) return;
+      select.innerHTML = '';
+
+      defaultCategories[lang]['expense'].forEach(cat => {
+        select.appendChild(new Option(cat, cat));
+      });
+      userCustomCategories.filter(c => c.type === 'expense').forEach(c => {
+        select.appendChild(new Option(c.name + " ✦", c.name));
+      });
     }
 
     function handleCategoryChange(sel) {
@@ -2061,8 +2083,11 @@
       proceedSave();
     }
 
-    /* 🌟 REMINDERS SYSTEM */
-    function openAddReminderModal() { document.getElementById('addReminderModal').style.display = 'flex'; }
+    /* 🌟 REMINDERS SYSTEM WITH DIRECT CATEGORY */
+    function openAddReminderModal() {
+      updateReminderCategoryDropdown();
+      document.getElementById('addReminderModal').style.display = 'flex';
+    }
     function closeAddReminderModal() { document.getElementById('addReminderModal').style.display = 'none'; }
 
     function handleNewReminderSubmit(e) {
@@ -2070,10 +2095,10 @@
       if (!currentUser) return;
       const remData = {
         title: document.getElementById('remindTitle').value.trim(),
+        category: document.getElementById('remindCategory').value,
         dueDate: document.getElementById('remindDueDate').value,
         amount: parseFloat(document.getElementById('remindAmount').value) || 0,
         frequency: document.getElementById('remindFrequency').value,
-        status: 'pending',
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -2096,7 +2121,7 @@
     function renderRemindersList() {
       const container = document.getElementById('remindersListContainer');
       if (userReminders.length === 0) {
-        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">${lang === 'ml' ? 'റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല' : (lang === 'ar' ? 'لا توجد تذكيرات مسجلة' : 'No active reminders')}</p>`;
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">${dict[lang].no_reminders}</p>`;
         return;
       }
 
@@ -2109,17 +2134,17 @@
         card.className = `reminder-card ${isUrgent ? 'due-urgent' : ''}`;
         
         let freqText = '';
-        if (rem.frequency === 'monthly') freqText = lang === 'ml' ? 'മാസം' : 'Monthly';
-        else if (rem.frequency === 'yearly') freqText = lang === 'ml' ? 'വർഷം' : 'Yearly';
-        else freqText = lang === 'ml' ? 'ഒരിക്കൽ' : 'Once';
+        if (rem.frequency === 'monthly') freqText = lang === 'ml' ? 'മാസം' : (lang === 'ar' ? 'شهري' : 'Monthly');
+        else if (rem.frequency === 'yearly') freqText = lang === 'ml' ? 'വർഷം' : (lang === 'ar' ? 'سنوي' : 'Yearly');
+        else freqText = lang === 'ml' ? 'ഒരിക്കൽ' : (lang === 'ar' ? 'مرة واحدة' : 'Once');
 
-        const btnText = lang === 'ml' ? 'അടച്ചു (Paid)' : 'Mark Paid';
+        const btnText = lang === 'ml' ? 'അടച്ചു (Paid)' : (lang === 'ar' ? 'تم الدفع' : 'Mark Paid');
 
         card.innerHTML = `
           <div>
-            <div class="reminder-title">${rem.title}</div>
+            <div class="reminder-title">${rem.title} <small style="font-weight:normal; color:var(--primary-dark);">(${rem.category || 'General'})</small></div>
             <div class="reminder-date"><i class="fa-solid fa-clock"></i> Due: ${rem.dueDate} (${freqText})</div>
-            <button type="button" class="btn-pay-now" onclick="openReminderPaymentCatModal('${rem.id}')"><i class="fa-solid fa-check"></i> ${btnText}</button>
+            <button type="button" class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')"><i class="fa-solid fa-check"></i> ${btnText}</button>
           </div>
           <div style="text-align: right;">
             <div class="reminder-amt">${userCurrency}${parseFloat(rem.amount).toFixed(2)}</div>
@@ -2130,65 +2155,50 @@
       });
     }
 
-    // 🌟 2. CATEGORY SELECTION WHILE MARKING REMINDER AS PAID
-    function openReminderPaymentCatModal(remId) {
-      tempReminderToPay = userReminders.find(r => r.id === remId);
-      if (!tempReminderToPay) return;
+    function markReminderAsPaid(remId) {
+      const rem = userReminders.find(r => r.id === remId);
+      if (!rem || !currentUser) return;
 
-      const select = document.getElementById('reminderExpenseCatSelect');
-      select.innerHTML = '';
-      
-      // Load only Expense categories
-      defaultCategories[lang]['expense'].forEach(cat => {
-        select.appendChild(new Option(cat, cat));
-      });
-      userCustomCategories.filter(c => c.type === 'expense').forEach(c => {
-        select.appendChild(new Option(c.name + " ✦", c.name));
-      });
+      const catToSave = rem.category || (defaultCategories[lang]['expense'][0]);
 
-      document.getElementById('reminderPaymentCatModal').style.display = 'flex';
-    }
-
-    function closeReminderPaymentCatModal() {
-      document.getElementById('reminderPaymentCatModal').style.display = 'none';
-      tempReminderToPay = null;
-    }
-
-    function confirmReminderPaymentWithCat() {
-      if (!tempReminderToPay || !currentUser) return;
-      const cat = document.getElementById('reminderExpenseCatSelect').value;
-      const rem = tempReminderToPay;
-
-      db.collection("users").doc(currentUser.uid).collection("transactions").add({
-        date: todayFormatted,
-        type: (lang === 'ml') ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Expense'),
-        category: cat,
-        amount: rem.amount,
-        description: `${rem.title} (Paid)`,
-        person: "-",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      if (rem.frequency === 'monthly') {
-        const nextD = new Date(rem.dueDate);
-        nextD.setMonth(nextD.getMonth() + 1);
-        const nextDueDateStr = nextD.toISOString().split('T')[0];
-        db.collection("users").doc(currentUser.uid).collection("reminders").doc(rem.id).update({ dueDate: nextDueDateStr });
-      } else if (rem.frequency === 'yearly') {
-        const nextD = new Date(rem.dueDate);
-        nextD.setFullYear(nextD.getFullYear() + 1);
-        const nextDueDateStr = nextD.toISOString().split('T')[0];
-        db.collection("users").doc(currentUser.uid).collection("reminders").doc(rem.id).update({ dueDate: nextDueDateStr });
-      } else {
-        db.collection("users").doc(currentUser.uid).collection("reminders").doc(rem.id).delete();
-      }
-
-      closeReminderPaymentCatModal();
       showAppConfirm({
         icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
-        title: "Success",
-        msg: (lang === 'ml') ? "ചെലവിലേക്ക് വിജയകരമായി രേഖപ്പെടുത്തി!" : "Successfully added to Expenses!",
-        hideCancel: true
+        title: "Mark as Paid",
+        msg: (lang === 'ml') ? `"${rem.title}" അടച്ചു എന്ന് രേഖപ്പെടുത്തി '${catToSave}' വിഭാഗത്തിൽ ചെലവായി സേവ് ചെയ്യണോ?` : 
+             (lang === 'ar' ? `هل تريد تسجيل "${rem.title}" كمدفوع وحفظه في فئة '${catToSave}'؟` : 
+             `Record "${rem.title}" as paid and save under category '${catToSave}'?`),
+        onConfirm: () => {
+          db.collection("users").doc(currentUser.uid).collection("transactions").add({
+            date: todayFormatted,
+            type: (lang === 'ml') ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Expense'),
+            category: catToSave,
+            amount: rem.amount,
+            description: `${rem.title} (Bill Paid)`,
+            person: "-",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          if (rem.frequency === 'monthly') {
+            const nextD = new Date(rem.dueDate);
+            nextD.setMonth(nextD.getMonth() + 1);
+            const nextDueDateStr = nextD.toISOString().split('T')[0];
+            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({ dueDate: nextDueDateStr });
+          } else if (rem.frequency === 'yearly') {
+            const nextD = new Date(rem.dueDate);
+            nextD.setFullYear(nextD.getFullYear() + 1);
+            const nextDueDateStr = nextD.toISOString().split('T')[0];
+            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({ dueDate: nextDueDateStr });
+          } else {
+            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).delete();
+          }
+
+          showAppConfirm({
+            icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
+            title: "Success",
+            msg: (lang === 'ml') ? "ചെലവിലേക്ക് വിജയകരമായി രേഖപ്പെടുത്തി!" : "Successfully recorded in Expenses!",
+            hideCancel: true
+          });
+        }
       });
     }
 
@@ -2237,10 +2247,10 @@
         });
 
         if (userVehicles.length === 0) {
-          select.innerHTML = '<option value="">വാഹനങ്ങൾ ചേർത്തിട്ടില്ല</option>';
+          select.innerHTML = `<option value="">${lang === 'ml' ? 'വാഹനങ്ങൾ ചേർത്തിട്ടില്ല' : 'No vehicles added'}</option>`;
           activeVehicleId = null;
           document.getElementById('vehicleStatsBox').style.display = 'none';
-          document.getElementById('fuelHistoryTableRows').innerHTML = '<tr><td colspan="4" style="text-align:center; padding:16px;">വാഹനങ്ങൾ ചേർക്കുക</td></tr>';
+          document.getElementById('fuelHistoryTableRows').innerHTML = `<tr><td colspan="4" style="text-align:center; padding:16px;">${lang === 'ml' ? 'വാഹനങ്ങൾ ചേർക്കുക' : 'Add Vehicles'}</td></tr>`;
         } else {
           userVehicles.forEach(v => {
             const opt = document.createElement('option');
@@ -2271,7 +2281,7 @@
 
           if (logs.length === 0) {
             document.getElementById('vehicleStatsBox').style.display = 'none';
-            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:16px; color:var(--text-muted);">ഇന്ധന വിവരങ്ങൾ രേഖപ്പെടുത്തിയിട്ടില്ല</td></tr>';
+            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:16px; color:var(--text-muted);">${lang === 'ml' ? 'ഇന്ധന വിവരങ്ങൾ രേഖപ്പെടുത്തിയിട്ടില്ല' : 'No fuel logs recorded'}</td></tr>`;
             return;
           }
 
@@ -2291,7 +2301,7 @@
               document.getElementById('statRunningCost').innerText = `${userCurrency}${costPerKm} / Km`;
             }
           } else {
-            document.getElementById('statMileage').innerText = 'അടുത്ത എൻട്രിയിൽ കണക്കാക്കും';
+            document.getElementById('statMileage').innerText = lang === 'ml' ? 'അടുത്ത എൻട്രിയിൽ കണക്കാക്കും' : 'Pending next entry';
             document.getElementById('statRunningCost').innerText = '-';
           }
 
@@ -2357,7 +2367,7 @@
           });
 
           alertBox.className = "status-alert status-success";
-          alertBox.innerText = "ഇന്ധന വിവരങ്ങളും ചെലവും രേഖപ്പെടുത്തി!";
+          alertBox.innerText = dict[lang].success_save;
           alertBox.style.display = "block";
           document.getElementById('fuelOdo').value = '';
           document.getElementById('fuelTotalAmount').value = '';
