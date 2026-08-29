@@ -10,6 +10,7 @@
   
   <title>Family Ledger</title>
   
+  <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9554/9554904.png">
   
@@ -572,7 +573,7 @@
     </div>
   </div>
 
-  <!-- SETTINGS MODAL (WITH SINGLE SAVE SETTINGS BUTTON) -->
+  <!-- SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-dialog">
       <div class="modal-header">
@@ -580,7 +581,7 @@
         <button type="button" class="modal-close-btn" onclick="closeSettingsModal()">✕</button>
       </div>
 
-      <!-- Change Language (3 Languages) -->
+      <!-- Change Language -->
       <div class="form-group">
         <label data-i18n="lbl_settings_lang">ഭാഷ (Language)</label>
         <div class="select-wrap">
@@ -597,16 +598,16 @@
         <label data-i18n="lbl_settings_currency">കറൻസി (Currency)</label>
         <div class="select-wrap">
           <select id="settingsCurrencySelect" class="input-box">
-            <option value="₹">₹ (INR - Indian Rupee)</option>
-            <option value="AED ">AED (UAE Dirham)</option>
-            <option value="SAR ">SAR (Saudi Riyal)</option>
-            <option value="QAR ">QAR (Qatar Riyal)</option>
-            <option value="OMR ">OMR (Oman Rial)</option>
-            <option value="KWD ">KWD (Kuwait Dinar)</option>
-            <option value="BHD ">BHD (Bahrain Dinar)</option>
-            <option value="$">$ (USD - Dollar)</option>
-            <option value="€">€ (EUR - Euro)</option>
-            <option value="£">£ (GBP - Pound)</option>
+            <option value="₹">₹ - Indian Rupee (INR)</option>
+            <option value="AED ">AED - UAE Dirham</option>
+            <option value="SAR ">SAR - Saudi Riyal</option>
+            <option value="QAR ">QAR - Qatar Riyal</option>
+            <option value="OMR ">OMR - Oman Rial</option>
+            <option value="KWD ">KWD - Kuwait Dinar</option>
+            <option value="BHD ">BHD - Bahrain Dinar</option>
+            <option value="$">$ - US Dollar (USD)</option>
+            <option value="€">€ - Euro (EUR)</option>
+            <option value="£">£ - British Pound (GBP)</option>
           </select>
         </div>
       </div>
@@ -811,7 +812,6 @@
     let unsubFuelHistory = null;
     let unsubCustomCategories = null;
 
-    // 🌟 3 LANGUAGES DICTIONARY (Malayalam, English, Arabic)
     const dict = {
       ml: {
         auth_login_title: "ലോഗിൻ ചെയ്യുക",
@@ -1102,7 +1102,6 @@
       document.getElementById('settingsVehicleToggle').checked = isVehicleModuleEnabled;
     };
 
-    // 🌟 PASSWORD TOGGLE VISIBILITY
     function togglePassVisibility(inputId, iconEl) {
       const input = document.getElementById(inputId);
       if (input.type === 'password') {
@@ -1220,9 +1219,11 @@
     }
     function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
 
-    // 🌟 SAVE ALL SETTINGS IN ONE CLICK
+    // 🌟 SAVE ALL SETTINGS WITH CONFIRMATION & INSTANT MODAL DISMISS
     function saveAllSettings() {
-      const alertBox = document.getElementById('settingsAlert');
+      const confirmMsg = (lang === 'ml') ? "സെറ്റിങ്സിലെ മാറ്റങ്ങൾ സേവ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?" : (lang === 'ar' ? "هل أنت متأكد من حفظ التغييرات في الإعدادات؟" : "Are you sure you want to save the settings?");
+      if (!confirm(confirmMsg)) return;
+
       const newLang = document.getElementById('settingsLangSelect').value;
       const newCurr = document.getElementById('settingsCurrencySelect').value;
       const newVehEnabled = document.getElementById('settingsVehicleToggle').checked;
@@ -1254,13 +1255,8 @@
       bindUserTransactions(currentUser.uid);
       if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
 
-      alertBox.className = "status-alert status-success";
-      alertBox.innerText = (lang === 'ml') ? "സെറ്റിങ്സ് വിജയകരമായി സേവ് ചെയ്തു!" : (lang === 'ar' ? "تم حفظ الإعدادات بنجاح!" : "Settings saved successfully!");
-      alertBox.style.display = "block";
-      setTimeout(() => {
-        alertBox.style.display = "none";
-        closeSettingsModal();
-      }, 1500);
+      // 🌟 ക്ലോസ് ചെയ്യുക ഉടൻ തന്നെ
+      closeSettingsModal();
     }
 
     function applyLanguage(l) {
@@ -1277,6 +1273,9 @@
     }
 
     function sendSettingsResetMail() {
+      const confirmMsg = (lang === 'ml') ? "പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് അയക്കണോ?" : (lang === 'ar' ? "هل تريد إرسال رابط إعادة تعيين كلمة المرور؟" : "Send password reset link to your email?");
+      if (!confirm(confirmMsg)) return;
+
       const alertBox = document.getElementById('settingsAlert');
       if (!currentUser || !currentUser.email) return;
 
@@ -1294,8 +1293,8 @@
     }
 
     function confirmResetAllData() {
-      if (!confirm("മുന്നറിയിപ്പ്: നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും ഇന്ധന വിവരങ്ങളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?")) return;
-      if (!confirm("ഉറപ്പാണോ? ഈ മാറ്റം ഒരിക്കലും തിരിച്ചെടുക്കാൻ കഴിയില്ല!")) return;
+      if (!confirm(lang === 'ml' ? "മുന്നറിയിപ്പ്: നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും ഇന്ധന വിവരങ്ങളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?" : "Warning: All recorded transactions and fuel logs will be permanently deleted. Continue?")) return;
+      if (!confirm(lang === 'ml' ? "ഉറപ്പാണോ? ഈ മാറ്റം ഒരിക്കലും തിരിച്ചെടുക്കാൻ കഴിയില്ല!" : "Are you sure? This action cannot be undone!")) return;
 
       const alertBox = document.getElementById('settingsAlert');
       alertBox.className = "status-alert status-error";
@@ -1308,9 +1307,7 @@
         snap.forEach((doc) => batch.delete(doc.ref));
         return batch.commit();
       }).then(() => {
-        alertBox.className = "status-alert status-success";
-        alertBox.innerText = "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്തു!";
-        setTimeout(() => { alertBox.style.display = "none"; closeSettingsModal(); }, 2000);
+        closeSettingsModal();
       });
     }
 
@@ -1359,7 +1356,7 @@
     function renderCustomCategoryChipsInSettings() {
       const container = document.getElementById('customCatChipContainer');
       if (userCustomCategories.length === 0) {
-        container.innerHTML = `<span style="font-size: 12px; color: var(--text-muted);">${lang === 'ml' ? 'കാറ്റഗറികൾ ഒന്നും ചേർത്തിട്ടില്ല' : 'No custom categories'}</span>`;
+        container.innerHTML = `<span style="font-size: 12px; color: var(--text-muted);">${lang === 'ml' ? 'കാറ്റഗറികൾ ഒന്നും ചേർത്തിട്ടില്ല' : (lang === 'ar' ? 'لا توجد فئات مخصصة' : 'No custom categories')}</span>`;
         return;
       }
       container.innerHTML = '';
@@ -1367,15 +1364,19 @@
         const chip = document.createElement('div');
         chip.className = 'cat-chip';
         chip.innerHTML = `
-          <span>${cat.name} (${cat.type === 'income' ? (lang === 'ml' ? 'വരവ്' : 'Inc') : (lang === 'ml' ? 'ചെലവ്' : 'Exp')})</span>
-          <span class="cat-chip-del" onclick="deleteCustomCategory('${cat.id}')" title="Delete">✕</span>
+          <span>${cat.name} (${cat.type === 'income' ? (lang === 'ml' ? 'വരവ്' : (lang === 'ar' ? 'دخل' : 'Inc')) : (lang === 'ml' ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Exp'))})</span>
+          <span class="cat-chip-del" onclick="deleteCustomCategory('${cat.id}', '${cat.name}')" title="Delete">✕</span>
         `;
         container.appendChild(chip);
       });
     }
 
-    function deleteCustomCategory(catDocId) {
+    // 🌟 CONFIRMATION BEFORE DELETING CATEGORY
+    function deleteCustomCategory(catDocId, catName) {
       if (!currentUser) return;
+      const confirmMsg = (lang === 'ml') ? `"${catName}" എന്ന കാറ്റഗറി ലിസ്റ്റിൽ നിന്ന് നീക്കം ചെയ്യണോ?` : (lang === 'ar' ? `هل تريد حذف الفئة "${catName}"؟` : `Do you want to delete "${catName}" category?`);
+      if (!confirm(confirmMsg)) return;
+
       db.collection("users").doc(currentUser.uid).collection("categories").doc(catDocId).delete();
     }
 
@@ -1539,6 +1540,7 @@
       window.print();
     }
 
+    // 🌟 TRANSACTION SUBMIT WITH CONFIRMATION FOR NEW CATEGORY
     function handleTransactionSubmit(e) {
       e.preventDefault();
       if (!currentUser) return;
@@ -1554,18 +1556,22 @@
 
       if (!cat) return;
 
-      btn.disabled = true;
-
+      // 🌟 Confirmation when adding a brand new category
       if (isNewCat && currentMode !== 'loan') {
         const alreadyExists = userCustomCategories.some(c => c.name.toLowerCase() === cat.toLowerCase() && c.type === currentMode);
         if (!alreadyExists) {
-          db.collection("users").doc(currentUser.uid).collection("categories").add({
-            name: cat,
-            type: currentMode,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
+          const confirmAddCat = (lang === 'ml') ? `"${cat}" എന്ന പുതിയ കാറ്റഗറി നിങ്ങളുടെ ലിസ്റ്റിൽ സ്ഥിരമായി ചേർക്കണോ?` : (lang === 'ar' ? `هل تريد إضافة الفئة الجديدة "${cat}" إلى قائمتك؟` : `Do you want to save "${cat}" to your category list?`);
+          if (confirm(confirmAddCat)) {
+            db.collection("users").doc(currentUser.uid).collection("categories").add({
+              name: cat,
+              type: currentMode,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
         }
       }
+
+      btn.disabled = true;
 
       const payload = {
         date: document.getElementById('entryDate').value,
