@@ -66,7 +66,7 @@
       padding: 16px;
     }
 
-    /* INSTALL APP BANNER */
+    /* PWA BANNER */
     .install-banner {
       position: fixed;
       bottom: 20px;
@@ -90,42 +90,12 @@
       from { transform: translate(-50%, 50px); opacity: 0; }
       to { transform: translate(-50%, 0); opacity: 1; }
     }
-    .install-banner-text {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .install-banner-text img {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-    }
-    .install-banner-btns {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn-install-now {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 7px 14px;
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-install-close {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      font-size: 16px;
-      cursor: pointer;
-    }
+    .install-banner-text { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
+    .install-banner-text img { width: 32px; height: 32px; border-radius: 8px; }
+    .btn-install-now { background: var(--accent); color: white; border: none; padding: 7px 14px; border-radius: var(--radius-full); font-size: 12px; font-weight: 700; cursor: pointer; }
+    .btn-install-close { background: transparent; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; }
 
-    /* AUTH SCREEN */
+    /* AUTH */
     .auth-wrapper {
       width: 100%;
       max-width: 420px;
@@ -135,508 +105,127 @@
       padding: 36px 28px;
       border: 1px solid var(--border);
     }
+    .auth-header { text-align: center; margin-bottom: 24px; }
+    .brand-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; }
+    .auth-header h2 { font-size: 22px; font-weight: 700; }
+    .auth-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
-    .auth-header {
-      text-align: center;
-      margin-bottom: 24px;
-    }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    .input-box { width: 100%; padding: 12px 16px; font-size: 14px; border: 1.5px solid var(--border); border-radius: var(--radius-md); outline: none; background: #f8fafc; color: var(--text); transition: all 0.2s ease; }
+    .input-box:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px var(--primary-light); }
 
-    .brand-icon {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: white;
-      border-radius: var(--radius-md);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 12px;
-      box-shadow: 0 8px 16px -4px rgba(13, 148, 136, 0.4);
-    }
-
-    .auth-header h2 {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .auth-header p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .input-box {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 14px;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
-      outline: none;
-      background: #f8fafc;
-      color: var(--text);
-      transition: all 0.2s ease;
-    }
-
-    .input-box:focus {
-      border-color: var(--primary);
-      background: #ffffff;
-      box-shadow: 0 0 0 4px var(--primary-light);
-    }
-
-    .forgot-link-wrap {
-      text-align: right;
-      margin-top: -8px;
-      margin-bottom: 16px;
-    }
-
-    .forgot-btn {
-      background: none;
-      border: none;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .forgot-btn:hover { text-decoration: underline; }
-
-    .btn-main {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      font-size: 15px;
-      font-weight: 700;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
-      transition: transform 0.1s, opacity 0.2s;
-    }
-
+    .forgot-link-wrap { text-align: right; margin-top: -8px; margin-bottom: 16px; }
+    .forgot-btn { background: none; border: none; color: var(--primary); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .btn-main { width: 100%; padding: 14px; border: none; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25); }
     .btn-main:active { transform: scale(0.98); }
-    .btn-main:disabled { opacity: 0.7; cursor: not-allowed; }
 
-    .switch-auth-mode {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
+    /* APP LAYOUT */
+    .app-shell { width: 100%; max-width: 600px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border); }
+    .app-topbar { background: linear-gradient(135deg, #0f766e, #0d9488); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .user-info { display: flex; align-items: center; gap: 10px; }
+    .user-avatar { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+    .user-name { font-size: 15px; font-weight: 700; }
+    .topbar-actions { display: flex; align-items: center; gap: 8px; }
+    .btn-icon-top { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: white; width: 38px; height: 38px; border-radius: var(--radius-full); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
 
-    .btn-text {
-      background: none;
-      border: none;
-      color: var(--primary);
-      font-weight: 700;
-      cursor: pointer;
-      margin-left: 4px;
-    }
-
-    /* MAIN APP LAYOUT */
-    .app-shell {
-      width: 100%;
-      max-width: 600px;
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .app-topbar {
-      background: linear-gradient(135deg, #0f766e, #0d9488);
-      color: white;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .user-avatar {
-      width: 38px;
-      height: 38px;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(8px);
-      border-radius: var(--radius-full);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-    }
-
-    .user-name {
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-icon-top {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: white;
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-full);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    .btn-icon-top:hover { background: rgba(255, 255, 255, 0.25); }
-
-    /* DASHBOARD */
-    .dashboard-overview {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      padding: 16px;
-      background: #f8fafc;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .metric-card {
-      background: var(--surface);
-      padding: 12px 10px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .metric-value {
-      font-size: 15px;
-      font-weight: 800;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .val-inc { color: var(--income); }
-    .val-exp { color: var(--expense); }
-    .val-bal { color: var(--text); }
+    .dashboard-overview { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 16px; background: #f8fafc; border-bottom: 1px solid var(--border); }
+    .metric-card { background: var(--surface); padding: 12px 10px; border-radius: var(--radius-md); border: 1px solid var(--border); text-align: center; }
+    .metric-label { font-size: 11px; font-weight: 600; color: var(--text-muted); margin-bottom: 4px; }
+    .metric-value { font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .val-inc { color: var(--income); } .val-exp { color: var(--expense); } .val-bal { color: var(--text); }
 
     /* NAVIGATION TABS */
-    .nav-tabs {
-      display: flex;
-      padding: 12px 16px 0 16px;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-    }
+    .nav-tabs { display: flex; padding: 12px 16px 0 16px; gap: 8px; border-bottom: 1px solid var(--border); }
+    .nav-tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; text-align: center; }
+    .nav-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .app-content { padding: 20px 16px; }
 
-    .nav-tab-btn {
-      flex: 1;
-      padding: 10px 4px;
-      border: none;
-      background: transparent;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-      text-align: center;
-    }
-
-    .nav-tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-
-    .app-content {
-      padding: 20px 16px;
-    }
-
-    /* TRANSACTION FORM */
-    .type-pill-group {
-      display: flex;
-      background: #f1f5f9;
-      padding: 4px;
-      border-radius: var(--radius-full);
-      gap: 4px;
-      margin-bottom: 20px;
-    }
-
-    .type-pill {
-      flex: 1;
-      border: none;
-      padding: 8px;
-      border-radius: var(--radius-full);
-      font-size: 13px;
-      font-weight: 700;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
+    /* TYPE PILLS */
+    .type-pill-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-full); gap: 4px; margin-bottom: 20px; }
+    .type-pill { flex: 1; border: none; padding: 8px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
     .type-pill.active[data-mode="income"] { background: var(--income); color: white; }
     .type-pill.active[data-mode="expense"] { background: var(--expense); color: white; }
     .type-pill.active[data-mode="loan"] { background: var(--loan); color: white; }
 
-    .amount-calc-wrap {
-      display: flex;
-      gap: 8px;
-    }
+    .amount-calc-wrap { display: flex; gap: 8px; }
+    .btn-calc { padding: 0 16px; background: var(--primary-light); color: var(--primary-dark); border: 1.5px solid var(--primary); border-radius: var(--radius-md); cursor: pointer; font-size: 16px; }
 
-    .btn-calc {
-      padding: 0 16px;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      border: 1.5px solid var(--primary);
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .select-wrap {
-      position: relative;
-    }
-    .select-wrap select {
-      appearance: none;
-      -webkit-appearance: none;
-    }
-    .select-wrap::after {
-      content: '\f107';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      pointer-events: none;
-    }
+    .select-wrap { position: relative; }
+    .select-wrap select { appearance: none; -webkit-appearance: none; }
+    .select-wrap::after { content: '\f107'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
 
     /* REPORT SECTION */
-    .filter-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
+    .filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .filter-summary-box { display: flex; justify-content: space-between; background: #f1f5f9; padding: 10px 14px; border-radius: var(--radius-md); font-size: 12px; font-weight: 700; margin-bottom: 12px; }
 
-    .filter-summary-box {
-      display: flex;
-      justify-content: space-between;
-      background: #f1f5f9;
-      padding: 10px 14px;
+    .btn-pdf {
+      background: #334155;
+      color: white;
+      border: none;
+      padding: 8px 14px;
       border-radius: var(--radius-md);
       font-size: 12px;
       font-weight: 700;
-      margin-bottom: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      margin-left: auto;
     }
 
-    .table-responsive {
-      overflow-x: auto;
-      max-height: 380px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-    }
+    .table-responsive { overflow-x: auto; max-height: 380px; border: 1px solid var(--border); border-radius: var(--radius-md); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; }
+    th { background: #f8fafc; padding: 10px 12px; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border); position: sticky; top: 0; }
+    td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+    .badge-amt { font-weight: 800; white-space: nowrap; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      text-align: left;
-    }
+    .action-icons { display: flex; gap: 10px; font-size: 14px; justify-content: flex-end; }
+    .icon-edit { color: #3b82f6; cursor: pointer; }
+    .icon-del { color: #ef4444; cursor: pointer; }
 
-    th {
-      background: #f8fafc;
-      padding: 10px 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-    }
-
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .badge-amt {
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    .status-alert {
-      padding: 12px;
-      border-radius: var(--radius-md);
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      margin-top: 14px;
-      display: none;
-      line-height: 1.4;
-    }
-    .status-success { background: #dcfce7; color: #15803d; }
-    .status-error { background: #ffe4e6; color: #be123c; }
+    .status-alert { padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; text-align: center; margin-top: 14px; display: none; line-height: 1.4; }
+    .status-success { background: #dcfce7; color: #15803d; } .status-error { background: #ffe4e6; color: #be123c; }
 
     /* MODALS */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      padding: 16px;
-    }
-
-    .modal-dialog {
-      background: var(--surface);
-      width: 100%;
-      max-width: 380px;
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-lg);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
-    }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 9999; padding: 16px; }
+    .modal-dialog { background: var(--surface); width: 100%; max-width: 380px; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     .modal-header h3 { font-size: 17px; font-weight: 700; }
-    .modal-close-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 18px;
-      cursor: pointer;
-    }
+    .modal-close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
 
-    /* VEHICLE STATS */
-    .vehicle-stat-card {
-      background: #f5f3ff;
-      border: 1.5px solid #ddd6fe;
-      border-radius: var(--radius-md);
-      padding: 12px;
-      margin-bottom: 16px;
-    }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .stat-row strong {
-      color: var(--vehicle);
-      font-size: 13px;
-    }
+    .vehicle-stat-card { background: #f5f3ff; border: 1.5px solid #ddd6fe; border-radius: var(--radius-md); padding: 12px; margin-bottom: 16px; }
+    .stat-row { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    .stat-row strong { color: var(--vehicle); font-size: 13px; }
 
-    /* CHIP STYLES FOR CATEGORIES IN SETTINGS */
-    .cat-chip-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .cat-chip {
-      background: #f1f5f9;
-      border: 1px solid #cbd5e1;
-      padding: 4px 10px;
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .cat-chip-del {
-      color: #ef4444;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    .cat-chip-container { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .cat-chip { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 4px 10px; border-radius: var(--radius-full); font-size: 12px; display: flex; align-items: center; gap: 6px; }
+    .cat-chip-del { color: #ef4444; cursor: pointer; font-weight: bold; }
 
     /* CALCULATOR */
-    .calc-display {
-      width: 100%;
-      height: 48px;
-      background: #f8fafc;
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-md);
-      text-align: right;
-      padding: 8px 14px;
-      font-size: 20px;
-      font-weight: 800;
-      margin-bottom: 14px;
-      outline: none;
-    }
-
-    .calc-pad {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
-
-    .c-btn {
-      padding: 12px;
-      font-size: 16px;
-      font-weight: 700;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: var(--surface);
-      cursor: pointer;
-    }
+    .calc-display { width: 100%; height: 48px; background: #f8fafc; border: 1.5px solid var(--border); border-radius: var(--radius-md); text-align: right; padding: 8px 14px; font-size: 20px; font-weight: 800; margin-bottom: 14px; outline: none; }
+    .calc-pad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .c-btn { padding: 12px; font-size: 16px; font-weight: 700; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); cursor: pointer; }
     .c-btn:active { background: #e2e8f0; }
     .c-btn.c-op { background: var(--primary-light); color: var(--primary-dark); border-color: transparent; }
     .c-btn.c-eq { background: var(--primary); color: white; border-color: transparent; grid-column: span 2; }
     .c-btn.c-del { background: #fee2e2; color: #ef4444; border-color: transparent; }
 
+    /* PRINT STYLES */
+    @media print {
+      body * { visibility: hidden; }
+      #printableReportArea, #printableReportArea * { visibility: visible; }
+      #printableReportArea { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white; }
+      .action-icons, .btn-pdf, .filter-grid { display: none !important; }
+      .table-responsive { max-height: none; overflow: visible; border: none; }
+      table { border: 1px solid #000; width: 100%; }
+      th, td { border: 1px solid #ddd; color: #000 !important; }
+    }
+
     @media (max-width: 480px) {
       body { padding: 0; }
-      .app-shell, .auth-wrapper {
-        border-radius: 0;
-        min-height: 100vh;
-        border: none;
-      }
+      .app-shell, .auth-wrapper { border-radius: 0; min-height: 100vh; border: none; }
     }
   </style>
 </head>
@@ -646,7 +235,7 @@
   <div class="install-banner" id="pwaBanner">
     <div class="install-banner-text">
       <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
-      <span data-i18n="pwa_banner_text">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
+      <span>ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
     </div>
     <div class="install-banner-btns">
       <button type="button" class="btn-install-now" onclick="triggerPwaInstall()">Install</button>
@@ -685,7 +274,7 @@
       </button>
     </form>
 
-    <div class="switch-auth-mode">
+    <div style="margin-top: 20px; text-align: center; font-size: 13px; color: var(--text-muted);">
       <span id="switchPrompt">അക്കൗണ്ട് ഇല്ലേ?</span>
       <button type="button" class="btn-text" id="switchBtn" onclick="toggleAuthMode()">പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക</button>
     </div>
@@ -790,7 +379,7 @@
             <label data-i18n="lbl_amount">തുക</label>
             <div class="amount-calc-wrap">
               <input type="number" id="entryAmount" step="0.01" class="input-box" placeholder="0.00" required>
-              <button type="button" class="btn-calc" onclick="openCalc()"><i class="fa-solid fa-calculator"></i></button>
+              <button type="button" class="btn-calc" onclick="openCalc('entryAmount')"><i class="fa-solid fa-calculator"></i></button>
             </div>
           </div>
 
@@ -807,41 +396,48 @@
         <div id="formAlert" class="status-alert"></div>
       </div>
 
-      <!-- 2. REPORT SECTION -->
+      <!-- 2. REPORT SECTION (WITH EDIT, DELETE & PDF PRINT) -->
       <div id="reportSection" style="display: none;">
-        <div class="filter-grid">
-          <div class="select-wrap">
-            <select id="filterMonth" class="input-box" onchange="renderReport()">
-              <option value="THIS_MONTH" selected data-i18n-opt="opt_this_month">ഈ മാസം</option>
-              <option value="ALL" data-i18n-opt="opt_all_months">എല്ലാ മാസവും</option>
-            </select>
+        <div id="printableReportArea">
+          <div class="filter-grid">
+            <div class="select-wrap">
+              <select id="filterMonth" class="input-box" onchange="renderReport()">
+                <option value="THIS_MONTH" selected data-i18n-opt="opt_this_month">ഈ മാസം</option>
+                <option value="ALL" data-i18n-opt="opt_all_months">എല്ലാ മാസവും</option>
+              </select>
+            </div>
+            <div class="select-wrap">
+              <select id="filterType" class="input-box" onchange="renderReport()">
+                <option value="ALL" data-i18n-opt="opt_all_types">എല്ലാ ഇടപാടുകളും</option>
+                <option value="INCOME" data-i18n-opt="opt_inc_only">വരവ് മാത്രം</option>
+                <option value="EXPENSE" data-i18n-opt="opt_exp_only">ചെലവ് മാത്രം</option>
+                <option value="LOAN" data-i18n-opt="opt_loan_only">കടം ഇടപാടുകൾ</option>
+              </select>
+            </div>
           </div>
-          <div class="select-wrap">
-            <select id="filterType" class="input-box" onchange="renderReport()">
-              <option value="ALL" data-i18n-opt="opt_all_types">എല്ലാ ഇടപാടുകളും</option>
-              <option value="INCOME" data-i18n-opt="opt_inc_only">വരവ് മാത്രം</option>
-              <option value="EXPENSE" data-i18n-opt="opt_exp_only">ചെലവ് മാത്രം</option>
-              <option value="LOAN" data-i18n-opt="opt_loan_only">കടം ഇടപാടുകൾ</option>
-            </select>
+
+          <button type="button" class="btn-pdf" onclick="printReport()">
+            <i class="fa-solid fa-file-pdf"></i> <span data-i18n="btn_print_pdf">PDF / Print</span>
+          </button>
+
+          <div class="filter-summary-box">
+            <span style="color: var(--income);"><span data-i18n="sum_inc">വരവ്</span>: <strong id="repIncSum">0.00</strong></span>
+            <span style="color: var(--expense);"><span data-i18n="sum_exp">ചെലവ്</span>: <strong id="repExpSum">0.00</strong></span>
           </div>
-        </div>
 
-        <div class="filter-summary-box">
-          <span style="color: var(--income);"><span data-i18n="sum_inc">വരവ്</span>: <strong id="repIncSum">0.00</strong></span>
-          <span style="color: var(--expense);"><span data-i18n="sum_exp">ചെലവ്</span>: <strong id="repExpSum">0.00</strong></span>
-        </div>
-
-        <div class="table-responsive">
-          <table>
-            <thead>
-              <tr>
-                <th data-i18n="th_date">തീയതി</th>
-                <th data-i18n="th_details">വിവരണം</th>
-                <th data-i18n="th_amount">തുക</th>
-              </tr>
-            </thead>
-            <tbody id="reportTableRows"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="th_date">തീയതി</th>
+                  <th data-i18n="th_details">വിവരണം</th>
+                  <th data-i18n="th_amount">തുക</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="reportTableRows"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -889,7 +485,7 @@
               <label>അടിച്ച ആകെ തുക</label>
               <div class="amount-calc-wrap">
                 <input type="number" step="0.01" id="fuelTotalAmount" class="input-box" placeholder="2000" required>
-                <button type="button" class="btn-calc" onclick="openFuelCalc()"><i class="fa-solid fa-calculator"></i></button>
+                <button type="button" class="btn-calc" onclick="openCalc('fuelTotalAmount')"><i class="fa-solid fa-calculator"></i></button>
               </div>
             </div>
           </div>
@@ -916,6 +512,39 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- EDIT TRANSACTION MODAL -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3>ഇടപാട് എഡിറ്റ് ചെയ്യുക</h3>
+        <button type="button" class="modal-close-btn" onclick="closeEditModal()">✕</button>
+      </div>
+      <form onsubmit="handleEditSubmit(event)">
+        <input type="hidden" id="editDocId">
+        <div class="form-group">
+          <label data-i18n="lbl_date">തീയതി</label>
+          <input type="date" id="editDate" class="input-box" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_category">വിഭാഗം</label>
+          <input type="text" id="editCategory" class="input-box" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_amount">തുക</label>
+          <div class="amount-calc-wrap">
+            <input type="number" id="editAmount" step="0.01" class="input-box" required>
+            <button type="button" class="btn-calc" onclick="openCalc('editAmount')"><i class="fa-solid fa-calculator"></i></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_description">വിവരണം</label>
+          <input type="text" id="editDesc" class="input-box">
+        </div>
+        <button type="submit" class="btn-main">അപ്‌ഡേറ്റ് ചെയ്യുക</button>
+      </form>
     </div>
   </div>
 
@@ -1119,11 +748,9 @@
       }
     }
 
-    function closePwaBanner() {
-      document.getElementById('pwaBanner').style.display = 'none';
-    }
+    function closePwaBanner() { document.getElementById('pwaBanner').style.display = 'none'; }
 
-    // Firebase Configuration
+    // Firebase Init
     const firebaseConfig = {
       apiKey: "AIzaSyCFf3lvoWEBsEbFOFR5uKIuZDPEi_I12nE",
       authDomain: "my-ledgers-471e4.firebaseapp.com",
@@ -1148,7 +775,7 @@
     let currentMode = 'income';
     let rawData = [];
     let userVehicles = [];
-    let userCustomCategories = []; // 🌟 Custom Categories
+    let userCustomCategories = [];
     let activeVehicleId = null;
     let calcTargetInputId = 'entryAmount';
 
@@ -1188,6 +815,7 @@
         th_date: "തീയതി",
         th_details: "വിവരണം",
         th_amount: "തുക",
+        btn_print_pdf: "PDF / Print റിപ്പോർട്ട്",
         success_save: "വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!",
         select_placeholder: "തിരഞ്ഞെടുക്കുക...",
         new_cat_opt: "+ പുതിയ കാറ്റഗറി ചേർക്കുക",
@@ -1209,11 +837,8 @@
         btn_update_name: "പേര് സേവ് ചെയ്യുക",
         lbl_settings_pass: "പാസ്‌വേഡ് മാറ്റാൻ",
         btn_send_reset_mail: "റീസെറ്റ് ലിങ്ക് അയക്കുക",
-        lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ",
-        btn_install_app: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക",
         lbl_settings_reset: "മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക",
-        btn_reset_data: "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യുക",
-        pwa_banner_text: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?"
+        btn_reset_data: "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യുക"
       },
       en: {
         auth_login_title: "Login",
@@ -1245,6 +870,7 @@
         th_date: "Date",
         th_details: "Details",
         th_amount: "Amount",
+        btn_print_pdf: "Print / PDF Report",
         success_save: "Transaction saved successfully!",
         select_placeholder: "Select Category...",
         new_cat_opt: "+ Add New Category",
@@ -1266,11 +892,8 @@
         btn_update_name: "Save Name",
         lbl_settings_pass: "Change Password",
         btn_send_reset_mail: "Send Reset Link",
-        lbl_settings_install: "Install Application",
-        btn_install_app: "Install App",
         lbl_settings_reset: "Reset All Data",
-        btn_reset_data: "Clear All Data",
-        pwa_banner_text: "Install app for quick access?"
+        btn_reset_data: "Clear All Data"
       }
     };
 
@@ -1541,7 +1164,6 @@
 
     function updateEntryType() { document.getElementById('entryType').value = document.getElementById('loanSubtype').value; }
 
-    // 🌟 CUSTOM CATEGORIES FIRESTORE BINDING
     function bindCustomCategories(uid) {
       if (unsubCustomCategories) unsubCustomCategories();
       unsubCustomCategories = db.collection("users").doc(uid).collection("categories").onSnapshot((snapshot) => {
@@ -1581,7 +1203,6 @@
       const select = document.getElementById('entryCategory');
       select.innerHTML = `<option value="" disabled selected>${dict[lang].select_placeholder}</option>`;
       
-      // 1. Add Default Categories
       defaultCategories[lang][currentMode].forEach(cat => {
         const opt = document.createElement('option');
         opt.value = cat;
@@ -1589,7 +1210,6 @@
         select.appendChild(opt);
       });
 
-      // 2. Add User's Saved Custom Categories for currentMode
       const customForMode = userCustomCategories.filter(c => c.type === currentMode);
       customForMode.forEach(c => {
         const opt = document.createElement('option');
@@ -1598,7 +1218,6 @@
         select.appendChild(opt);
       });
 
-      // 3. Add Option for creating new category
       const newOpt = document.createElement('option');
       newOpt.value = 'NEW_CAT';
       newOpt.innerText = dict[lang].new_cat_opt;
@@ -1638,7 +1257,7 @@
           if (rowDate.getMonth() === currM && rowDate.getFullYear() === currY) {
             if (isInc) mInc += amt; else mExp += amt;
           }
-          rawData.push({ ...data, parsedDate: rowDate });
+          rawData.push({ id: doc.id, ...data, parsedDate: rowDate });
         });
 
         document.getElementById('dashInc').innerText = userCurrency + mInc.toFixed(2);
@@ -1671,7 +1290,7 @@
       tbody.innerHTML = '';
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding:24px; color:var(--text-muted);">${dict[lang].no_records}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:24px; color:var(--text-muted);">${dict[lang].no_records}</td></tr>`;
       } else {
         list.forEach(r => {
           const amt = parseFloat(r.amount) || 0;
@@ -1684,8 +1303,12 @@
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td style="color:var(--text-muted);">${dtStr}</td>
-            <td><strong>${r.category}</strong><br><small style="color:var(--text-muted);">${r.description || ''} ${r.person && r.person !== '-' ? '('+r.person+')' : ''}</small></td>
+            <td><strong>${r.category}</strong><br><small style="color:var(--text-muted);">${r.description && r.description !== '-' ? r.description : ''} ${r.person && r.person !== '-' ? '('+r.person+')' : ''}</small></td>
             <td class="badge-amt" style="color:${isInc ? 'var(--income)' : 'var(--expense)'};">${isInc ? '+' : '-'}${userCurrency}${amt.toFixed(2)}</td>
+            <td class="action-icons">
+              <i class="fa-solid fa-pen-to-square icon-edit" onclick="openEditModal('${r.id}')" title="Edit"></i>
+              <i class="fa-solid fa-trash icon-del" onclick="deleteTransaction('${r.id}')" title="Delete"></i>
+            </td>
           `;
           tbody.appendChild(tr);
         });
@@ -1695,7 +1318,48 @@
       document.getElementById('repExpSum').innerText = userCurrency + sumE.toFixed(2);
     }
 
-    // 🌟 TRANSACTION SUBMIT WITH AUTO-SAVING CUSTOM CATEGORY
+    /* 🌟 EDIT & DELETE FUNCTIONS */
+    function openEditModal(docId) {
+      const item = rawData.find(r => r.id === docId);
+      if (!item) return;
+
+      document.getElementById('editDocId').value = item.id;
+      document.getElementById('editDate').value = item.date;
+      document.getElementById('editCategory').value = item.category;
+      document.getElementById('editAmount').value = item.amount;
+      document.getElementById('editDesc').value = item.description === '-' ? '' : item.description;
+
+      document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+
+    function handleEditSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const docId = document.getElementById('editDocId').value;
+      const updated = {
+        date: document.getElementById('editDate').value,
+        category: document.getElementById('editCategory').value.trim(),
+        amount: parseFloat(document.getElementById('editAmount').value) || 0,
+        description: document.getElementById('editDesc').value.trim() || "-"
+      };
+
+      db.collection("users").doc(currentUser.uid).collection("transactions").doc(docId).update(updated)
+        .then(() => {
+          closeEditModal();
+        });
+    }
+
+    function deleteTransaction(docId) {
+      if (!confirm("ഈ ഇടപാട് ഡിലീറ്റ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?")) return;
+      db.collection("users").doc(currentUser.uid).collection("transactions").doc(docId).delete();
+    }
+
+    function printReport() {
+      window.print();
+    }
+
     function handleTransactionSubmit(e) {
       e.preventDefault();
       if (!currentUser) return;
@@ -1713,7 +1377,6 @@
 
       btn.disabled = true;
 
-      // 🌟 If user entered a new category, save it to their custom category database
       if (isNewCat && currentMode !== 'loan') {
         const alreadyExists = userCustomCategories.some(c => c.name.toLowerCase() === cat.toLowerCase() && c.type === currentMode);
         if (!alreadyExists) {
@@ -1745,9 +1408,7 @@
         document.getElementById('customCategoryInput').value = '';
         document.getElementById('customCatGroup').style.display = 'none';
         
-        // Reset category dropdown
         updateCategoryList();
-
         setTimeout(() => alert.style.display = "none", 3000);
         btn.disabled = false;
       }).catch(err => {
@@ -1915,18 +1576,11 @@
         });
     }
 
-    /* POPUP CALCULATOR */
+    /* 🌟 POPUP CALCULATOR FOR ANY INPUT */
     let expr = "";
-    function openCalc() {
-      calcTargetInputId = 'entryAmount';
-      const val = document.getElementById('entryAmount').value;
-      expr = val ? val.toString() : "";
-      document.getElementById('calcScreen').value = expr || "0";
-      document.getElementById('calcPopup').style.display = "flex";
-    }
-    function openFuelCalc() {
-      calcTargetInputId = 'fuelTotalAmount';
-      const val = document.getElementById('fuelTotalAmount').value;
+    function openCalc(targetInputId) {
+      calcTargetInputId = targetInputId;
+      const val = document.getElementById(targetInputId).value;
       expr = val ? val.toString() : "";
       document.getElementById('calcScreen').value = expr || "0";
       document.getElementById('calcPopup').style.display = "flex";
