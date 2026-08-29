@@ -136,6 +136,36 @@
     .btn-main { width: 100%; padding: 14px; border: none; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25); }
     .btn-main:active { transform: scale(0.98); }
 
+    /* ACTION BUTTONS GROUP */
+    .form-actions-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .btn-cancel-action {
+      flex: 1;
+      padding: 14px;
+      border: 1.5px solid var(--border);
+      background: #f1f5f9;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-cancel-action:hover {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+    .btn-save-action {
+      flex: 2;
+    }
+
     /* APP LAYOUT */
     .app-shell { width: 100%; max-width: 600px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border); }
     .app-topbar { background: linear-gradient(135deg, #0f766e, #0d9488); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
@@ -218,13 +248,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 0;
+      padding: 6px 0;
       font-size: 13px;
       font-weight: 600;
       cursor: pointer;
     }
     .display-check-item:not(:last-child) { border-bottom: 1px dashed #e2e8f0; }
-    .display-check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+    .display-check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
 
     /* CUSTOM CONFIRM DIALOG */
     .custom-dialog-box { text-align: center; padding: 10px; }
@@ -419,7 +449,7 @@
     </div>
 
     <div class="app-content">
-      <!-- 1. ENTRY SECTION -->
+      <!-- 1. ENTRY SECTION (WITH SAVE & CANCEL BUTTONS) -->
       <div id="entrySection">
         <div class="type-pill-group">
           <button type="button" class="type-pill active" data-mode="income" onclick="setMode('income')" data-i18n="type_inc">വരവ്</button>
@@ -477,9 +507,15 @@
             <input type="text" id="entryDesc" class="input-box" placeholder="ചെറിയ വിവരണം...">
           </div>
 
-          <button type="submit" class="btn-main" id="saveSubmitBtn">
-            <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_save">രേഖപ്പെടുത്തുക</span>
-          </button>
+          <!-- 🌟 SAVE & CANCEL BUTTONS GROUP -->
+          <div class="form-actions-group">
+            <button type="button" class="btn-cancel-action" onclick="resetEntryForm()">
+              <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_cancel_entry">റദ്ദാക്കുക</span>
+            </button>
+            <button type="submit" class="btn-main btn-save-action" id="saveSubmitBtn">
+              <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_save">രേഖപ്പെടുത്തുക</span>
+            </button>
+          </div>
         </form>
 
         <div id="formAlert" class="status-alert"></div>
@@ -771,7 +807,7 @@
         <input type="text" id="settingsDisplayName" class="input-box" placeholder="Your Name">
       </div>
 
-      <!-- 🌟 INSTANT SAVE SETTINGS BUTTON -->
+      <!-- SAVE SETTINGS BUTTON -->
       <button type="button" class="btn-main" style="margin-top: 10px; background: linear-gradient(135deg, #059669, #10b981);" onclick="handleSettingsSaveClick()">
         <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_settings">Save Settings</span>
       </button>
@@ -1031,6 +1067,7 @@
         lbl_due_date: "നൽകേണ്ട തീയതി (Due Date)",
         lbl_recurrence: "ആവർത്തനം (Recurrence)",
         btn_save: "രേഖപ്പെടുത്തുക",
+        btn_cancel_entry: "റദ്ദാക്കുക",
         btn_save_reminder: "റിമൈൻഡർ സേവ് ചെയ്യുക",
         btn_forgot_pass: "പാസ്‌വേഡ് മറന്നുപോയോ?",
         tab_add: "ഇടപാട്",
@@ -1068,21 +1105,21 @@
         opt_once: "ഒരിക്കൽ മാത്രം (One Time)",
         opt_monthly: "എല്ലാ മാസവും (Monthly)",
         opt_yearly: "എല്ലാ വർഷവും (Yearly)",
-        settings_title: "സെറ്റിങ്സ് (Settings)",
+        settings_title: "Settings",
         lbl_settings_currency: "കറൻസി (Currency)",
         lbl_settings_lang: "ഭാഷ (Language)",
         lbl_settings_name: "പ്രൊഫൈൽ പേര്",
-        btn_save_settings: "സെറ്റിങ്സ് സേവ് ചെയ്യുക",
+        btn_save_settings: "Save Settings",
         lbl_settings_pass: "പാസ്‌വേഡ് മാറ്റാൻ",
         btn_send_reset_mail: "റീസെറ്റ് ലിങ്ക് അയക്കുക",
         lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ",
-        btn_install_app: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക",
+        btn_install_app: "Install App",
         lbl_settings_reset: "മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക",
-        btn_reset_data: "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യുക",
+        btn_reset_data: "Clear All Data",
         lbl_custom_cats: "നിങ്ങൾ ചേർത്ത പുതിയ കാറ്റഗറികൾ",
         lbl_display_settings: "Display Settings (കാണിക്കേണ്ടവ തിരഞ്ഞെടുക്കുക)",
         lbl_share_app: "ആപ്പ് ഷെയർ ചെയ്യാൻ (Share App)",
-        btn_share_whatsapp: "WhatsApp വഴി ഷെയർ ചെയ്യുക",
+        btn_share_whatsapp: "Share via WhatsApp",
         lbl_guide_heading: "ആപ്പ് ഉപയോഗ ക്രമം (User Guide)",
         btn_user_guide: "ഉപയോഗ ക്രമം കാണുക",
         title_upcoming_bills: "വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ",
@@ -1126,6 +1163,7 @@
         lbl_due_date: "Due Date",
         lbl_recurrence: "Recurrence",
         btn_save: "Save Entry",
+        btn_cancel_entry: "Cancel / Clear",
         btn_save_reminder: "Save Reminder",
         btn_forgot_pass: "Forgot password?",
         tab_add: "New Entry",
@@ -1221,6 +1259,7 @@
         lbl_due_date: "تاريخ الاستحقاق",
         lbl_recurrence: "التكرار",
         btn_save: "حفظ المعاملة",
+        btn_cancel_entry: "إلغاء / مسح",
         btn_save_reminder: "حفظ التذكير",
         btn_forgot_pass: "نسيت كلمة المرور؟",
         tab_add: "إضافة",
@@ -1303,7 +1342,7 @@
       ml: `
         <div class="guide-section">
           <h4><i class="fa-solid fa-wallet"></i> 1. വരവ്-ചെലവുകൾ രേഖപ്പെടുത്തൽ</h4>
-          <p>വരവ് (Income), ചെലവ് (Expense), കടം ഇടപാടുകൾ (Loans) എന്നിവ തിരഞ്ഞെടുത്ത് തീയതി, വിഭാഗം, തുക എന്നിവ നൽകി രേഖപ്പെടുത്താം. തുക കണക്കുകൂട്ടാൻ കാൽക്കുലേറ്റർ ഐക്കൺ ഉപയോഗിക്കാം.</p>
+          <p>വരവ് (Income), ചെലവ് (Expense), കടം ഇടപാടുകൾ (Loans) എന്നിവ തിരഞ്ഞെടുത്ത് തീയതി, വിഭാഗം, തുക എന്നിവ നൽകി രേഖപ്പെടുത്താം. തുക കണക്കുകൂട്ടാൻ കാൽക്കുലേറ്റർ ഐക്കൺ ഉപയോഗിക്കാം. തെറ്റിയാൽ 'റദ്ദാക്കുക' ക്ലിക്ക് ചെയ്ത് ഫോം ക്ലിയർ ചെയ്യാം.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-folder-plus"></i> 2. പുതിയ കാറ്റഗറി ചേർക്കൽ</h4>
@@ -1329,7 +1368,7 @@
       en: `
         <div class="guide-section">
           <h4><i class="fa-solid fa-wallet"></i> 1. Recording Transactions</h4>
-          <p>Select Income, Expense, or Loan transaction. Enter the Date, Category, and Amount. Use the built-in calculator icon beside the amount field for calculations.</p>
+          <p>Select Income, Expense, or Loan transaction. Enter Date, Category, and Amount. Use the calculator icon for calculations or click 'Cancel / Clear' to reset the form.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-folder-plus"></i> 2. Custom Categories</h4>
@@ -1337,15 +1376,15 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-chart-pie"></i> 3. Reports, Edit & PDF Export</h4>
-          <p>Filter entries by month or type. Edit or delete any entry using the action icons. Export or print clean PDF statements from Settings.</p>
+          <p>Filter entries by month or type. Edit or delete any entry using action icons. Export or print clean PDF statements from Settings.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-bell"></i> 4. Bill & Payment Reminders</h4>
-          <p>Set recurring or one-time payment reminders with category. Click 'Mark as Paid' to automatically add it to your expense ledger.</p>
+          <p>Set recurring or one-time payment reminders with designated categories. Click 'Mark as Paid' to automatically log it into your expenses.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> 5. Vehicle Fuel & Mileage Tracker</h4>
-          <p>Register your vehicles. Log odometer reading and fuel cost every time you refuel. The app automatically calculates mileage (Km/L) and running cost per Km.</p>
+          <p>Register your vehicles. Log odometer reading and fuel cost. The app automatically calculates mileage (Km/L) and running cost per Km.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-sliders"></i> 6. Display Settings & Customization</h4>
@@ -1355,7 +1394,7 @@
       ar: `
         <div class="guide-section">
           <h4><i class="fa-solid fa-wallet"></i> ١. تسجيل المعاملات</h4>
-          <p>اختر نوع المعاملة (دخل، مصروف، ديون)، أدخل التاريخ، الفئة، والمبلغ. يمكنك استخدام الآلة الحاسبة المدمجة بجانب حقل المبلغ.</p>
+          <p>اختر نوع المعاملة (دخل، مصروف، ديون)، أدخل التاريخ، الفئة، والمبلغ. يمكنك استخدام الآلة الحاسبة المدمجة أو مسح الحقول بزر الإلغاء.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-folder-plus"></i> ٢. الفئات المخصصة</h4>
@@ -1611,43 +1650,48 @@
       document.getElementById('displayCheckPrint').checked = displayConfig.print !== false;
     }
 
-    // 🌟 DIRECT INSTANT SAVE SETTINGS (NO INNER CONFIRMATION - INSTANT CLOSE)
     function handleSettingsSaveClick() {
-      const newLang = document.getElementById('settingsLangSelect').value;
-      const newCurr = document.getElementById('settingsCurrencySelect').value;
-      const newName = document.getElementById('settingsDisplayName').value.trim();
+      showAppConfirm({
+        icon: '<i class="fa-solid fa-floppy-disk" style="color:var(--primary);"></i>',
+        title: (lang === 'ml') ? "സെറ്റിങ്സ് സേവ് ചെയ്യുക" : (lang === 'ar' ? "حفظ الإعدادات" : "Save Settings"),
+        msg: (lang === 'ml') ? "സെറ്റിങ്സിലെ മാറ്റങ്ങൾ സേവ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?" : (lang === 'ar' ? "هل أنت متأكد من حفظ التغييرات؟" : "Are you sure you want to apply these settings?"),
+        onConfirm: () => {
+          const newLang = document.getElementById('settingsLangSelect').value;
+          const newCurr = document.getElementById('settingsCurrencySelect').value;
+          const newName = document.getElementById('settingsDisplayName').value.trim();
 
-      displayConfig = {
-        entry: document.getElementById('displayCheckEntry').checked,
-        report: document.getElementById('displayCheckReport').checked,
-        reminder: document.getElementById('displayCheckReminder').checked,
-        vehicle: document.getElementById('displayCheckVehicle').checked,
-        print: document.getElementById('displayCheckPrint').checked
-      };
-      localStorage.setItem('app_display_config', JSON.stringify(displayConfig));
+          displayConfig = {
+            entry: document.getElementById('displayCheckEntry').checked,
+            report: document.getElementById('displayCheckReport').checked,
+            reminder: document.getElementById('displayCheckReminder').checked,
+            vehicle: document.getElementById('displayCheckVehicle').checked,
+            print: document.getElementById('displayCheckPrint').checked
+          };
+          localStorage.setItem('app_display_config', JSON.stringify(displayConfig));
 
-      lang = newLang;
-      localStorage.setItem('app_lang', lang);
-      applyLanguage(lang);
+          lang = newLang;
+          localStorage.setItem('app_lang', lang);
+          applyLanguage(lang);
 
-      userCurrency = newCurr;
-      localStorage.setItem('app_currency', userCurrency);
+          userCurrency = newCurr;
+          localStorage.setItem('app_currency', userCurrency);
 
-      if (currentUser && newName && newName !== currentUser.displayName) {
-        currentUser.updateProfile({ displayName: newName }).then(() => {
-          document.getElementById('userNameLabel').innerText = newName;
-          document.getElementById('avatarInitial').innerText = newName.charAt(0).toUpperCase();
-        });
-      }
+          if (currentUser && newName && newName !== currentUser.displayName) {
+            currentUser.updateProfile({ displayName: newName }).then(() => {
+              document.getElementById('userNameLabel').innerText = newName;
+              document.getElementById('avatarInitial').innerText = newName.charAt(0).toUpperCase();
+            });
+          }
 
-      applyDisplayPreferences();
-      updateCategoryList();
-      updateReminderCategoryDropdown();
-      bindUserTransactions(currentUser.uid);
-      if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
+          applyDisplayPreferences();
+          updateCategoryList();
+          updateReminderCategoryDropdown();
+          bindUserTransactions(currentUser.uid);
+          if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
 
-      // 🌟 വിൻഡോ ഉടൻ ക്ലോസ് ആകുന്നു
-      closeSettingsModal();
+          closeSettingsModal();
+        }
+      });
     }
 
     function applyDisplayPreferences() {
@@ -1722,38 +1766,22 @@
       showAppConfirm({
         icon: '<i class="fa-solid fa-triangle-exclamation" style="color:var(--expense);"></i>',
         title: (lang === 'ml') ? "ശ്രദ്ധിക്കുക!" : (lang === 'ar' ? "تحذير!" : "Warning!"),
-        msg: (lang === 'ml') ? "നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും, വാഹന-ഇന്ധന വിവരങ്ങളും, റിമൈൻഡറുകളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?" : "All your transactions, fuel logs, reminders and vehicles will be permanently deleted. Continue?",
+        msg: (lang === 'ml') ? "നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?" : (lang === 'ar' ? "سيتم حذف جميع المعاملات نهائياً. هل أنت متأكد؟" : "All transactions will be permanently deleted. Continue?"),
         onConfirm: () => {
-          if (!currentUser) return;
-          
-          closeSettingsModal();
-          const userDoc = db.collection("users").doc(currentUser.uid);
-          const collections = ["transactions", "reminders", "categories", "vehicles"];
-
-          const deletePromises = collections.map(col => {
-            return userDoc.collection(col).get().then(snap => {
-              const batch = db.batch();
-              snap.forEach(doc => {
-                if (col === "vehicles") {
-                  doc.ref.collection("fuel_logs").get().then(fuelSnap => {
-                    const fBatch = db.batch();
-                    fuelSnap.forEach(fDoc => fBatch.delete(fDoc.ref));
-                    fBatch.commit();
-                  });
-                }
-                batch.delete(doc.ref);
+          showAppConfirm({
+            icon: '<i class="fa-solid fa-trash-can" style="color:var(--expense);"></i>',
+            title: (lang === 'ml') ? "അന്തിമ സ്ഥിരീകരണം" : (lang === 'ar' ? "تأكيد أخير" : "Final Confirmation"),
+            msg: (lang === 'ml') ? "ഈ മാറ്റം ഒരിക്കലും തിരിച്ചെടുക്കാൻ കഴിയില്ല. ഡിലീറ്റ് ചെയ്യട്ടെ?" : (lang === 'ar' ? "لا يمكن التراجع عن هذا الإجراء أبداً. تأكيد الحذف؟" : "This action cannot be undone. Clear all?"),
+            onConfirm: () => {
+              const txRef = db.collection("users").doc(currentUser.uid).collection("transactions");
+              txRef.get().then((snap) => {
+                const batch = db.batch();
+                snap.forEach((doc) => batch.delete(doc.ref));
+                return batch.commit();
+              }).then(() => {
+                closeSettingsModal();
               });
-              return batch.commit();
-            });
-          });
-
-          Promise.all(deletePromises).then(() => {
-            showAppConfirm({
-              icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
-              title: (lang === 'ml') ? "ഡാറ്റ ക്ലിയർ ചെയ്തു" : "Reset Complete",
-              msg: (lang === 'ml') ? "എല്ലാ വിവരങ്ങളും വിജയകരമായി ഡിലീറ്റ് ചെയ്തു!" : "All data has been cleared successfully!",
-              hideCancel: true
-            });
+            }
           });
         }
       });
@@ -1790,6 +1818,15 @@
     }
 
     function updateEntryType() { document.getElementById('entryType').value = document.getElementById('loanSubtype').value; }
+
+    function resetEntryForm() {
+      document.getElementById('entryAmount').value = '';
+      document.getElementById('entryDesc').value = '';
+      document.getElementById('entryPerson').value = '';
+      document.getElementById('customCategoryInput').value = '';
+      document.getElementById('customCatGroup').style.display = 'none';
+      updateCategoryList();
+    }
 
     function bindCustomCategories(uid) {
       if (unsubCustomCategories) unsubCustomCategories();
@@ -2056,13 +2093,8 @@
           alert.className = "status-alert status-success";
           alert.innerText = dict[lang].success_save;
           alert.style.display = "block";
-          document.getElementById('entryAmount').value = '';
-          document.getElementById('entryDesc').value = '';
-          document.getElementById('entryPerson').value = '';
-          document.getElementById('customCategoryInput').value = '';
-          document.getElementById('customCatGroup').style.display = 'none';
+          resetEntryForm();
           
-          updateCategoryList();
           setTimeout(() => alert.style.display = "none", 3000);
           btn.disabled = false;
         }).catch(err => {
