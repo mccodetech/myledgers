@@ -509,7 +509,7 @@
     .status-success { background: #dcfce7; color: #15803d; }
     .status-error { background: #ffe4e6; color: #be123c; }
 
-    /* MODAL POPUPS (SETTINGS & CALCULATOR) */
+    /* MODALS */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -525,7 +525,7 @@
     .modal-dialog {
       background: var(--surface);
       width: 100%;
-      max-width: 360px;
+      max-width: 380px;
       border-radius: var(--radius-lg);
       padding: 20px;
       box-shadow: var(--shadow-lg);
@@ -597,7 +597,7 @@
 </head>
 <body>
 
-  <!-- PWA INSTALL PROMPT BANNER -->
+  <!-- PWA INSTALL BANNER -->
   <div class="install-banner" id="pwaBanner">
     <div class="install-banner-text">
       <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
@@ -658,11 +658,9 @@
         <div class="user-name" id="userNameLabel">User</div>
       </div>
       <div class="topbar-actions">
-        <!-- Settings Button -->
         <button type="button" class="btn-icon-top" onclick="openSettingsModal()" title="Settings">
           <i class="fa-solid fa-gear"></i>
         </button>
-        <!-- Logout Button -->
         <button type="button" class="btn-icon-top" onclick="handleLogout()" title="Logout">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
         </button>
@@ -673,15 +671,15 @@
     <div class="dashboard-overview">
       <div class="metric-card">
         <div class="metric-label" data-i18n="dash_inc">ഈ മാസത്തെ വരവ്</div>
-        <div class="metric-value val-inc" id="dashInc">₹0.00</div>
+        <div class="metric-value val-inc" id="dashInc">0.00</div>
       </div>
       <div class="metric-card">
         <div class="metric-label" data-i18n="dash_exp">ഈ മാസത്തെ ചെലവ്</div>
-        <div class="metric-value val-exp" id="dashExp">₹0.00</div>
+        <div class="metric-value val-exp" id="dashExp">0.00</div>
       </div>
       <div class="metric-card">
         <div class="metric-label" data-i18n="dash_bal">ആകെ ബാക്കി തുക</div>
-        <div class="metric-value val-bal" id="dashBal">₹0.00</div>
+        <div class="metric-value val-bal" id="dashBal">0.00</div>
       </div>
     </div>
 
@@ -782,8 +780,8 @@
         </div>
 
         <div class="filter-summary-box">
-          <span style="color: var(--income);"><span data-i18n="sum_inc">വരവ്</span>: <strong id="repIncSum">₹0.00</strong></span>
-          <span style="color: var(--expense);"><span data-i18n="sum_exp">ചെലവ്</span>: <strong id="repExpSum">₹0.00</strong></span>
+          <span style="color: var(--income);"><span data-i18n="sum_inc">വരവ്</span>: <strong id="repIncSum">0.00</strong></span>
+          <span style="color: var(--expense);"><span data-i18n="sum_exp">ചെലവ്</span>: <strong id="repExpSum">0.00</strong></span>
         </div>
 
         <div class="table-responsive">
@@ -810,6 +808,25 @@
         <button type="button" class="modal-close-btn" onclick="closeSettingsModal()">✕</button>
       </div>
 
+      <!-- Currency Selector -->
+      <div class="form-group">
+        <label data-i18n="lbl_settings_currency">കറൻസി (Currency)</label>
+        <div class="select-wrap">
+          <select id="settingsCurrencySelect" class="input-box" onchange="changeCurrency(this.value)">
+            <option value="₹">₹ (INR - ഇന്ത്യൻ രൂപ)</option>
+            <option value="AED ">AED (യു.എ.ഇ ദിർഹം)</option>
+            <option value="SAR ">SAR (സൗദി റിയാൽ)</option>
+            <option value="QAR ">QAR (ഖത്തർ റിയാൽ)</option>
+            <option value="OMR ">OMR (ഒമാൻ റിയാൽ)</option>
+            <option value="KWD ">KWD (കുവൈറ്റ് ദിനാർ)</option>
+            <option value="BHD ">BHD (ബഹ്‌റൈൻ ദിനാർ)</option>
+            <option value="$">$ (USD - ഡോളർ)</option>
+            <option value="€">€ (EUR - യൂറോ)</option>
+            <option value="£">£ (GBP - പൗണ്ട്)</option>
+          </select>
+        </div>
+      </div>
+
       <!-- Change Language -->
       <div class="form-group">
         <label data-i18n="lbl_settings_lang">ഭാഷ (Language)</label>
@@ -830,12 +847,11 @@
         </button>
       </div>
 
-      <!-- Update Password -->
+      <!-- Send Password Reset Email -->
       <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
-        <label data-i18n="lbl_settings_pass">പുതിയ പാസ്‌വേഡ്</label>
-        <input type="password" id="settingsNewPass" class="input-box" placeholder="New Password (min 6 chars)">
-        <button type="button" class="btn-main" style="margin-top: 8px; padding: 10px; background: #334155;" onclick="updateUserPassword()">
-          <span data-i18n="btn_update_pass">പാസ്‌വേഡ് മാറ്റുക</span>
+        <label data-i18n="lbl_settings_pass">പാസ്‌വേഡ് മാറ്റാൻ</label>
+        <button type="button" class="btn-main" style="padding: 10px; background: #334155;" onclick="sendSettingsResetMail()">
+          <i class="fa-solid fa-envelope"></i> <span data-i18n="btn_send_reset_mail">റീസെറ്റ് ലിങ്ക് അയക്കുക</span>
         </button>
       </div>
 
@@ -844,6 +860,14 @@
         <label data-i18n="lbl_settings_install">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ</label>
         <button type="button" class="btn-main" style="padding: 10px; background: var(--accent);" onclick="triggerPwaInstall()">
           <i class="fa-solid fa-download"></i> <span data-i18n="btn_install_app">Install Application</span>
+        </button>
+      </div>
+
+      <!-- Reset All Data -->
+      <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
+        <label style="color: var(--expense);" data-i18n="lbl_settings_reset">മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക</label>
+        <button type="button" class="btn-main" style="padding: 10px; background: var(--expense);" onclick="confirmResetAllData()">
+          <i class="fa-solid fa-trash-can"></i> <span data-i18n="btn_reset_data">Reset All Data</span>
         </button>
       </div>
 
@@ -883,14 +907,12 @@
   </div>
 
   <script>
-    // Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
 
-    // PWA Install Handlers
     let deferredPrompt = null;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -909,9 +931,7 @@
       if (deferredPrompt) {
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            closePwaBanner();
-          }
+          if (choiceResult.outcome === 'accepted') closePwaBanner();
           deferredPrompt = null;
         });
       } else {
@@ -948,6 +968,7 @@
     let currentUser = null;
     let isSignUp = false;
     let lang = localStorage.getItem('app_lang') || 'ml';
+    let userCurrency = localStorage.getItem('app_currency') || '₹';
     let currentMode = 'income';
     let rawData = [];
     let unsubSnapshot = null;
@@ -997,13 +1018,16 @@
         opt_exp_only: "ചെലവ് മാത്രം",
         opt_loan_only: "കടം ഇടപാടുകൾ",
         settings_title: "സെറ്റിങ്സ് (Settings)",
+        lbl_settings_currency: "കറൻസി (Currency)",
         lbl_settings_lang: "ഭാഷ (Language)",
         lbl_settings_name: "പ്രൊഫൈൽ പേര് മാറ്റാൻ",
         btn_update_name: "പേര് സേവ് ചെയ്യുക",
-        lbl_settings_pass: "പുതിയ പാസ്‌വേഡ്",
-        btn_update_pass: "പാസ്‌വേഡ് മാറ്റുക",
+        lbl_settings_pass: "പാസ്‌വേഡ് മാറ്റാൻ",
+        btn_send_reset_mail: "റീസെറ്റ് ലിങ്ക് അയക്കുക",
         lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ",
         btn_install_app: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക",
+        lbl_settings_reset: "മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക",
+        btn_reset_data: "എല്ലാ ഡാറ്റയും ക്ലിയർ ചെയ്യുക",
         pwa_banner_text: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?"
       },
       en: {
@@ -1050,13 +1074,16 @@
         opt_exp_only: "Expense Only",
         opt_loan_only: "Loans / Debts",
         settings_title: "Settings",
+        lbl_settings_currency: "Currency",
         lbl_settings_lang: "Language",
         lbl_settings_name: "Change Display Name",
         btn_update_name: "Save Name",
-        lbl_settings_pass: "New Password",
-        btn_update_pass: "Update Password",
+        lbl_settings_pass: "Change Password",
+        btn_send_reset_mail: "Send Reset Link",
         lbl_settings_install: "Install Application",
         btn_install_app: "Install App",
+        lbl_settings_reset: "Reset All Data",
+        btn_reset_data: "Clear All Data",
         pwa_banner_text: "Install app for quick access?"
       }
     };
@@ -1100,6 +1127,7 @@
     window.onload = function() {
       applyLanguage(lang);
       document.getElementById('settingsLangSelect').value = lang;
+      document.getElementById('settingsCurrencySelect').value = userCurrency;
     };
 
     function toggleAuthMode() {
@@ -1143,7 +1171,7 @@
       auth.sendPasswordResetEmail(email)
         .then(() => {
           alertBox.className = "status-alert status-success";
-          alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡ് റീസെറ്റ് ചെയ്യാനുള്ള ലിങ്ക് ഇമെയിലിലേക്ക് അയച്ചിട്ടുണ്ട്. മെയിൽ പരിശോധിക്കുക!" : "Password reset link has been sent to your email!";
+          alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ഇമെയിലിലേക്ക് അയച്ചിട്ടുണ്ട്. മെയിൽ പരിശോധിക്കുക!" : "Password reset link sent to your email!";
           alertBox.style.display = 'block';
         })
         .catch((err) => {
@@ -1194,17 +1222,24 @@
       auth.signOut();
     }
 
-    /* SETTINGS MODAL FUNCTIONS */
+    /* SETTINGS FUNCTIONS */
     function openSettingsModal() {
       document.getElementById('settingsModal').style.display = 'flex';
       document.getElementById('settingsAlert').style.display = 'none';
       if (currentUser) {
         document.getElementById('settingsDisplayName').value = currentUser.displayName || "";
       }
+      document.getElementById('settingsCurrencySelect').value = userCurrency;
     }
 
     function closeSettingsModal() {
       document.getElementById('settingsModal').style.display = 'none';
+    }
+
+    function changeCurrency(curr) {
+      userCurrency = curr;
+      localStorage.setItem('app_currency', curr);
+      bindUserTransactions(currentUser.uid);
     }
 
     function changeLanguageFromSettings(newLang) {
@@ -1247,31 +1282,54 @@
         });
     }
 
-    function updateUserPassword() {
-      const newPass = document.getElementById('settingsNewPass').value;
+    function sendSettingsResetMail() {
       const alertBox = document.getElementById('settingsAlert');
-      if (!newPass || !currentUser) return;
+      if (!currentUser || !currentUser.email) return;
 
-      if (newPass.length < 6) {
-        alertBox.className = "status-alert status-error";
-        alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡിൽ കുറഞ്ഞത് 6 അക്ഷരങ്ങൾ വേണം!" : "Password must be at least 6 characters!";
-        alertBox.style.display = "block";
-        return;
-      }
-
-      currentUser.updatePassword(newPass)
+      auth.sendPasswordResetEmail(currentUser.email)
         .then(() => {
-          document.getElementById('settingsNewPass').value = '';
           alertBox.className = "status-alert status-success";
-          alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡ് വിജയകരമായി മാറ്റി!" : "Password updated successfully!";
+          alertBox.innerText = (lang === 'ml') ? `പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ${currentUser.email} എന്ന ഇമെയിലിലേക്ക് അയച്ചിട്ടുണ്ട്. മെയിൽ പരിശോധിക്കുക!` : `Password reset link sent to ${currentUser.email}!`;
           alertBox.style.display = "block";
-          setTimeout(() => alertBox.style.display = "none", 3000);
         })
         .catch(err => {
           alertBox.className = "status-alert status-error";
-          alertBox.innerText = (lang === 'ml') ? "സുരക്ഷാ കാരണങ്ങളാൽ ഒരിക്കൽ ലോഗൗട്ട് ചെയ്ത് വീണ്ടും ലോഗിൻ ചെയ്ത ശേഷം ശ്രമിക്കുക." : err.message;
+          alertBox.innerText = err.message;
           alertBox.style.display = "block";
         });
+    }
+
+    // 🌟 മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യൽ (Double Confirmation)
+    function confirmResetAllData() {
+      const firstConfirm = confirm(lang === 'ml' ? "ശ്രദ്ധിക്കുക: നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?" : "Warning: All your recorded transactions will be permanently deleted. Do you want to continue?");
+      if (!firstConfirm) return;
+
+      const secondConfirm = confirm(lang === 'ml' ? "ഇത് തിരിച്ചെടുക്കാൻ കഴിയില്ല! ഉറപ്പായും എല്ലാ വിവരങ്ങളും ക്ലിയർ ചെയ്യണമെന്നുണ്ടോ?" : "Are you absolutely sure? This action cannot be undone!");
+      if (!secondConfirm) return;
+
+      const alertBox = document.getElementById('settingsAlert');
+      alertBox.className = "status-alert status-error";
+      alertBox.innerText = (lang === 'ml') ? "ഡാറ്റ ഡിലീറ്റ് ചെയ്യുന്നു..." : "Deleting all data...";
+      alertBox.style.display = "block";
+
+      const collectionRef = db.collection("users").doc(currentUser.uid).collection("transactions");
+      collectionRef.get().then((querySnapshot) => {
+        const batch = db.batch();
+        querySnapshot.forEach((doc) => {
+          batch.delete(doc.ref);
+        });
+        return batch.commit();
+      }).then(() => {
+        alertBox.className = "status-alert status-success";
+        alertBox.innerText = (lang === 'ml') ? "എല്ലാ ഡാറ്റയും വിജയകരമായി ക്ലിയർ ചെയ്തു!" : "All data cleared successfully!";
+        setTimeout(() => {
+          alertBox.style.display = "none";
+          closeSettingsModal();
+        }, 2000);
+      }).catch((err) => {
+        alertBox.className = "status-alert status-error";
+        alertBox.innerText = err.message;
+      });
     }
 
     function switchView(view) {
@@ -1387,12 +1445,12 @@
             rawData.push({ ...data, parsedDate: rowDate });
           });
 
-          document.getElementById('dashInc').innerText = '₹' + mInc.toFixed(2);
-          document.getElementById('dashExp').innerText = '₹' + mExp.toFixed(2);
+          document.getElementById('dashInc').innerText = userCurrency + mInc.toFixed(2);
+          document.getElementById('dashExp').innerText = userCurrency + mExp.toFixed(2);
           
           const bal = tInc - tExp;
           const balEl = document.getElementById('dashBal');
-          balEl.innerText = '₹' + bal.toFixed(2);
+          balEl.innerText = userCurrency + bal.toFixed(2);
           balEl.className = 'metric-value ' + (bal < 0 ? 'val-exp' : 'val-inc');
 
           renderReport();
@@ -1437,14 +1495,14 @@
           tr.innerHTML = `
             <td style="color: var(--text-muted);">${dtStr}</td>
             <td><strong>${r.category}</strong><br><small style="color: var(--text-muted);">${r.description || ''} ${r.person && r.person !== '-' ? '('+r.person+')' : ''}</small></td>
-            <td class="badge-amt" style="color: ${isInc ? 'var(--income)' : 'var(--expense)'};">${isInc ? '+' : '-'}₹${amt.toFixed(2)}</td>
+            <td class="badge-amt" style="color: ${isInc ? 'var(--income)' : 'var(--expense)'};">${isInc ? '+' : '-'}${userCurrency}${amt.toFixed(2)}</td>
           `;
           tbody.appendChild(tr);
         });
       }
 
-      document.getElementById('repIncSum').innerText = '₹' + sumI.toFixed(2);
-      document.getElementById('repExpSum').innerText = '₹' + sumE.toFixed(2);
+      document.getElementById('repIncSum').innerText = userCurrency + sumI.toFixed(2);
+      document.getElementById('repExpSum').innerText = userCurrency + sumE.toFixed(2);
     }
 
     function handleTransactionSubmit(e) {
