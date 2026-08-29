@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0d9488">
+  <meta name="theme-color" content="#1e40af">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="My Ledgers">
@@ -26,15 +26,14 @@
 
   <style>
     :root {
-      --primary: #0d9488;
-      --primary-dark: #0f766e;
-      --primary-light: #ccfbf1;
-      --accent: #14b8a6;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --accent: #3b82f6;
       --expense: #f43f5e;
       --income: #10b981;
-      --loan: #3b82f6;
+      --loan: #6366f1;
       --vehicle: #8b5cf6;
-      --vehicle-dark: #7c3aed;
       --reminder: #f59e0b;
       --whatsapp: #25d366;
       --bg: #f8fafc;
@@ -113,7 +112,7 @@
       border: 1px solid var(--border);
     }
     .auth-header { text-align: center; margin-bottom: 24px; }
-    .brand-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; }
+    .brand-icon { width: 56px; height: 56px; background: linear-gradient(135deg, #1e40af, var(--primary)); color: white; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; }
     .auth-header h2 { font-size: 24px; font-weight: 800; color: var(--text); }
     .auth-header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
 
@@ -134,7 +133,7 @@
       font-size: 15px;
     }
 
-    .btn-main { width: 100%; padding: 14px; border: none; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25); }
+    .btn-main { width: 100%; padding: 14px; border: none; background: linear-gradient(135deg, #1e40af, var(--primary)); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
     .btn-main:active { transform: scale(0.98); }
 
     /* ACTION BUTTONS GROUP */
@@ -169,7 +168,7 @@
 
     /* APP LAYOUT */
     .app-shell { width: 100%; max-width: 600px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border); }
-    .app-topbar { background: linear-gradient(135deg, #0f766e, #0d9488); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .app-topbar { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
     .user-info { display: flex; align-items: center; gap: 10px; }
     .user-avatar { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
     .user-name { font-size: 15px; font-weight: 700; }
@@ -194,7 +193,7 @@
     .type-pill.active[data-mode="loan"] { background: var(--loan); color: white; }
 
     .amount-calc-wrap { display: flex; gap: 8px; }
-    .btn-calc { padding: 0 16px; background: var(--primary-light); color: var(--primary-dark); border: 1.5px solid var(--primary); border-radius: var(--radius-md); cursor: pointer; font-size: 16px; }
+    .btn-calc { padding: 0 16px; background: var(--primary-light); color: var(--primary); border: 1.5px solid var(--primary); border-radius: var(--radius-md); cursor: pointer; font-size: 16px; }
 
     .select-wrap { position: relative; }
     .select-wrap select { appearance: none; -webkit-appearance: none; }
@@ -315,7 +314,7 @@
     .calc-pad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .c-btn { padding: 12px; font-size: 16px; font-weight: 700; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); cursor: pointer; }
     .c-btn:active { background: #e2e8f0; }
-    .c-btn.c-op { background: var(--primary-light); color: var(--primary-dark); border-color: transparent; }
+    .c-btn.c-op { background: var(--primary-light); color: var(--primary); border-color: transparent; }
     .c-btn.c-eq { background: var(--primary); color: white; border-color: transparent; grid-column: span 2; }
     .c-btn.c-del { background: #fee2e2; color: #ef4444; border-color: transparent; }
 
@@ -337,7 +336,7 @@
 </head>
 <body>
 
-  <!-- PWA INSTALL BANNER (Only on Login screen) -->
+  <!-- PWA INSTALL BANNER -->
   <div class="install-banner" id="pwaBanner">
     <div class="install-banner-text">
       <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
@@ -576,7 +575,7 @@
         </div>
       </div>
 
-      <!-- 4. VEHICLE SECTION (WITH SAVE & CANCEL BUTTONS) -->
+      <!-- 4. VEHICLE SECTION -->
       <div id="vehicleSection" style="display: none;">
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <div class="select-wrap" style="flex: 1;">
@@ -625,7 +624,6 @@
             </div>
           </div>
           
-          <!-- 🌟 SAVE FUEL LOG & CANCEL BUTTONS GROUP -->
           <div class="form-actions-group">
             <button type="button" class="btn-cancel-action" onclick="resetFuelForm()">
               <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_cancel_entry">റദ്ദാക്കുക</span>
@@ -690,7 +688,7 @@
     </div>
   </div>
 
-  <!-- ADD REMINDER MODAL (WITH CANCEL & SAVE BUTTONS) -->
+  <!-- ADD REMINDER MODAL -->
   <div class="modal-overlay" id="addReminderModal">
     <div class="modal-dialog">
       <div class="modal-header">
@@ -822,14 +820,14 @@
       </div>
 
       <!-- SAVE SETTINGS BUTTON -->
-      <button type="button" class="btn-main" style="margin-top: 10px; background: linear-gradient(135deg, #059669, #10b981);" onclick="handleSettingsSaveClick()">
+      <button type="button" class="btn-main" style="margin-top: 10px; background: linear-gradient(135deg, #1e40af, var(--primary));" onclick="handleSettingsSaveClick()">
         <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_settings">Save Settings</span>
       </button>
 
       <!-- USER GUIDE BUTTON -->
       <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
         <label data-i18n="lbl_guide_heading">ആപ്പ് ഉപയോഗ ക്രമം (User Guide)</label>
-        <button type="button" class="btn-main" style="padding: 10px; background: #6366f1;" onclick="openGuideModalDirectly()">
+        <button type="button" class="btn-main" style="padding: 10px; background: #4f46e5;" onclick="openGuideModalDirectly()">
           <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_user_guide">ഉപയോഗ ക്രമം കാണുക</span>
         </button>
       </div>
@@ -1846,7 +1844,6 @@
       updateCategoryList();
     }
 
-    // 🌟 RESET FUEL FORM
     function resetFuelForm() {
       document.getElementById('fuelOdo').value = '';
       document.getElementById('fuelPricePerLiter').value = '';
