@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manjari:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
   
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -1144,7 +1145,6 @@
         auth.signInWithEmailAndPassword(email, pass)
           .catch(err => {
             alertBox.className = "status-alert status-error";
-            // 🌟 Incorrect password show reset button
             const errMsg = (lang === 'ml') ? "ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്!" : (lang === 'ar' ? "كلمة المرور أو البريد الإلكتروني غير صحيح!" : "Incorrect email or password!");
             const resetBtnText = (lang === 'ml') ? "പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ഇമെയിലിലേക്ക് അയക്കണോ?" : (lang === 'ar' ? "إعادة تعيين كلمة المرور؟" : "Forgot password? Send Reset Link");
             
