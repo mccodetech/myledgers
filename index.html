@@ -10,7 +10,6 @@
   
   <title>My Ledgers</title>
   
-  <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9554/9554904.png">
   
@@ -33,6 +32,7 @@
       --income: #10b981;
       --loan: #3b82f6;
       --vehicle: #8b5cf6;
+      --reminder: #f59e0b;
       --whatsapp: #25d366;
       --bg: #f8fafc;
       --surface: #ffffff;
@@ -151,8 +151,8 @@
     .metric-value { font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .val-inc { color: var(--income); } .val-exp { color: var(--expense); } .val-bal { color: var(--text); }
 
-    .nav-tabs { display: flex; padding: 12px 16px 0 16px; gap: 8px; border-bottom: 1px solid var(--border); }
-    .nav-tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; text-align: center; }
+    .nav-tabs { display: flex; padding: 12px 16px 0 16px; gap: 6px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+    .nav-tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; text-align: center; white-space: nowrap; }
     .nav-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
     .app-content { padding: 20px 16px; }
 
@@ -190,7 +190,7 @@
     .modal-dialog {
       background: var(--surface);
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       border-radius: var(--radius-lg);
       padding: 20px;
       box-shadow: var(--shadow-lg);
@@ -234,6 +234,42 @@
     .custom-dialog-actions { display: flex; gap: 10px; }
     .btn-dialog-cancel { flex: 1; padding: 12px; background: #e2e8f0; border: none; color: var(--text); font-weight: 700; border-radius: var(--radius-md); cursor: pointer; }
     .btn-dialog-confirm { flex: 1; padding: 12px; background: var(--primary); border: none; color: white; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; }
+
+    /* REMINDER CARD STYLES */
+    .reminder-card {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .reminder-card.due-urgent {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+    .reminder-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
+    .reminder-date { font-size: 11px; color: var(--text-muted); }
+    .reminder-amt { font-weight: 800; font-size: 15px; color: var(--expense); }
+    .btn-pay-now {
+      background: var(--income);
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    /* USER GUIDE STYLES */
+    .guide-section { margin-bottom: 18px; }
+    .guide-section h4 { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .guide-section p, .guide-section li { font-size: 12.5px; line-height: 1.6; color: var(--text); margin-bottom: 4px; }
+    .guide-section ul { padding-left: 18px; }
 
     .vehicle-stat-card { background: #f5f3ff; border: 1.5px solid #ddd6fe; border-radius: var(--radius-md); padding: 12px; margin-bottom: 16px; }
     .stat-row { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
@@ -378,6 +414,9 @@
       <button type="button" class="nav-tab-btn" id="tabReportBtn" onclick="switchView('report')">
         <i class="fa-solid fa-chart-pie"></i> <span data-i18n="tab_report">റിപ്പോർട്ട്</span>
       </button>
+      <button type="button" class="nav-tab-btn" id="tabReminderBtn" style="display: none;" onclick="switchView('reminder')">
+        <i class="fa-solid fa-bell"></i> <span data-i18n="tab_reminders">റിമൈൻഡർ</span>
+      </button>
       <button type="button" class="nav-tab-btn" id="tabVehicleBtn" style="display: none;" onclick="switchView('vehicle')">
         <i class="fa-solid fa-gas-pump"></i> <span data-i18n="tab_vehicle">വാഹനം</span>
       </button>
@@ -491,7 +530,21 @@
         </div>
       </div>
 
-      <!-- 3. VEHICLE SECTION -->
+      <!-- 3. REMINDER SECTION -->
+      <div id="reminderSection" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="font-size: 15px; font-weight: 700;" data-i18n="title_upcoming_bills">വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ</h3>
+          <button type="button" class="btn-main" style="width: auto; padding: 6px 14px; background: var(--reminder); font-size: 13px;" onclick="openAddReminderModal()">
+            <i class="fa-solid fa-plus"></i> <span data-i18n="btn_add_reminder">പുതിയത്</span>
+          </button>
+        </div>
+
+        <div id="remindersListContainer">
+          <p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല</p>
+        </div>
+      </div>
+
+      <!-- 4. VEHICLE SECTION -->
       <div id="vehicleSection" style="display: none;">
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <div class="select-wrap" style="flex: 1;">
@@ -598,6 +651,54 @@
     </div>
   </div>
 
+  <!-- ADD REMINDER MODAL -->
+  <div class="modal-overlay" id="addReminderModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 data-i18n="btn_add_reminder">പുതിയ റിമൈൻഡർ ചേർക്കുക</h3>
+        <button type="button" class="modal-close-btn" onclick="closeAddReminderModal()">✕</button>
+      </div>
+      <form onsubmit="handleNewReminderSubmit(event)">
+        <div class="form-group">
+          <label>ബിൽ / ഇടപാടിന്റെ പേര്</label>
+          <input type="text" id="remindTitle" class="input-box" placeholder="ഉദാ: വീട്ടുവാടക, കറന്റ് ബിൽ" required>
+        </div>
+        <div class="form-group">
+          <label>നൽകേണ്ട തീയതി (Due Date)</label>
+          <input type="date" id="remindDueDate" class="input-box" required>
+        </div>
+        <div class="form-group">
+          <label>തുക (Amount)</label>
+          <input type="number" step="0.01" id="remindAmount" class="input-box" placeholder="0.00" required>
+        </div>
+        <div class="form-group">
+          <label>ആവർത്തനം (Recurrence)</label>
+          <div class="select-wrap">
+            <select id="remindFrequency" class="input-box">
+              <option value="once">ഒരിക്കൽ മാത്രം (One Time)</option>
+              <option value="monthly">എല്ലാ മാസവും (Monthly)</option>
+              <option value="yearly">എല്ലാ വർഷവും (Yearly)</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-main" style="background: var(--reminder);">റിമൈൻഡർ സേവ് ചെയ്യുക</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- USER GUIDE MODAL -->
+  <div class="modal-overlay" id="guideModal">
+    <div class="modal-dialog" style="max-width: 460px;">
+      <div class="modal-header">
+        <h3 data-i18n="btn_user_guide"><i class="fa-solid fa-book-open" style="margin-right: 8px;"></i>ഉപയോഗ ക്രമം (User Guide)</h3>
+        <button type="button" class="modal-close-btn" onclick="closeGuideModal()">✕</button>
+      </div>
+      <div id="guideContentBody">
+        <!-- Dynamic based on language -->
+      </div>
+    </div>
+  </div>
+
   <!-- SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-dialog">
@@ -637,7 +738,7 @@
         </div>
       </div>
 
-      <!-- 🌟 DISPLAY SETTINGS (CUSTOMIZABLE DASHBOARD MODULES) -->
+      <!-- DISPLAY SETTINGS -->
       <div class="form-group">
         <label data-i18n="lbl_display_settings"><i class="fa-solid fa-sliders" style="margin-right: 6px;"></i>Display Settings (കാണിക്കേണ്ടവ തിരഞ്ഞെടുക്കുക)</label>
         <div class="display-settings-box">
@@ -648,6 +749,10 @@
           <label class="display-check-item">
             <span data-i18n="tab_report">റിപ്പോർട്ട് (Reports)</span>
             <input type="checkbox" id="displayCheckReport" checked>
+          </label>
+          <label class="display-check-item">
+            <span data-i18n="tab_reminders">ബിൽ റിമൈൻഡർ (Reminders)</span>
+            <input type="checkbox" id="displayCheckReminder" checked>
           </label>
           <label class="display-check-item">
             <span data-i18n="tab_vehicle">വാഹന ട്രാക്കർ (Vehicles)</span>
@@ -671,15 +776,23 @@
         <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_settings">Save Settings</span>
       </button>
 
-      <!-- 🌟 SHARE APP (WHATSAPP / SOCIAL SHARE) -->
+      <!-- USER GUIDE BUTTON -->
       <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
+        <label data-i18n="lbl_guide_heading">ആപ്പ് ഉപയോഗ ക്രമം (User Guide)</label>
+        <button type="button" class="btn-main" style="padding: 10px; background: #6366f1;" onclick="openGuideModal()">
+          <i class="fa-solid fa-book-open"></i> <span data-i18n="btn_user_guide">ഉപയോഗ ക്രമം കാണുക</span>
+        </button>
+      </div>
+
+      <!-- SHARE APP -->
+      <div class="form-group" style="margin-top: 14px;">
         <label data-i18n="lbl_share_app">ആപ്പ് ഷെയർ ചെയ്യാൻ (Share App)</label>
         <button type="button" class="btn-main" style="padding: 10px; background: var(--whatsapp); color: white;" onclick="shareApplication()">
           <i class="fa-brands fa-whatsapp" style="font-size: 18px;"></i> <span data-i18n="btn_share_whatsapp">Share via WhatsApp</span>
         </button>
       </div>
 
-      <!-- Print / Export PDF (If Enabled) -->
+      <!-- Print / Export PDF -->
       <div class="form-group" id="settingsPrintBlock" style="margin-top: 14px;">
         <label data-i18n="lbl_settings_print">റിപ്പോർട്ട് പ്രിന്റ് / PDF എടുക്കാൻ</label>
         <button type="button" class="btn-main" style="padding: 10px; background: #475569;" onclick="printReportFromSettings()">
@@ -880,14 +993,13 @@
     let isSignUp = false;
     let lang = localStorage.getItem('app_lang') || 'ml';
     let userCurrency = localStorage.getItem('app_currency') || '₹';
-    
-    // Display Preferences
-    let displayConfig = JSON.parse(localStorage.getItem('app_display_config') || '{"entry":true,"report":true,"vehicle":false,"print":true}');
+    let displayConfig = JSON.parse(localStorage.getItem('app_display_config') || '{"entry":true,"report":true,"reminder":true,"vehicle":false,"print":true}');
 
     let currentMode = 'income';
     let rawData = [];
     let userVehicles = [];
     let userCustomCategories = [];
+    let userReminders = [];
     let activeVehicleId = null;
     let calcTargetInputId = 'entryAmount';
     let currentConfirmCallback = null;
@@ -896,6 +1008,7 @@
     let unsubVehicles = null;
     let unsubFuelHistory = null;
     let unsubCustomCategories = null;
+    let unsubReminders = null;
 
     const dict = {
       ml: {
@@ -917,6 +1030,7 @@
         btn_forgot_pass: "പാസ്‌വേഡ് മറന്നുപോയോ?",
         tab_add: "ഇടപാട്",
         tab_report: "റിപ്പോർട്ട്",
+        tab_reminders: "റിമൈൻഡർ",
         tab_vehicle: "വാഹനം",
         type_inc: "വരവ്",
         type_exp: "ചെലവ്",
@@ -960,6 +1074,10 @@
         lbl_display_settings: "Display Settings (കാണിക്കേണ്ടവ തിരഞ്ഞെടുക്കുക)",
         lbl_share_app: "ആപ്പ് ഷെയർ ചെയ്യാൻ (Share App)",
         btn_share_whatsapp: "WhatsApp വഴി ഷെയർ ചെയ്യുക",
+        lbl_guide_heading: "ആപ്പ് ഉപയോഗ ക്രമം (User Guide)",
+        btn_user_guide: "ഉപയോഗ ക്രമം കാണുക",
+        title_upcoming_bills: "വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ",
+        btn_add_reminder: "പുതിയ റിമൈൻഡർ",
         title_edit_tx: "ഇടപാട് എഡിറ്റ് ചെയ്യുക",
         btn_update: "അപ്‌ഡേറ്റ് ചെയ്യുക",
         title_add_veh: "പുതിയ വാഹനം ചേർക്കുക",
@@ -999,6 +1117,7 @@
         btn_forgot_pass: "Forgot password?",
         tab_add: "New Entry",
         tab_report: "Reports",
+        tab_reminders: "Reminders",
         tab_vehicle: "Vehicles",
         type_inc: "Income",
         type_exp: "Expense",
@@ -1042,6 +1161,10 @@
         lbl_display_settings: "Display Settings (Choose visible modules)",
         lbl_share_app: "Share Application",
         btn_share_whatsapp: "Share via WhatsApp",
+        lbl_guide_heading: "Application User Guide",
+        btn_user_guide: "View User Guide",
+        title_upcoming_bills: "Upcoming Bills & Reminders",
+        btn_add_reminder: "New Reminder",
         title_edit_tx: "Edit Transaction",
         btn_update: "Update Entry",
         title_add_veh: "Add New Vehicle",
@@ -1081,6 +1204,7 @@
         btn_forgot_pass: "نسيت كلمة المرور؟",
         tab_add: "إضافة",
         tab_report: "التقارير",
+        tab_reminders: "التذكيرات",
         tab_vehicle: "المركبات",
         type_inc: "دخل",
         type_exp: "مصروف",
@@ -1124,6 +1248,10 @@
         lbl_display_settings: "إعدادات العرض (تخصيص الواجهة)",
         lbl_share_app: "مشاركة التطبيق",
         btn_share_whatsapp: "مشاركة عبر واتساب",
+        lbl_guide_heading: "دليل الاستخدام",
+        btn_user_guide: "عرض دليل الاستخدام",
+        title_upcoming_bills: "الفواتير القادمة والتذكيرات",
+        btn_add_reminder: "إضافة تذكير",
         title_edit_tx: "تعديل المعاملة",
         btn_update: "تحديث",
         title_add_veh: "إضافة مركبة جديدة",
@@ -1144,6 +1272,87 @@
         btn_yes: "نعم",
         pwa_banner_text: "تثبيت التطبيق للوصول السريع؟"
       }
+    };
+
+    const guideData = {
+      ml: `
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-wallet"></i> 1. വരവ്-ചെലവുകൾ രേഖപ്പെടുത്തൽ</h4>
+          <p>വരവ് (Income), ചെലവ് (Expense), കടം ഇടപാടുകൾ (Loans) എന്നിവ തിരഞ്ഞെടുത്ത് തീയതി, വിഭാഗം, തുക എന്നിവ നൽകി രേഖപ്പെടുത്താം. തുക കണക്കുകൂട്ടാൻ കാൽക്കുലേറ്റർ ഐക്കൺ ഉപയോഗിക്കാം.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-folder-plus"></i> 2. പുതിയ കാറ്റഗറി ചേർക്കൽ</h4>
+          <p>വിഭാഗം ഡ്രോപ്പ്ഡൗണിൽ നിന്ന് '+ പുതിയ കാറ്റഗറി ചേർക്കുക' തിരഞ്ഞെടുത്ത് പേര് നൽകിയാൽ അത് നിങ്ങളുടെ അക്കൗണ്ടിൽ സ്ഥിരമായി സേവ് ആകും.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-chart-pie"></i> 3. റിപ്പോർട്ടുകളും PDF പ്രിന്റും</h4>
+          <p>മാസം തിരിച്ചോ ഇടപാട് തരം തിരിച്ചോ ഫിൽറ്റർ ചെയ്യാം. ഓരോ ഇടപാടും എഡിറ്റ് ചെയ്യാനും ഡിലീറ്റ് ചെയ്യാനും സാധിക്കും. Settings-ൽ നിന്ന് PDF ആയി പ്രിന്റ് എടുക്കാം.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-bell"></i> 4. ബിൽ റിമൈൻഡറുകൾ (Reminders)</h4>
+          <p>മാസാന്ത ബില്ലുകൾ, വാടക, സ്കൂൾ ഫീസ് എന്നിവ നിശ്ചിത തീയതിയിൽ ഓർമ്മിപ്പിക്കാൻ റിമൈൻഡർ സെറ്റ് ചെയ്യാം. അടച്ചു കഴിഞ്ഞാൽ 'Mark as Paid' ക്ലിക്ക് ചെയ്താൽ അത് തനിയെ ചെലവ് ലിസ്റ്റിലേക്ക് മാറും.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-gas-pump"></i> 5. വാഹന ട്രാക്കർ & മൈലേജ്</h4>
+          <p>നിങ്ങളുടെ കാർ/ബൈക്ക് രജിസ്റ്റർ ചെയ്ത് ഇന്ധനം അടിക്കുമ്പോൾ ഓഡോമീറ്റർ റീഡിംഗ് നൽകുക. ആപ്പ് തനിയെ വാഹനത്തിന്റെ മൈലേജും ഒരു കിലോമീറ്ററിന് വരുന്ന ചെലവും കണക്കാക്കും.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-sliders"></i> 6. ഡിസ്‌പ്ലേ സെറ്റിങ്സ്</h4>
+          <p>Settings-ലെ Display Settings വഴി നിങ്ങൾക്ക് ആവശ്യമുള്ള ടാബുകൾ മാത്രം ഓൺ ചെയ്ത് വെക്കാവുന്നതാണ്.</p>
+        </div>
+      `,
+      en: `
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-wallet"></i> 1. Recording Transactions</h4>
+          <p>Select Income, Expense, or Loan transaction. Enter the Date, Category, and Amount. Use the built-in calculator icon beside the amount field for calculations.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-folder-plus"></i> 2. Custom Categories</h4>
+          <p>Select '+ Add New Category' from the dropdown. Once saved, it permanently becomes available for your future entries.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-chart-pie"></i> 3. Reports, Edit & PDF Export</h4>
+          <p>Filter entries by month or type. Edit or delete any entry using the action icons. Export or print clean PDF statements from Settings.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-bell"></i> 4. Bill & Payment Reminders</h4>
+          <p>Set recurring or one-time payment reminders for rent, utility bills, EMI, etc. Click 'Mark as Paid' to automatically add it to your expense ledger.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-gas-pump"></i> 5. Vehicle Fuel & Mileage Tracker</h4>
+          <p>Register your vehicles. Log odometer reading and fuel cost every time you refuel. The app automatically calculates mileage (Km/L) and running cost per Km.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-sliders"></i> 6. Display Settings & Customization</h4>
+          <p>Configure which modules (Entry, Reports, Reminders, Vehicles) appear on your dashboard through Settings > Display Settings.</p>
+        </div>
+      `,
+      ar: `
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-wallet"></i> ١. تسجيل المعاملات</h4>
+          <p>اختر نوع المعاملة (دخل، مصروف، ديون)، أدخل التاريخ، الفئة، والمبلغ. يمكنك استخدام الآلة الحاسبة المدمجة بجانب حقل المبلغ.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-folder-plus"></i> ٢. الفئات المخصصة</h4>
+          <p>اختر '+ إضافة فئة جديدة' من القائمة لكتابة وحفظ فئاتك الخاصة بشكل دائم في حسابك.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-chart-pie"></i> ٣. التقارير وتصدير PDF</h4>
+          <p>قم بفرز المعاملات حسب الشهر أو النوع، وتعديل أو حذف المعاملات، وطباعة تقرير PDF من الإعدادات.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-bell"></i> ٤. تذكير الفواتير</h4>
+          <p>أضف تذكيرات بمواعيد الإيجار أو الفواتير. عند السداد، اضغط 'تم الدفع' لتحويلها مباشرة إلى سجل المصروفات.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-gas-pump"></i> ٥. متتبع وقود واستهلاك المركبات</h4>
+          <p>سجل مركباتك وقم بتدوين قراءة العداد وتكلفة الوقود عند التعبئة ليقوم التطبيق بحساب معدل الاستهلاك والتكلفة لكل كم تلقائياً.</p>
+        </div>
+        <div class="guide-section">
+          <h4><i class="fa-solid fa-sliders"></i> ٦. إعدادات العرض</h4>
+          <p>خصص واجهة التطبيق عن طريق تفعيل أو إخفاء التبويبات حسب رغبتك من صفحة الإعدادات.</p>
+        </div>
+      `
     };
 
     const defaultCategories = {
@@ -1168,6 +1377,7 @@
     const todayFormatted = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     document.getElementById('entryDate').value = todayFormatted;
     document.getElementById('fuelDate').value = todayFormatted;
+    document.getElementById('remindDueDate').value = todayFormatted;
 
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -1182,6 +1392,7 @@
         setMode('income');
         bindUserTransactions(user.uid);
         bindCustomCategories(user.uid);
+        bindUserReminders(user.uid);
         applyDisplayPreferences();
         bindUserVehicles(user.uid);
       } else {
@@ -1190,6 +1401,7 @@
         if (unsubVehicles) unsubVehicles();
         if (unsubFuelHistory) unsubFuelHistory();
         if (unsubCustomCategories) unsubCustomCategories();
+        if (unsubReminders) unsubReminders();
         document.getElementById('mainAppView').style.display = 'none';
         document.getElementById('authView').style.display = 'block';
       }
@@ -1350,14 +1562,20 @@
     }
     function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
 
+    function openGuideModal() {
+      document.getElementById('guideContentBody').innerHTML = guideData[lang] || guideData.en;
+      document.getElementById('guideModal').style.display = 'flex';
+    }
+    function closeGuideModal() { document.getElementById('guideModal').style.display = 'none'; }
+
     function loadDisplaySettingsToCheckboxes() {
       document.getElementById('displayCheckEntry').checked = displayConfig.entry !== false;
       document.getElementById('displayCheckReport').checked = displayConfig.report !== false;
+      document.getElementById('displayCheckReminder').checked = displayConfig.reminder !== false;
       document.getElementById('displayCheckVehicle').checked = displayConfig.vehicle === true;
       document.getElementById('displayCheckPrint').checked = displayConfig.print !== false;
     }
 
-    // 🌟 SAVE SETTINGS & APPLY DISPLAY CONFIGURATION
     function handleSettingsSaveClick() {
       showAppConfirm({
         icon: '<i class="fa-solid fa-floppy-disk" style="color:var(--primary);"></i>',
@@ -1368,25 +1586,22 @@
           const newCurr = document.getElementById('settingsCurrencySelect').value;
           const newName = document.getElementById('settingsDisplayName').value.trim();
 
-          // Save Display Config
           displayConfig = {
             entry: document.getElementById('displayCheckEntry').checked,
             report: document.getElementById('displayCheckReport').checked,
+            reminder: document.getElementById('displayCheckReminder').checked,
             vehicle: document.getElementById('displayCheckVehicle').checked,
             print: document.getElementById('displayCheckPrint').checked
           };
           localStorage.setItem('app_display_config', JSON.stringify(displayConfig));
 
-          // Save Language
           lang = newLang;
           localStorage.setItem('app_lang', lang);
           applyLanguage(lang);
 
-          // Save Currency
           userCurrency = newCurr;
           localStorage.setItem('app_currency', userCurrency);
 
-          // Save Name
           if (currentUser && newName && newName !== currentUser.displayName) {
             currentUser.updateProfile({ displayName: newName }).then(() => {
               document.getElementById('userNameLabel').innerText = newName;
@@ -1407,21 +1622,21 @@
     function applyDisplayPreferences() {
       document.getElementById('tabEntryBtn').style.display = displayConfig.entry !== false ? 'block' : 'none';
       document.getElementById('tabReportBtn').style.display = displayConfig.report !== false ? 'block' : 'none';
+      document.getElementById('tabReminderBtn').style.display = displayConfig.reminder !== false ? 'block' : 'none';
       document.getElementById('tabVehicleBtn').style.display = displayConfig.vehicle ? 'block' : 'none';
       document.getElementById('settingsPrintBlock').style.display = displayConfig.print !== false ? 'block' : 'none';
 
-      // Switch to first visible tab
       if (displayConfig.entry !== false) switchView('entry');
       else if (displayConfig.report !== false) switchView('report');
+      else if (displayConfig.reminder !== false) switchView('reminder');
       else if (displayConfig.vehicle) switchView('vehicle');
     }
 
-    // 🌟 SHARE APPLICATION FUNCTION
     function shareApplication() {
       const shareUrl = window.location.href;
       const shareText = (lang === 'ml') ? 
-        `കുടുംബത്തിലെ വരവ്-ചെലവുകളും വാഹന ഇന്ധനച്ചെലവുകളും എളുപ്പത്തിൽ ട്രാക്ക് ചെയ്യാൻ ഞാൻ ഉപയോഗിക്കുന്ന 'My Ledgers' ആപ്പ് പരീക്ഷിച്ചു നോക്കൂ:\n${shareUrl}` : 
-        (lang === 'ar' ? `جرب تطبيق My Ledgers لتتبع المصاريف والوقود بسهولة:\n${shareUrl}` : `Check out My Ledgers app to manage personal/family expenses and fuel tracking easily:\n${shareUrl}`);
+        `വരവ്-ചെലവുകളും ബിൽ റിമൈൻഡറുകളും വാഹന ഇന്ധനച്ചെലവുകളും ട്രാക്ക് ചെയ്യാൻ ഞാൻ ഉപയോഗിക്കുന്ന 'My Ledgers' ആപ്പ് പരീക്ഷിച്ചു നോക്കൂ:\n${shareUrl}` : 
+        (lang === 'ar' ? `جرب تطبيق My Ledgers لتتبع المصاريف، الفواتير والوقود بكل سهولة:\n${shareUrl}` : `Check out My Ledgers app to manage personal expenses, bill reminders and fuel tracking:\n${shareUrl}`);
 
       if (navigator.share) {
         navigator.share({
@@ -1500,10 +1715,12 @@
     function switchView(view) {
       document.getElementById('entrySection').style.display = (view === 'entry') ? 'block' : 'none';
       document.getElementById('reportSection').style.display = (view === 'report') ? 'block' : 'none';
+      document.getElementById('reminderSection').style.display = (view === 'reminder') ? 'block' : 'none';
       document.getElementById('vehicleSection').style.display = (view === 'vehicle') ? 'block' : 'none';
 
       document.getElementById('tabEntryBtn').classList.toggle('active', view === 'entry');
       document.getElementById('tabReportBtn').classList.toggle('active', view === 'report');
+      document.getElementById('tabReminderBtn').classList.toggle('active', view === 'reminder');
       document.getElementById('tabVehicleBtn').classList.toggle('active', view === 'vehicle');
 
       if (view === 'report') renderReport();
@@ -1730,10 +1947,6 @@
       });
     }
 
-    function printReport() {
-      window.print();
-    }
-
     function handleTransactionSubmit(e) {
       e.preventDefault();
       if (!currentUser) return;
@@ -1789,7 +2002,7 @@
           showAppConfirm({
             icon: '<i class="fa-solid fa-folder-plus" style="color:var(--primary);"></i>',
             title: (lang === 'ml') ? "പുതിയ കാറ്റഗറി" : (lang === 'ar' ? "فئة جديدة" : "New Category"),
-            msg: (lang === 'ml') ? `"${cat}" എന്ന പുതിയ കാറ്റഗറി നിങ്ങളുടെ ലിസ്റ്റിൽ സ്ഥിരമായി ചേർക്കണോ?` : (lang === 'ar' ? `هل تريد حفظ الفئة "${cat}" في قائمتك؟` : `Save "${cat}" to your category list?`),
+            msg: (lang === 'ml') ? `"${cat}" എന്ന പുതിയ കാറ്റഗറി സ്ഥിരമായി സേവ് ചെയ്യണോ?` : (lang === 'ar' ? `هل تريد حفظ الفئة "${cat}" في قائمتك؟` : `Save "${cat}" to your category list?`),
             onConfirm: () => {
               db.collection("users").doc(currentUser.uid).collection("categories").add({
                 name: cat,
@@ -1804,6 +2017,117 @@
       }
 
       proceedSave();
+    }
+
+    /* 🌟 REMINDERS SYSTEM */
+    function openAddReminderModal() { document.getElementById('addReminderModal').style.display = 'flex'; }
+    function closeAddReminderModal() { document.getElementById('addReminderModal').style.display = 'none'; }
+
+    function handleNewReminderSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const remData = {
+        title: document.getElementById('remindTitle').value.trim(),
+        dueDate: document.getElementById('remindDueDate').value,
+        amount: parseFloat(document.getElementById('remindAmount').value) || 0,
+        frequency: document.getElementById('remindFrequency').value,
+        status: 'pending',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      db.collection("users").doc(currentUser.uid).collection("reminders").add(remData).then(() => {
+        closeAddReminderModal();
+        document.getElementById('remindTitle').value = '';
+        document.getElementById('remindAmount').value = '';
+      });
+    }
+
+    function bindUserReminders(uid) {
+      if (unsubReminders) unsubReminders();
+      unsubReminders = db.collection("users").doc(uid).collection("reminders").orderBy("dueDate", "asc").onSnapshot((snap) => {
+        userReminders = [];
+        snap.forEach(doc => userReminders.push({ id: doc.id, ...doc.data() }));
+        renderRemindersList();
+      });
+    }
+
+    function renderRemindersList() {
+      const container = document.getElementById('remindersListContainer');
+      if (userReminders.length === 0) {
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">${lang === 'ml' ? 'റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല' : (lang === 'ar' ? 'لا توجد تذكيرات مسجلة' : 'No active reminders')}</p>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      const todayDate = new Date().toISOString().split('T')[0];
+
+      userReminders.forEach(rem => {
+        const isUrgent = rem.dueDate <= todayDate;
+        const card = document.createElement('div');
+        card.className = `reminder-card ${isUrgent ? 'due-urgent' : ''}`;
+        
+        card.innerHTML = `
+          <div>
+            <div class="reminder-title">${rem.title}</div>
+            <div class="reminder-date"><i class="fa-solid fa-clock"></i> Due: ${rem.dueDate} (${rem.frequency})</div>
+            <button type="button" class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')"><i class="fa-solid fa-check"></i> Mark as Paid</button>
+          </div>
+          <div style="text-align: right;">
+            <div class="reminder-amt">${userCurrency}${parseFloat(rem.amount).toFixed(2)}</div>
+            <i class="fa-solid fa-trash icon-del" style="margin-top: 8px; display: inline-block;" onclick="promptDeleteReminder('${rem.id}')" title="Delete"></i>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function markReminderAsPaid(remId) {
+      const rem = userReminders.find(r => r.id === remId);
+      if (!rem || !currentUser) return;
+
+      showAppConfirm({
+        icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
+        title: "Mark as Paid",
+        msg: (lang === 'ml') ? `"${rem.title}" അടച്ചു എന്ന് രേഖപ്പെടുത്തി പ്രധാന ചെലവ് ലിസ്റ്റിലേക്ക് മാറ്റണോ?` : (lang === 'ar' ? `هل تريد تسجيل "${rem.title}" كمدفوع وإضافته للمصروفات؟` : `Record "${rem.title}" as paid and add to Expense ledger?`),
+        onConfirm: () => {
+          // Add to expense ledger
+          db.collection("users").doc(currentUser.uid).collection("transactions").add({
+            date: todayFormatted,
+            type: (lang === 'ml') ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Expense'),
+            category: (lang === 'ml') ? 'ബില്ലുകൾ' : (lang === 'ar' ? 'فواتير' : 'Bills / Utility'),
+            amount: rem.amount,
+            description: `${rem.title} (Bill Paid)`,
+            person: "-",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          // Handle recurrence or delete
+          if (rem.frequency === 'monthly') {
+            const nextD = new Date(rem.dueDate);
+            nextD.setMonth(nextD.getMonth() + 1);
+            const nextDueDateStr = nextD.toISOString().split('T')[0];
+            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({ dueDate: nextDueDateStr });
+          } else if (rem.frequency === 'yearly') {
+            const nextD = new Date(rem.dueDate);
+            nextD.setFullYear(nextD.getFullYear() + 1);
+            const nextDueDateStr = nextD.toISOString().split('T')[0];
+            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({ dueDate: nextDueDateStr });
+          } else {
+            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).delete();
+          }
+        }
+      });
+    }
+
+    function promptDeleteReminder(remId) {
+      showAppConfirm({
+        icon: '<i class="fa-solid fa-trash" style="color:var(--expense);"></i>',
+        title: "Delete Reminder",
+        msg: "ഈ റിമൈൻഡർ ഒഴിവാക്കണമെന്ന് ഉറപ്പാണോ?",
+        onConfirm: () => {
+          db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).delete();
+        }
+      });
     }
 
     /* VEHICLE LOGIC */
