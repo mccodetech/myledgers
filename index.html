@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -345,12 +345,11 @@
       th, td { border: 1px solid #ddd; color: #000 !important; }
     }
 
-    /* 🌟 FULL SCREEN & NO EXTRA TOP BLANK ON PHONES */
     @media (max-width: 480px) {
       body { 
         padding: 0; 
         align-items: flex-start;
-        background-color: #1e3a8a; /* Matches topbar to prevent white notch flash */
+        background-color: #1e3a8a; 
       }
       .app-shell, .auth-wrapper { 
         border-radius: 0; 
@@ -362,11 +361,11 @@
 </head>
 <body>
 
-  <!-- PWA INSTALL BANNER -->
+  <!-- PWA INSTALL BANNER (Only on Login screen) -->
   <div class="install-banner" id="pwaBanner">
     <div class="install-banner-text">
       <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
-      <span data-i18n="pwa_banner_text">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?</span>
+      <span>Install app for quick access?</span>
     </div>
     <div class="install-banner-btns">
       <button type="button" class="btn-install-now" onclick="triggerPwaInstall()">Install</button>
@@ -374,49 +373,51 @@
     </div>
   </div>
 
-  <!-- AUTHENTICATION VIEW -->
+  <!-- AUTHENTICATION VIEW (ENGLISH ONLY) -->
   <div class="auth-wrapper" id="authView">
     <div class="auth-header">
       <div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
       <h2>My Ledgers</h2>
-      <p id="authHeading" data-i18n="auth_login_title">ലോഗിൻ ചെയ്യുക</p>
+      <p id="authHeading">Login to your account</p>
     </div>
 
     <form onsubmit="handleAuth(event)">
       <div class="form-group" id="nameGroup" style="display: none;">
-        <label data-i18n="lbl_name">പേര്</label>
-        <input type="text" id="authName" class="input-box" placeholder="User Name">
+        <label>Your Name</label>
+        <input type="text" id="authName" class="input-box" placeholder="Full Name">
       </div>
       
       <div class="form-group">
-        <label data-i18n="lbl_email">ഇമെയിൽ വിലാസം</label>
+        <label>Email Address</label>
         <input type="email" id="authEmail" class="input-box" placeholder="name@example.com" required>
       </div>
       
+      <!-- 1st Password (Hidden by default) -->
       <div class="form-group">
-        <label data-i18n="lbl_pass">പാസ്‌വേഡ്</label>
+        <label>Password (Min 4 characters)</label>
         <div class="password-wrap">
-          <input type="password" id="authPass" class="input-box" placeholder="••••••••" required>
+          <input type="password" id="authPass" class="input-box" placeholder="••••••••" minlength="4" required>
           <i class="fa-solid fa-eye toggle-eye" onclick="togglePassVisibility('authPass', this)"></i>
         </div>
       </div>
 
+      <!-- 2nd Confirm Password (Visible by default for easy check) -->
       <div class="form-group" id="confirmPassGroup" style="display: none;">
-        <label data-i18n="lbl_confirm_pass">പാസ്‌വേഡ് വീണ്ടും നൽകുക (Confirm)</label>
+        <label>Confirm Password (Visible)</label>
         <div class="password-wrap">
-          <input type="password" id="authConfirmPass" class="input-box" placeholder="••••••••">
-          <i class="fa-solid fa-eye toggle-eye" onclick="togglePassVisibility('authConfirmPass', this)"></i>
+          <input type="text" id="authConfirmPass" class="input-box" placeholder="Re-enter password" minlength="4">
+          <i class="fa-solid fa-eye-slash toggle-eye" onclick="togglePassVisibility('authConfirmPass', this)"></i>
         </div>
       </div>
 
       <button type="submit" class="btn-main" id="authSubmitBtn">
-        <span id="authBtnText">ലോഗിൻ</span>
+        <span id="authBtnText">Login</span>
       </button>
     </form>
 
     <div style="margin-top: 20px; text-align: center; font-size: 13px; color: var(--text-muted);">
-      <span id="switchPrompt">അക്കൗണ്ട് ഇല്ലേ?</span>
-      <button type="button" class="btn-text" id="switchBtn" onclick="toggleAuthMode()">പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക</button>
+      <span id="switchPrompt">Don't have an account?</span>
+      <button type="button" class="btn-text" id="switchBtn" onclick="toggleAuthMode()" style="background:none; border:none; color:var(--primary); font-weight:700; cursor:pointer; margin-left:4px;">Create New Account</button>
     </div>
 
     <div id="authAlert" class="status-alert"></div>
@@ -1089,13 +1090,6 @@
 
     const dict = {
       ml: {
-        auth_login_title: "ലോഗിൻ ചെയ്യുക",
-        auth_signup_title: "പുതിയ അക്കൗണ്ട്",
-        auth_subtitle: "നിങ്ങളുടെ വരവ്-ചെലവുകൾ കൃത്യമായി സൂക്ഷിക്കുക",
-        lbl_name: "പേര്",
-        lbl_email: "ഇമെയിൽ വിലാസം",
-        lbl_pass: "പാസ്‌വേഡ്",
-        lbl_confirm_pass: "പാസ്‌വേഡ് വീണ്ടും നൽകുക (Confirm)",
         lbl_date: "തീയതി",
         lbl_loan_type: "കടം ഇടപാട് തരം",
         lbl_person: "ആരുമായി? (വ്യക്തിയുടെ പേര്)",
@@ -1109,7 +1103,6 @@
         btn_save: "രേഖപ്പെടുത്തുക",
         btn_cancel_entry: "റദ്ദാക്കുക",
         btn_save_reminder: "റിമൈൻഡർ സേവ് ചെയ്യുക",
-        btn_forgot_pass: "പാസ്‌വേഡ് മറന്നുപോയോ?",
         tab_add: "ഇടപാട്",
         tab_report: "റിപ്പോർട്ട്",
         tab_reminders: "റിമൈൻഡർ",
@@ -1181,17 +1174,9 @@
         btn_save_fuel: "ഇന്ധന വിവരങ്ങൾ സേവ് ചെയ്യുക",
         title_fuel_history: "ഇന്ധന ചരിത്രം (Fuel History)",
         btn_cancel: "റദ്ദാക്കുക",
-        btn_yes: "അതെ (Yes)",
-        pwa_banner_text: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യണോ?"
+        btn_yes: "അതെ (Yes)"
       },
       en: {
-        auth_login_title: "Login",
-        auth_signup_title: "New Account",
-        auth_subtitle: "Keep accurate records of your income and expenses.",
-        lbl_name: "Name",
-        lbl_email: "Email address",
-        lbl_pass: "Password",
-        lbl_confirm_pass: "Confirm Password",
         lbl_date: "Date",
         lbl_loan_type: "Transaction Type",
         lbl_person: "Person Name",
@@ -1205,7 +1190,6 @@
         btn_save: "Save Entry",
         btn_cancel_entry: "Cancel / Clear",
         btn_save_reminder: "Save Reminder",
-        btn_forgot_pass: "Forgot password?",
         tab_add: "New Entry",
         tab_report: "Reports",
         tab_reminders: "Reminders",
@@ -1277,17 +1261,9 @@
         btn_save_fuel: "Save Fuel Log",
         title_fuel_history: "Fuel Log History",
         btn_cancel: "Cancel",
-        btn_yes: "Yes",
-        pwa_banner_text: "Install app for quick access?"
+        btn_yes: "Yes"
       },
       ar: {
-        auth_login_title: "تسجيل الدخول",
-        auth_signup_title: "حساب جديد",
-        auth_subtitle: "سجل مصروفاتك ومداخيلك بكل سهولة ودقة",
-        lbl_name: "الاسم",
-        lbl_email: "البريد الإلكتروني",
-        lbl_pass: "كلمة المرور",
-        lbl_confirm_pass: "تأكيد كلمة المرور",
         lbl_date: "التاريخ",
         lbl_loan_type: "نوع المعاملة",
         lbl_person: "اسم الشخص",
@@ -1301,7 +1277,6 @@
         btn_save: "حفظ المعاملة",
         btn_cancel_entry: "إلغاء / مسح",
         btn_save_reminder: "حفظ التذكير",
-        btn_forgot_pass: "نسيت كلمة المرور؟",
         tab_add: "إضافة",
         tab_report: "التقارير",
         tab_reminders: "التذكيرات",
@@ -1373,8 +1348,7 @@
         btn_save_fuel: "حفظ تعبئة الوقود",
         title_fuel_history: "سجل الوقود",
         btn_cancel: "إلغاء",
-        btn_yes: "نعم",
-        pwa_banner_text: "تثبيت التطبيق للوصول السريع؟"
+        btn_yes: "نعم"
       }
     };
 
@@ -1562,19 +1536,19 @@
       document.getElementById('authAlert').style.display = 'none';
 
       if (isSignUp) {
-        heading.innerText = dict[lang].auth_signup_title;
+        heading.innerText = "Create New Account";
         nameGroup.style.display = 'block';
         confirmGroup.style.display = 'block';
-        btnText.innerText = (lang === 'ml') ? "തുടങ്ങുക" : (lang === 'ar' ? "تسجيل" : "Start");
-        prompt.innerText = (lang === 'ml') ? "അക്കൗണ്ട് ഉണ്ടോ?" : (lang === 'ar' ? "لديك حساب؟" : "Have an account?");
-        btn.innerText = (lang === 'ml') ? "ലോഗിൻ ചെയ്യുക" : (lang === 'ar' ? "تسجيل الدخول" : "Login");
+        btnText.innerText = "Register";
+        prompt.innerText = "Already have an account?";
+        btn.innerText = "Login";
       } else {
-        heading.innerText = dict[lang].auth_login_title;
+        heading.innerText = "Login to your account";
         nameGroup.style.display = 'none';
         confirmGroup.style.display = 'none';
-        btnText.innerText = (lang === 'ml') ? "ലോഗിൻ" : (lang === 'ar' ? "تسجيل الدخول" : "Login");
-        prompt.innerText = (lang === 'ml') ? "അക്കൗണ്ട് ഇല്ലേ?" : (lang === 'ar' ? "ليس لديك حساب؟" : "No account?");
-        btn.innerText = (lang === 'ml') ? "പുതിയ അക്കൗണ്ട് ഉണ്ടാക്കുക" : (lang === 'ar' ? "حساب جديد" : "Create Account");
+        btnText.innerText = "Login";
+        prompt.innerText = "Don't have an account?";
+        btn.innerText = "Create New Account";
       }
     }
 
@@ -1593,7 +1567,7 @@
       if (isSignUp) {
         if (pass !== confirmPass) {
           alertBox.className = "status-alert status-error";
-          alertBox.innerText = (lang === 'ml') ? "പാസ്‌വേഡുകൾ തമ്മിൽ പൊരുത്തപ്പെടുന്നില്ല!" : (lang === 'ar' ? "كلمات المرور غير متطابقة!" : "Passwords do not match!");
+          alertBox.innerText = "Passwords do not match!";
           alertBox.style.display = 'block';
           btn.disabled = false;
           return;
@@ -1613,12 +1587,9 @@
         auth.signInWithEmailAndPassword(email, pass)
           .catch(err => {
             alertBox.className = "status-alert status-error";
-            const errMsg = (lang === 'ml') ? "ഇമെയിൽ അല്ലെങ്കിൽ പാസ്‌വേഡ് തെറ്റാണ്!" : (lang === 'ar' ? "كلمة المرور أو البريد الإلكتروني غير صحيح!" : "Incorrect email or password!");
-            const resetBtnText = (lang === 'ml') ? "പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ഇമെയിലിലേക്ക് അയക്കണോ?" : (lang === 'ar' ? "إعادة تعيين كلمة المرور؟" : "Forgot password? Send Reset Link");
-            
             alertBox.innerHTML = `
-              <div>${errMsg}</div>
-              <button type="button" style="margin-top:8px; background:none; border:none; color:var(--primary); font-weight:700; text-decoration:underline; cursor:pointer;" onclick="triggerPasswordResetWithConfirm('${email}')">${resetBtnText}</button>
+              <div>Incorrect email or password!</div>
+              <button type="button" style="margin-top:8px; background:none; border:none; color:var(--primary); font-weight:700; text-decoration:underline; cursor:pointer;" onclick="triggerPasswordResetWithConfirm('${email}')">Forgot password? Send Reset Link</button>
             `;
             alertBox.style.display = 'block';
             btn.disabled = false;
@@ -1631,7 +1602,7 @@
         showAppConfirm({
           icon: '<i class="fa-solid fa-envelope"></i>',
           title: "Notice",
-          msg: (lang === 'ml') ? "ദയവായി ഇമെയിൽ വിലാസം നൽകുക!" : "Please enter your email address first!",
+          msg: "Please enter your email address first!",
           hideCancel: true
         });
         return;
@@ -1639,13 +1610,13 @@
 
       showAppConfirm({
         icon: '<i class="fa-solid fa-envelope" style="color:var(--primary);"></i>',
-        title: (lang === 'ml') ? "പാസ്‌വേഡ് റീസെറ്റ്" : "Password Reset",
-        msg: (lang === 'ml') ? `${email} എന്ന ഇമെയിലിലേക്ക് പാസ്‌വേഡ് മാറ്റാനുള്ള ഔദ്യോഗിക ലിങ്ക് അയക്കണോ?` : `Send password reset link to ${email}?`,
+        title: "Password Reset",
+        msg: `Send password reset link to ${email}?`,
         onConfirm: () => {
           auth.sendPasswordResetEmail(email).then(() => {
             const alertBox = document.getElementById('authAlert');
             alertBox.className = "status-alert status-success";
-            alertBox.innerText = (lang === 'ml') ? `പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ${email}-ലേക്ക് അയച്ചിട്ടുണ്ട്!` : `Password reset link sent to ${email}!`;
+            alertBox.innerText = `Password reset link sent to ${email}!`;
             alertBox.style.display = "block";
           });
         }
