@@ -137,7 +137,6 @@
     .btn-main { width: 100%; padding: 14px; border: none; background: linear-gradient(135deg, #1e40af, var(--primary)); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
     .btn-main:active { transform: scale(0.98); }
 
-    /* ACTION BUTTONS GROUP */
     .form-actions-group {
       display: flex;
       gap: 10px;
@@ -167,7 +166,33 @@
       flex: 2;
     }
 
-    /* APP LAYOUT - FULL SEAMLESS TOP ON MOBILE */
+    /* TOP URGENT NOTIFICATION BAR */
+    .top-due-alert-container {
+      background: #fef2f2;
+      border-bottom: 2px solid #f87171;
+      padding: 10px 16px;
+      display: none;
+    }
+    .top-due-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+    }
+    .top-due-item:not(:last-child) {
+      border-bottom: 1px dashed #fecaca;
+    }
+    .due-tag {
+      background: var(--expense);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+
+    /* APP LAYOUT */
     .app-shell { 
       width: 100%; 
       max-width: 600px; 
@@ -233,7 +258,7 @@
     .status-alert { padding: 12px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; text-align: center; margin-top: 14px; display: none; line-height: 1.4; }
     .status-success { background: #dcfce7; color: #15803d; } .status-error { background: #ffe4e6; color: #be123c; }
 
-    /* MODALS & CLEAN SCROLL */
+    /* MODALS */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 9999; padding: 16px; }
     .modal-dialog {
       background: var(--surface);
@@ -301,6 +326,12 @@
     .reminder-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
     .reminder-date { font-size: 11px; color: var(--text-muted); }
     .reminder-amt { font-weight: 800; font-size: 15px; color: var(--expense); }
+    
+    .btn-group-rem {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
     .btn-pay-now {
       background: var(--income);
       color: white;
@@ -310,7 +341,16 @@
       font-size: 11px;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 4px;
+    }
+    .btn-postpone-now {
+      background: #475569;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     /* USER GUIDE */
@@ -393,7 +433,6 @@
         <input type="email" id="authEmail" class="input-box" placeholder="name@example.com" required>
       </div>
       
-      <!-- 1st Password (Hidden) -->
       <div class="form-group">
         <label>Password (Min 4 characters)</label>
         <div class="password-wrap">
@@ -402,7 +441,6 @@
         </div>
       </div>
 
-      <!-- 2nd Confirm Password (Visible by default) -->
       <div class="form-group" id="confirmPassGroup" style="display: none;">
         <label>Confirm Password (Visible)</label>
         <div class="password-wrap">
@@ -443,6 +481,9 @@
         </button>
       </div>
     </div>
+
+    <!-- 🌟 TOP DUE ALERT BAR (Appears on home when payments are due) -->
+    <div class="top-due-alert-container" id="topDueAlertBox"></div>
 
     <!-- DASHBOARD -->
     <div class="dashboard-overview">
@@ -603,13 +644,12 @@
         </div>
       </div>
 
-      <!-- 4. VEHICLE SECTION (WITH VEHICLE DELETE & FUEL LOG DELETE) -->
+      <!-- 4. VEHICLE SECTION -->
       <div id="vehicleSection" style="display: none;">
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <div class="select-wrap" style="flex: 1;">
             <select id="activeVehicleSelect" class="input-box" onchange="onVehicleSelectChange()"></select>
           </div>
-          <!-- 🌟 DELETE VEHICLE BUTTON -->
           <button type="button" id="btnDeleteCurrentVeh" class="btn-main" style="width: auto; padding: 0 12px; background: var(--expense);" onclick="promptDeleteCurrentVehicle()" title="Delete Vehicle">
             <i class="fa-solid fa-trash-can"></i>
           </button>
@@ -685,6 +725,24 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- POSTPONE REMINDER MODAL -->
+  <div class="modal-overlay" id="postponeModal">
+    <div class="modal-dialog" style="max-width: 320px;">
+      <div class="modal-header">
+        <h3 style="font-size: 15px;">മാറ്റിവെയ്ക്കുക (Postpone)</h3>
+        <button type="button" class="modal-close-btn" onclick="closePostponeModal()">✕</button>
+      </div>
+      <form onsubmit="handlePostponeSubmit(event)">
+        <input type="hidden" id="postponeRemId">
+        <div class="form-group">
+          <label>പുതിയ തീയതി (New Due Date)</label>
+          <input type="date" id="postponeNewDate" class="input-box" required>
+        </div>
+        <button type="submit" class="btn-main">തീയതി മാറ്റുക</button>
+      </form>
     </div>
   </div>
 
@@ -1374,7 +1432,7 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-bell"></i> 4. ബിൽ റിമൈൻഡറുകൾ (Reminders)</h4>
-          <p>മാസാന്ത ബില്ലുകൾ, വാടക, സ്കൂൾ ഫീസ് എന്നിവ നിശ്ചിത തീയതിയും കാറ്റഗറിയും നൽകി റിമൈൻഡർ സെറ്റ് ചെയ്യാം. അടച്ചു കഴിഞ്ഞാൽ 'Mark as Paid' ക്ലിക്ക് ചെയ്താൽ അത് തനിയെ ചെലവ് ലിസ്റ്റിലേക്ക് മാറും.</p>
+          <p>മാസാന്ത ബില്ലുകൾ, വാടക, സ്കൂൾ ഫീസ് എന്നിവ നിശ്ചിത തീയതിയും കാറ്റഗറിയും നൽകി റിമൈൻഡർ സെറ്റ് ചെയ്യാം. അടച്ചു കഴിഞ്ഞാൽ 'Mark as Paid' ക്ലിക്ക് ചെയ്താൽ അത് തനിയെ ചെലവ് ലിസ്റ്റിലേക്ക് മാറും. അടയ്ക്കാൻ കഴിഞ്ഞില്ലെങ്കിൽ 'Postpone' വഴി തീയതി മാറ്റാം.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> 5. വാഹന ട്രാക്കർ & മൈലേജ്</h4>
@@ -1400,7 +1458,7 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-bell"></i> 4. Bill & Payment Reminders</h4>
-          <p>Set recurring or one-time payment reminders with designated categories. Click 'Mark as Paid' to automatically log it into your expenses.</p>
+          <p>Set recurring or one-time payment reminders with designated categories. Click 'Mark as Paid' to automatically log it into expenses, or 'Postpone' to reschedule.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> 5. Vehicle Fuel & Mileage Tracker</h4>
@@ -1426,7 +1484,7 @@
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-bell"></i> ٤. تذكير الفواتير</h4>
-          <p>أضف تذكيرات بمواعيد الإيجار أو الفواتير مع تحديد الفئة. عند السداد، اضغط 'تم الدفع' لتحويلها مباشرة إلى سجل المصروفات.</p>
+          <p>أضف تذكيرات بمواعيد الإيجار أو الفواتير مع تحديد الفئة. عند السداد، اضغط 'تم الدفع' لتحويلها للمصروفات، أو 'تأجيل' لإعادة الجدولة.</p>
         </div>
         <div class="guide-section">
           <h4><i class="fa-solid fa-gas-pump"></i> ٥. متتبع وقود واستهلاك المركبات</h4>
@@ -2153,7 +2211,7 @@
       proceedSave();
     }
 
-    /* REMINDERS SYSTEM */
+    /* 🌟 REMINDERS SYSTEM WITH TOP DUE NOTIFICATION & POSTPONE */
     function openAddReminderModal() {
       updateReminderCategoryDropdown();
       document.getElementById('addReminderModal').style.display = 'flex';
@@ -2185,6 +2243,40 @@
         userReminders = [];
         snap.forEach(doc => userReminders.push({ id: doc.id, ...doc.data() }));
         renderRemindersList();
+        renderTopDueAlerts();
+      });
+    }
+
+    // 🌟 RENDER TOP RED ALERT FOR DUE BILLS ON APP HOME
+    function renderTopDueAlerts() {
+      const alertBox = document.getElementById('topDueAlertBox');
+      const todayDate = new Date().toISOString().split('T')[0];
+      const dueList = userReminders.filter(r => r.dueDate <= todayDate);
+
+      if (dueList.length === 0) {
+        alertBox.style.display = 'none';
+        alertBox.innerHTML = '';
+        return;
+      }
+
+      alertBox.style.display = 'block';
+      alertBox.innerHTML = '';
+
+      dueList.forEach(rem => {
+        const item = document.createElement('div');
+        item.className = 'top-due-item';
+        item.innerHTML = `
+          <div>
+            <span class="due-tag">DUE</span>
+            <strong style="font-size:13px; color:#991b1b;">${rem.title}</strong>
+            <span style="font-size:12px; font-weight:700; color:var(--text); margin-left:6px;">${userCurrency}${parseFloat(rem.amount).toFixed(2)}</span>
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')"><i class="fa-solid fa-check"></i> Paid</button>
+            <button type="button" class="btn-postpone-now" onclick="openPostponeModal('${rem.id}', '${rem.dueDate}')"><i class="fa-solid fa-calendar-days"></i></button>
+          </div>
+        `;
+        alertBox.appendChild(item);
       });
     }
 
@@ -2208,13 +2300,14 @@
         else if (rem.frequency === 'yearly') freqText = lang === 'ml' ? 'വർഷം' : (lang === 'ar' ? 'سنوي' : 'Yearly');
         else freqText = lang === 'ml' ? 'ഒരിക്കൽ' : (lang === 'ar' ? 'مرة واحدة' : 'Once');
 
-        const btnText = lang === 'ml' ? 'അടച്ചു (Paid)' : (lang === 'ar' ? 'تم الدفع' : 'Mark Paid');
-
         card.innerHTML = `
           <div>
             <div class="reminder-title">${rem.title} <small style="font-weight:normal; color:var(--primary-dark);">(${rem.category || 'General'})</small></div>
             <div class="reminder-date"><i class="fa-solid fa-clock"></i> Due: ${rem.dueDate} (${freqText})</div>
-            <button type="button" class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')"><i class="fa-solid fa-check"></i> ${btnText}</button>
+            <div class="btn-group-rem">
+              <button type="button" class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')"><i class="fa-solid fa-check"></i> Paid</button>
+              <button type="button" class="btn-postpone-now" onclick="openPostponeModal('${rem.id}', '${rem.dueDate}')"><i class="fa-solid fa-calendar-days"></i> Postpone</button>
+            </div>
           </div>
           <div style="text-align: right;">
             <div class="reminder-amt">${userCurrency}${parseFloat(rem.amount).toFixed(2)}</div>
@@ -2222,6 +2315,27 @@
           </div>
         `;
         container.appendChild(card);
+      });
+    }
+
+    // 🌟 POSTPONE REMINDER MODAL LOGIC
+    function openPostponeModal(remId, currentDate) {
+      document.getElementById('postponeRemId').value = remId;
+      document.getElementById('postponeNewDate').value = currentDate;
+      document.getElementById('postponeModal').style.display = 'flex';
+    }
+    function closePostponeModal() { document.getElementById('postponeModal').style.display = 'none'; }
+
+    function handlePostponeSubmit(e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const remId = document.getElementById('postponeRemId').value;
+      const newDate = document.getElementById('postponeNewDate').value;
+
+      db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({
+        dueDate: newDate
+      }).then(() => {
+        closePostponeModal();
       });
     }
 
@@ -2283,7 +2397,7 @@
       });
     }
 
-    /* 🌟 VEHICLE LOGIC (WITH FULL DELETE & FUEL LOG DELETE) */
+    /* VEHICLE LOGIC */
     function openAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'flex'; }
     function closeAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'none'; }
 
@@ -2343,7 +2457,6 @@
       if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
     }
 
-    // 🌟 DELETE ENTIRE VEHICLE
     function promptDeleteCurrentVehicle() {
       if (!currentUser || !activeVehicleId) return;
       const vehObj = userVehicles.find(v => v.id === activeVehicleId);
@@ -2359,7 +2472,6 @@
       });
     }
 
-    // 🌟 LOAD FUEL HISTORY WITH INDIVIDUAL DELETE BUTTON
     function loadVehicleFuelHistory(vehId) {
       if (unsubFuelHistory) unsubFuelHistory();
       unsubFuelHistory = db.collection("users").doc(currentUser.uid).collection("vehicles").doc(vehId).collection("fuel_logs")
@@ -2420,7 +2532,6 @@
         });
     }
 
-    // 🌟 DELETE SINGLE FUEL LOG ENTRY
     function promptDeleteFuelLog(logId) {
       if (!currentUser || !activeVehicleId) return;
 
