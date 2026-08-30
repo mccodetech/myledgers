@@ -34,6 +34,7 @@
       --income: #10b981;
       --loan: #6366f1;
       --vehicle: #8b5cf6;
+      --vehicle-dark: #7c3aed;
       --reminder: #f59e0b;
       --whatsapp: #25d366;
       --bg: #f8fafc;
@@ -361,7 +362,7 @@
 </head>
 <body>
 
-  <!-- PWA INSTALL BANNER (Only on Login screen) -->
+  <!-- PWA INSTALL BANNER -->
   <div class="install-banner" id="pwaBanner">
     <div class="install-banner-text">
       <img src="https://cdn-icons-png.flaticon.com/512/9554/9554904.png" alt="App Icon">
@@ -373,7 +374,7 @@
     </div>
   </div>
 
-  <!-- AUTHENTICATION VIEW (ENGLISH ONLY) -->
+  <!-- AUTHENTICATION VIEW -->
   <div class="auth-wrapper" id="authView">
     <div class="auth-header">
       <div class="brand-icon"><i class="fa-solid fa-wallet"></i></div>
@@ -392,7 +393,7 @@
         <input type="email" id="authEmail" class="input-box" placeholder="name@example.com" required>
       </div>
       
-      <!-- 1st Password (Hidden by default) -->
+      <!-- 1st Password (Hidden) -->
       <div class="form-group">
         <label>Password (Min 4 characters)</label>
         <div class="password-wrap">
@@ -401,7 +402,7 @@
         </div>
       </div>
 
-      <!-- 2nd Confirm Password (Visible by default for easy check) -->
+      <!-- 2nd Confirm Password (Visible by default) -->
       <div class="form-group" id="confirmPassGroup" style="display: none;">
         <label>Confirm Password (Visible)</label>
         <div class="password-wrap">
@@ -602,13 +603,17 @@
         </div>
       </div>
 
-      <!-- 4. VEHICLE SECTION -->
+      <!-- 4. VEHICLE SECTION (WITH VEHICLE DELETE & FUEL LOG DELETE) -->
       <div id="vehicleSection" style="display: none;">
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <div class="select-wrap" style="flex: 1;">
             <select id="activeVehicleSelect" class="input-box" onchange="onVehicleSelectChange()"></select>
           </div>
-          <button type="button" class="btn-main" style="width: auto; padding: 0 16px; background: var(--vehicle);" onclick="openAddVehicleModal()">
+          <!-- 🌟 DELETE VEHICLE BUTTON -->
+          <button type="button" id="btnDeleteCurrentVeh" class="btn-main" style="width: auto; padding: 0 12px; background: var(--expense);" onclick="promptDeleteCurrentVehicle()" title="Delete Vehicle">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+          <button type="button" class="btn-main" style="width: auto; padding: 0 14px; background: var(--vehicle);" onclick="openAddVehicleModal()">
             <i class="fa-solid fa-plus"></i> <span data-i18n="btn_add_veh">വാഹനം</span>
           </button>
         </div>
@@ -672,6 +677,7 @@
                 <th>Km</th>
                 <th data-i18n="th_amount">തുക</th>
                 <th>Mileage</th>
+                <th style="text-align: right;">Action</th>
               </tr>
             </thead>
             <tbody id="fuelHistoryTableRows"></tbody>
@@ -2277,7 +2283,7 @@
       });
     }
 
-    /* VEHICLE LOGIC */
+    /* 🌟 VEHICLE LOGIC (WITH FULL DELETE & FUEL LOG DELETE) */
     function openAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'flex'; }
     function closeAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'none'; }
 
@@ -2310,12 +2316,16 @@
           userVehicles.push({ id: doc.id, ...doc.data() });
         });
 
+        const btnDelVeh = document.getElementById('btnDeleteCurrentVeh');
+
         if (userVehicles.length === 0) {
           select.innerHTML = `<option value="">${lang === 'ml' ? 'വാഹനങ്ങൾ ചേർത്തിട്ടില്ല' : 'No vehicles added'}</option>`;
           activeVehicleId = null;
+          if (btnDelVeh) btnDelVeh.style.display = 'none';
           document.getElementById('vehicleStatsBox').style.display = 'none';
-          document.getElementById('fuelHistoryTableRows').innerHTML = `<tr><td colspan="4" style="text-align:center; padding:16px;">${lang === 'ml' ? 'വാഹനങ്ങൾ ചേർക്കുക' : 'Add Vehicles'}</td></tr>`;
+          document.getElementById('fuelHistoryTableRows').innerHTML = `<tr><td colspan="5" style="text-align:center; padding:16px;">${lang === 'ml' ? 'വാഹനങ്ങൾ ചേർക്കുക' : 'Add Vehicles'}</td></tr>`;
         } else {
+          if (btnDelVeh) btnDelVeh.style.display = 'inline-flex';
           userVehicles.forEach(v => {
             const opt = document.createElement('option');
             opt.value = v.id;
@@ -2333,6 +2343,23 @@
       if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
     }
 
+    // 🌟 DELETE ENTIRE VEHICLE
+    function promptDeleteCurrentVehicle() {
+      if (!currentUser || !activeVehicleId) return;
+      const vehObj = userVehicles.find(v => v.id === activeVehicleId);
+      const vehName = vehObj ? vehObj.name : "Vehicle";
+
+      showAppConfirm({
+        icon: '<i class="fa-solid fa-trash-can" style="color:var(--expense);"></i>',
+        title: (lang === 'ml') ? "വാഹനം നീക്കം ചെയ്യുക" : "Delete Vehicle",
+        msg: (lang === 'ml') ? `"${vehName}" എന്ന വാഹനവും അതിന്റെ മുഴുവൻ ഇന്ധന വിവരങ്ങളും ഡിലീറ്റ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?` : `Are you sure you want to delete vehicle "${vehName}" and all its logs?`,
+        onConfirm: () => {
+          db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).delete();
+        }
+      });
+    }
+
+    // 🌟 LOAD FUEL HISTORY WITH INDIVIDUAL DELETE BUTTON
     function loadVehicleFuelHistory(vehId) {
       if (unsubFuelHistory) unsubFuelHistory();
       unsubFuelHistory = db.collection("users").doc(currentUser.uid).collection("vehicles").doc(vehId).collection("fuel_logs")
@@ -2345,7 +2372,7 @@
 
           if (logs.length === 0) {
             document.getElementById('vehicleStatsBox').style.display = 'none';
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:16px; color:var(--text-muted);">${lang === 'ml' ? 'ഇന്ധന വിവരങ്ങൾ രേഖപ്പെടുത്തിയിട്ടില്ല' : 'No fuel logs recorded'}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:16px; color:var(--text-muted);">${lang === 'ml' ? 'ഇന്ധന വിവരങ്ങൾ രേഖപ്പെടുത്തിയിട്ടില്ല' : 'No fuel logs recorded'}</td></tr>`;
             return;
           }
 
@@ -2384,10 +2411,27 @@
               <td>${log.odometer}</td>
               <td style="font-weight:700;">${userCurrency}${log.amount}</td>
               <td style="color:var(--vehicle); font-weight:700;">${mBadge}</td>
+              <td style="text-align: right;">
+                <i class="fa-solid fa-trash icon-del" onclick="promptDeleteFuelLog('${log.id}')" title="Delete Log"></i>
+              </td>
             `;
             tbody.appendChild(tr);
           });
         });
+    }
+
+    // 🌟 DELETE SINGLE FUEL LOG ENTRY
+    function promptDeleteFuelLog(logId) {
+      if (!currentUser || !activeVehicleId) return;
+
+      showAppConfirm({
+        icon: '<i class="fa-solid fa-trash" style="color:var(--expense);"></i>',
+        title: (lang === 'ml') ? "എൻട്രി ഒഴിവാക്കുക" : "Delete Fuel Log",
+        msg: (lang === 'ml') ? "ഈ ഇന്ധന എൻട്രി ഒഴിവാക്കണമെന്ന് ഉറപ്പാണോ?" : "Delete this fuel log record?",
+        onConfirm: () => {
+          db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).collection("fuel_logs").doc(logId).delete();
+        }
+      });
     }
 
     function handleFuelEntrySubmit(e) {
