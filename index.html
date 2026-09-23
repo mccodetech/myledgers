@@ -26,10 +26,10 @@
 
   <style>
     :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --primary-light: #dbeafe;
-      --accent: #3b82f6;
+      --primary: #1e3a8a;
+      --primary-dark: #172554;
+      --primary-light: #eff6ff;
+      --accent: #2563eb;
       --expense: #f43f5e;
       --income: #10b981;
       --loan: #6366f1;
@@ -60,12 +60,22 @@
 
     body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
 
-    /* GRID HOME MENU STYLES */
-    .home-grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
-    .grid-menu-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 18px 14px; text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
-    .grid-menu-card:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
-    .grid-menu-card i { font-size: 26px; color: var(--primary); margin-bottom: 8px; }
-    .grid-menu-card span { display: block; font-size: 13.5px; font-weight: 700; color: var(--text); }
+    /* STYLISH NAVY BLUE GRADIENT HOME GRID MENU */
+    .home-grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 16px; }
+    .grid-menu-card { 
+      background: linear-gradient(135deg, #1e3a8a, #2563eb); 
+      border: 1.5px solid rgba(255, 255, 255, 0.2); 
+      border-radius: var(--radius-lg); 
+      padding: 22px 16px; 
+      text-align: center; 
+      cursor: pointer; 
+      transition: all 0.25s ease; 
+      box-shadow: var(--shadow-md); 
+      color: white;
+    }
+    .grid-menu-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); filter: brightness(1.05); }
+    .grid-menu-card i { font-size: 30px; color: #ffffff; margin-bottom: 10px; background: rgba(255, 255, 255, 0.15); width: 56px; height: 56px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; }
+    .grid-menu-card span { display: block; font-size: 14px; font-weight: 700; color: #ffffff; }
 
     .install-banner {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 440px;
@@ -122,9 +132,6 @@
     .metric-value { font-size: 15px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .val-inc { color: var(--income); } .val-exp { color: var(--expense); } .val-bal { color: var(--text); }
 
-    .nav-tabs { display: flex; padding: 12px 16px 0 16px; gap: 6px; border-bottom: 1px solid var(--border); overflow-x: auto; }
-    .nav-tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; text-align: center; white-space: nowrap; }
-    .nav-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
     .app-content { padding: 20px 16px; }
 
     .type-pill-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-full); gap: 4px; margin-bottom: 20px; }
@@ -328,47 +335,33 @@
       </div>
     </div>
 
-    <!-- 🌟 HOME GRID MENU (Direct Access Buttons) -->
-    <div class="app-content" id="homeMenuView">
-      <div class="home-grid-menu">
-        <div class="grid-menu-card" onclick="switchView('entry')">
-          <i class="fa-solid fa-plus-circle"></i>
-          <span data-i18n="tab_add">ഇടപാട്</span>
-        </div>
-        <div class="grid-menu-card" onclick="switchView('report')">
-          <i class="fa-solid fa-chart-pie"></i>
-          <span data-i18n="tab_report">റിപ്പോർട്ട്</span>
-        </div>
-        <div class="grid-menu-card" onclick="switchView('reminder')">
-          <i class="fa-solid fa-bell"></i>
-          <span data-i18n="tab_reminders">റിമൈൻഡർ</span>
-        </div>
-        <div class="grid-menu-card" onclick="switchView('vehicle')">
-          <i class="fa-solid fa-gas-pump"></i>
-          <span data-i18n="tab_vehicle">വാഹനം</span>
+    <div class="app-content">
+      <!-- 🌟 HOME GRID MENU -->
+      <div id="homeMenuView">
+        <div style="font-size: 14px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px;" data-i18n="main_menu">പ്രധാന മെനു (Main Menu)</div>
+        <div class="home-grid-menu">
+          <div class="grid-menu-card" onclick="switchView('entry')">
+            <i class="fa-solid fa-plus-circle"></i>
+            <span data-i18n="tab_add">ഇടപാട് ചേർക്കുക</span>
+          </div>
+          <div class="grid-menu-card" onclick="switchView('report')">
+            <i class="fa-solid fa-chart-pie"></i>
+            <span data-i18n="tab_report">റിപ്പോർട്ടുകൾ</span>
+          </div>
+          <div class="grid-menu-card" onclick="switchView('reminder')">
+            <i class="fa-solid fa-bell"></i>
+            <span data-i18n="tab_reminders">ബിൽ റിമൈൻഡർ</span>
+          </div>
+          <div class="grid-menu-card" onclick="switchView('vehicle')">
+            <i class="fa-solid fa-gas-pump"></i>
+            <span data-i18n="tab_vehicle">വാഹന ട്രാക്കർ</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- NAVIGATION TABS -->
-    <div class="nav-tabs" id="mainNavTabs">
-      <button type="button" class="nav-tab-btn active" id="tabEntryBtn" onclick="switchView('entry')">
-        <i class="fa-solid fa-plus-circle"></i> <span data-i18n="tab_add">ഇടപാട്</span>
-      </button>
-      <button type="button" class="nav-tab-btn" id="tabReportBtn" onclick="switchView('report')">
-        <i class="fa-solid fa-chart-pie"></i> <span data-i18n="tab_report">റിപ്പോർട്ട്</span>
-      </button>
-      <button type="button" class="nav-tab-btn" id="tabReminderBtn" style="display: none;" onclick="switchView('reminder')">
-        <i class="fa-solid fa-bell"></i> <span data-i18n="tab_reminders">റിമൈൻഡർ</span>
-      </button>
-      <button type="button" class="nav-tab-btn" id="tabVehicleBtn" style="display: none;" onclick="switchView('vehicle')">
-        <i class="fa-solid fa-gas-pump"></i> <span data-i18n="tab_vehicle">വാഹനം</span>
-      </button>
-    </div>
-
-    <div class="app-content">
       <!-- 1. ENTRY SECTION -->
       <div id="entrySection" style="display: none;">
+        <button type="button" class="btn-cancel-action" style="margin-bottom: 16px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">തിരികെ മെനുവിലേക്ക്</span></button>
         <div class="type-pill-group">
           <button type="button" class="type-pill active" data-mode="income" onclick="setMode('income')" data-i18n="type_inc">വരവ്</button>
           <button type="button" class="type-pill" data-mode="expense" onclick="setMode('expense')" data-i18n="type_exp">ചെലവ്</button>
@@ -426,8 +419,8 @@
           </div>
 
           <div class="form-actions-group">
-            <button type="button" class="btn-cancel-action" onclick="switchView('home')">
-              <i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">മടങ്ങിപ്പോവുക</span>
+            <button type="button" class="btn-cancel-action" onclick="resetEntryForm()">
+              <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_cancel_entry">റദ്ദാക്കുക</span>
             </button>
             <button type="submit" class="btn-main btn-save-action" id="saveSubmitBtn">
               <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_save">രേഖപ്പെടുത്തുക</span>
@@ -439,9 +432,7 @@
 
       <!-- 2. REPORT SECTION -->
       <div id="reportSection" style="display: none;">
-        <div style="margin-bottom: 12px;">
-          <button type="button" class="btn-cancel-action" style="padding: 8px 14px; width: auto;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> Back to Menu</button>
-        </div>
+        <button type="button" class="btn-cancel-action" style="margin-bottom: 16px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">തിരികെ മെനുവിലേക്ക്</span></button>
         <div id="printableReportArea">
           <div class="filter-grid">
             <div class="select-wrap">
@@ -483,9 +474,7 @@
 
       <!-- 3. REMINDER SECTION -->
       <div id="reminderSection" style="display: none;">
-        <div style="margin-bottom: 12px;">
-          <button type="button" class="btn-cancel-action" style="padding: 8px 14px; width: auto;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> Back to Menu</button>
-        </div>
+        <button type="button" class="btn-cancel-action" style="margin-bottom: 16px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">തിരികെ മെനുവിലേക്ക്</span></button>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <h3 style="font-size: 15px; font-weight: 700;" data-i18n="title_upcoming_bills">വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ</h3>
           <button type="button" class="btn-main" style="width: auto; padding: 6px 14px; background: var(--reminder); font-size: 13px;" onclick="openAddReminderModal()">
@@ -500,9 +489,7 @@
 
       <!-- 4. VEHICLE SECTION (WITH MAINTENANCE & REPAIRS) -->
       <div id="vehicleSection" style="display: none;">
-        <div style="margin-bottom: 12px;">
-          <button type="button" class="btn-cancel-action" style="padding: 8px 14px; width: auto;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> Back to Menu</button>
-        </div>
+        <button type="button" class="btn-cancel-action" style="margin-bottom: 16px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">തിരികെ മെനുവിലേക്ക്</span></button>
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <div class="select-wrap" style="flex: 1;">
             <select id="activeVehicleSelect" class="input-box" onchange="onVehicleSelectChange()"></select>
@@ -1016,7 +1003,10 @@
         title_add_veh: "പുതിയ വാഹനം ചേർക്കുക", lbl_veh_type: "വാഹന തരം", lbl_veh_name: "വാഹനത്തിന്റെ പേര് / മോഡൽ", lbl_veh_num: "വാഹന നമ്പർ (Reg. Number)",
         lbl_fuel_type: "ഇന്ധന തരം (Fuel Type)", btn_save_veh: "വാഹനം സേവ് ചെയ്യുക", btn_add_veh: "വാഹനം", lbl_veh_mileage: "വാഹനത്തിന്റെ മൈലേജ്:",
         lbl_running_cost: "ഒരു Km ഓടാനുള്ള ചെലവ്:", lbl_last_odo: "അവസാനം അടിച്ച ഓഡോമീറ്റർ:", lbl_odo_reading: "ഇപ്പോഴത്തെ മീറ്റർ റീഡിംഗ് (Odometer Km)",
-        lbl_fuel_price: "ഇന്ധന വില (Price/Litre)", btn_save_fuel: "വിവരങ്ങൾ സേവ് ചെയ്യുക", title_fuel_history: "വാഹന സർവീസ് ചരിത്രം", btn_cancel: "റദ്ദാക്കുക", btn_yes: "അതെ"
+        lbl_fuel_price: "ഇന്ധന വില (Price/Litre)", btn_save_fuel: "വിവരങ്ങൾ സേവ് ചെയ്യുക", title_fuel_history: "വാഹന സർവീസ് ചരിത്രം", btn_cancel: "റദ്ദാക്കുക", btn_yes: "അതെ",
+        main_menu: "പ്രധാന മെനു", btn_back: "തിരികെ മെനുവിലേക്ക്", loan_borrowed: "കടം വാങ്ങിയത്", loan_given: "കടം കൊടുത്തത്", loan_repaid: "കടം തിരിച്ചു കൊടുത്തത്",
+        loan_received: "കടം തിരിച്ചു കിട്ടിയത്", opt_all_months: "എല്ലാ മാസവും", opt_this_month: "ഈ മാസം", opt_all_types: "എല്ലാ ഇടപാടുകളും", opt_inc_only: "വരവ് മാത്രം",
+        opt_exp_only: "ചെലവ് മാത്രം", opt_loan_only: "കടം ഇടപാടുകൾ", opt_once: "ഒരിക്കൽ മാത്രം", opt_monthly: "എല്ലാ മാസവും", opt_yearly: "എല്ലാ വർഷവും"
       },
       en: {
         lbl_date: "Date", lbl_loan_type: "Transaction Type", lbl_person: "Person Name", lbl_category: "Category", lbl_new_category: "New Category Name",
@@ -1034,7 +1024,10 @@
         btn_add_reminder: "New Reminder", title_edit_tx: "Edit Transaction", btn_update: "Update Entry", title_add_veh: "Add New Vehicle",
         lbl_veh_type: "Vehicle Type", lbl_veh_name: "Vehicle Name", lbl_veh_num: "Reg. Number", lbl_fuel_type: "Fuel Type", btn_save_veh: "Save Vehicle",
         btn_add_veh: "Vehicle", lbl_veh_mileage: "Vehicle Mileage:", lbl_running_cost: "Running Cost / Km:", lbl_last_odo: "Last Odometer:",
-        lbl_odo_reading: "Current Odometer (Km)", lbl_fuel_price: "Fuel Price/Litre", btn_save_fuel: "Save Log", title_fuel_history: "Service History", btn_cancel: "Cancel", btn_yes: "Yes"
+        lbl_odo_reading: "Current Odometer (Km)", lbl_fuel_price: "Fuel Price/Litre", btn_save_fuel: "Save Log", title_fuel_history: "Service History", btn_cancel: "Cancel", btn_yes: "Yes",
+        main_menu: "Main Menu", btn_back: "Back to Menu", loan_borrowed: "Borrowed Loan", loan_given: "Given Loan", loan_repaid: "Repaid Loan",
+        loan_received: "Received Loan Repayment", opt_all_months: "All Months", opt_this_month: "This Month", opt_all_types: "All Transactions",
+        opt_inc_only: "Income Only", opt_exp_only: "Expense Only", opt_loan_only: "Loans / Debts", opt_once: "One Time", opt_monthly: "Monthly", opt_yearly: "Yearly"
       },
       ar: {
         lbl_date: "التاريخ", lbl_loan_type: "نوع المعاملة", lbl_person: "اسم الشخص", lbl_category: "الفئة", lbl_new_category: "اسم الفئة الجديدة",
@@ -1051,12 +1044,15 @@
         title_upcoming_bills: "الفواتير القادمة", btn_add_reminder: "إضافة تذكير", title_edit_tx: "تعديل", btn_update: "تحديث", title_add_veh: "إضافة مركبة",
         lbl_veh_type: "نوع المركبة", lbl_veh_name: "اسم المركبة", lbl_veh_num: "رقم اللوحة", lbl_fuel_type: "نوع الوقود", btn_save_veh: "حفظ المركبة",
         btn_add_veh: "مركبة", lbl_veh_mileage: "معدل الاستهلاك:", lbl_running_cost: "تكلفة كم:", lbl_last_odo: "آخر عداد:", lbl_odo_reading: "قراءة العداد الحالية",
-        lbl_fuel_price: "سعر اللتر", btn_save_fuel: "حفظ", title_fuel_history: "سجل الخدمات", btn_cancel: "إلغاء", btn_yes: "نعم"
+        lbl_fuel_price: "سعر اللتر", btn_save_fuel: "حفظ", title_fuel_history: "سجل الخدمات", btn_cancel: "إلغاء", btn_yes: "نعم",
+        main_menu: "القائمة الرئيسية", btn_back: "العودة للقائمة", loan_borrowed: "اقتراض دين", loan_given: "إعطاء دين", loan_repaid: "سداد دين",
+        loan_received: "استرداد دين", opt_all_months: "جميع الأشهر", opt_this_month: "هذا الشهر", opt_all_types: "جميع المعاملات", opt_inc_only: "الدخل فقط",
+        opt_exp_only: "المصروفات فقط", opt_loan_only: "الديون والقروض", opt_once: "مرة واحدة", opt_monthly: "شهرياً", opt_yearly: "سنوياً"
       }
     };
 
     const guideData = {
-      ml: `<div class="guide-section"><h4><i class="fa-solid fa-wallet"></i> 1. വരവ്-ചെലവുകൾ</h4><p>വരവ്, ചെലവ്, കടം ഇടപാടുകൾ രേഖപ്പെടുത്താം.</p></div>`,
+      ml: `<div class="guide-section"><h4><i class="fa-solid fa-wallet"></i> 1. വരവ്-ചെലവുകൾ</h4><p>വരവ്, ചെലവ്, കടം ഇടപാടുകൾ എന്നിവ രേഖപ്പെടുത്താം.</p></div>`,
       en: `<div class="guide-section"><h4><i class="fa-solid fa-wallet"></i> 1. Transactions</h4><p>Record income, expenses and loans easily.</p></div>`,
       ar: `<div class="guide-section"><h4><i class="fa-solid fa-wallet"></i> 1. المعاملات</h4><p>تسجيل الدخل والمصروفات بكل سهولة.</p></div>`
     };
@@ -1194,10 +1190,7 @@
       closeSettingsModal();
     }
     function applyDisplayPreferences() {
-      document.getElementById('tabEntryBtn').style.display = displayConfig.entry !== false ? 'block' : 'none';
-      document.getElementById('tabReportBtn').style.display = displayConfig.report !== false ? 'block' : 'none';
-      document.getElementById('tabReminderBtn').style.display = displayConfig.reminder !== false ? 'block' : 'none';
-      document.getElementById('tabVehicleBtn').style.display = displayConfig.vehicle ? 'block' : 'none';
+      // Visibility configuration logic if needed
     }
     function shareApplication() {
       const shareUrl = window.location.href;
@@ -1226,11 +1219,6 @@
       document.getElementById('reportSection').style.display = (view === 'report') ? 'block' : 'none';
       document.getElementById('reminderSection').style.display = (view === 'reminder') ? 'block' : 'none';
       document.getElementById('vehicleSection').style.display = (view === 'vehicle') ? 'block' : 'none';
-
-      document.getElementById('tabEntryBtn').classList.toggle('active', view === 'entry');
-      document.getElementById('tabReportBtn').classList.toggle('active', view === 'report');
-      document.getElementById('tabReminderBtn').classList.toggle('active', view === 'reminder');
-      document.getElementById('tabVehicleBtn').classList.toggle('active', view === 'vehicle');
 
       if (view === 'report') renderReport();
     }
