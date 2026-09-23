@@ -10,10 +10,8 @@
   
   <title>My Ledgers</title>
   
-  <!-- PWA Manifest & Icons -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/9554/9554904.png">
-  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +46,6 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Manjari', sans-serif; -webkit-tap-highlight-color: transparent; }
-    [dir="rtl"] { text-align: right; }
 
     body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
 
@@ -94,7 +91,6 @@
     .val-inc { color: var(--income); } .val-exp { color: var(--expense); } .val-bal { color: var(--text); }
 
     .app-content { padding: 20px 16px; }
-
     .type-pill-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-full); gap: 4px; margin-bottom: 20px; }
     .type-pill { flex: 1; border: none; padding: 8px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; background: transparent; color: var(--text-muted); cursor: pointer; }
     .type-pill.active[data-mode="income"] { background: var(--income); color: white; }
@@ -148,7 +144,7 @@
       </div>
     </div>
 
-    <!-- SEPARATED DASHBOARD ROWS FOR INCOME & EXPENSE -->
+    <!-- DASHBOARD -->
     <div class="dashboard-overview">
       <div class="dash-row">
         <div class="metric-card">
@@ -167,7 +163,7 @@
     </div>
 
     <div class="app-content">
-      <!-- 🌟 HOME GRID MENU -->
+      <!-- HOME GRID MENU -->
       <div id="homeMenuView">
         <div style="font-size: 13.5px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;" data-i18n="main_menu">Main Menu</div>
         <div class="home-grid-menu">
@@ -190,7 +186,7 @@
         </div>
       </div>
 
-      <!-- 1. ENTRY SECTION WITH TRIP / EXPENSE BREAKDOWN -->
+      <!-- ENTRY SECTION WITH BREAKDOWN -->
       <div id="entrySection" style="display: none;">
         <button type="button" class="btn-main" style="background: #64748b; margin-bottom: 16px; padding: 10px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">Back to Menu</span></button>
         <div class="type-pill-group">
@@ -216,14 +212,14 @@
             <input type="number" step="0.01" id="entryAmount" class="input-box" placeholder="0.00" required>
           </div>
           <div class="form-group">
-            <label data-i18n="lbl_description">Description / Breakdown (e.g., Food: 200, Travel: 300)</label>
+            <label data-i18n="lbl_description">Description / Breakdown (Travel: 500, Food: 300, etc.)</label>
             <input type="text" id="entryDesc" class="input-box" placeholder="Optional notes...">
           </div>
           <button type="submit" class="btn-main" data-i18n="btn_save">Save Entry</button>
         </form>
       </div>
 
-      <!-- 2. REPORT SECTION -->
+      <!-- REPORT SECTION -->
       <div id="reportSection" style="display: none;">
         <button type="button" class="btn-main" style="background: #64748b; margin-bottom: 16px; padding: 10px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">Back to Menu</span></button>
         <div class="table-responsive">
@@ -236,14 +232,14 @@
         </div>
       </div>
 
-      <!-- 3. REMINDER SECTION -->
+      <!-- REMINDER SECTION -->
       <div id="reminderSection" style="display: none;">
         <button type="button" class="btn-main" style="background: #64748b; margin-bottom: 16px; padding: 10px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">Back to Menu</span></button>
         <h3 style="font-size: 15px; margin-bottom: 12px;" data-i18n="title_upcoming_bills">Upcoming Reminders & Bills</h3>
         <div id="remindersListContainer"><p style="color:var(--text-muted); font-size:13px;" data-i18n="no_reminders">No active reminders</p></div>
       </div>
 
-      <!-- 4. VEHICLE SECTION -->
+      <!-- VEHICLE SECTION -->
       <div id="vehicleSection" style="display: none;">
         <button type="button" class="btn-main" style="background: #64748b; margin-bottom: 16px; padding: 10px;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">Back to Menu</span></button>
         <h3 style="font-size: 15px; margin-bottom: 10px;" data-i18n="tab_vehicle">Vehicle Tracker & Maintenance</h3>
@@ -264,7 +260,7 @@
     </div>
   </div>
 
-  <!-- SETTINGS MODAL FOR LANGUAGE & CURRENCY -->
+  <!-- SETTINGS MODAL -->
   <div class="modal-overlay" id="settingsModal">
     <div class="modal-dialog">
       <div class="modal-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid var(--border); padding-bottom:8px;">
