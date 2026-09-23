@@ -51,51 +51,26 @@
       --shadow-lg: 0 10px 25px -5px rgb(0 0 0 / 0.1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', 'Manjari', 'Tajawal', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', 'Manjari', 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
 
     [dir="rtl"] { text-align: right; }
     [dir="rtl"] .select-wrap::after { right: auto; left: 16px; }
     [dir="rtl"] .password-wrap .toggle-eye { right: auto; left: 14px; }
     [dir="rtl"] .action-icons { justify-content: flex-start; }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
-    }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
+
+    /* GRID HOME MENU STYLES */
+    .home-grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+    .grid-menu-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 18px 14px; text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm); }
+    .grid-menu-card:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+    .grid-menu-card i { font-size: 26px; color: var(--primary); margin-bottom: 8px; }
+    .grid-menu-card span { display: block; font-size: 13.5px; font-weight: 700; color: var(--text); }
 
     .install-banner {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 32px);
-      max-width: 440px;
-      background: #0f172a;
-      color: white;
-      padding: 12px 16px;
-      border-radius: var(--radius-md);
-      box-shadow: var(--shadow-lg);
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      z-index: 10000;
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { transform: translate(-50%, 50px); opacity: 0; }
-      to { transform: translate(-50%, 0); opacity: 1; }
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 440px;
+      background: #0f172a; color: white; padding: 12px 16px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+      display: none; align-items: center; justify-content: space-between; gap: 12px; z-index: 10000;
     }
     .install-banner-text { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; }
     .install-banner-text img { width: 32px; height: 32px; border-radius: 8px; }
@@ -103,15 +78,7 @@
     .btn-install-close { background: transparent; border: none; color: #94a3b8; font-size: 16px; cursor: pointer; }
 
     /* AUTH */
-    .auth-wrapper {
-      width: 100%;
-      max-width: 420px;
-      background: var(--surface);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-lg);
-      padding: 36px 28px;
-      border: 1px solid var(--border);
-    }
+    .auth-wrapper { width: 100%; max-width: 420px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 36px 28px; border: 1px solid var(--border); }
     .auth-header { text-align: center; margin-bottom: 24px; }
     .brand-icon { width: 56px; height: 56px; background: linear-gradient(135deg, #1e40af, var(--primary)); color: white; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; }
     .auth-header h2 { font-size: 24px; font-weight: 800; color: var(--text); }
@@ -124,96 +91,27 @@
 
     .password-wrap { position: relative; }
     .password-wrap .input-box { padding-right: 42px; }
-    .password-wrap .toggle-eye {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 15px;
-    }
+    .password-wrap .toggle-eye { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); cursor: pointer; font-size: 15px; }
 
     .btn-main { width: 100%; padding: 14px; border: none; background: linear-gradient(135deg, #1e40af, var(--primary)); color: white; font-size: 15px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25); }
     .btn-main:active { transform: scale(0.98); }
 
-    .form-actions-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 6px;
-    }
-    .btn-cancel-action {
-      flex: 1;
-      padding: 14px;
-      border: 1.5px solid var(--border);
-      background: #f1f5f9;
-      color: var(--text-muted);
-      font-size: 14px;
-      font-weight: 700;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s;
-    }
-    .btn-cancel-action:hover {
-      background: #e2e8f0;
-      color: var(--text);
-    }
-    .btn-save-action {
-      flex: 2;
-    }
+    .form-actions-group { display: flex; gap: 10px; margin-top: 6px; }
+    .btn-cancel-action { flex: 1; padding: 14px; border: 1.5px solid var(--border); background: #f1f5f9; color: var(--text-muted); font-size: 14px; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-save-action { flex: 2; }
 
     /* TOP URGENT NOTIFICATION BAR */
-    .top-due-alert-container {
-      background: #fef2f2;
-      border-bottom: 2px solid #f87171;
-      padding: 10px 16px;
-      display: none;
-    }
-    .top-due-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 6px 0;
-    }
-    .top-due-item:not(:last-child) {
-      border-bottom: 1px dashed #fecaca;
-    }
-    .due-tag {
-      background: var(--expense);
-      color: white;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
-      margin-right: 6px;
-    }
+    .top-due-alert-container { background: #fef2f2; border-bottom: 2px solid #f87171; padding: 10px 16px; display: none; }
+    .top-due-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+    .top-due-item:not(:last-child) { border-bottom: 1px dashed #fecaca; }
+    .due-tag { background: var(--expense); color: white; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; margin-right: 6px; }
 
     /* APP LAYOUT */
-    .app-shell { 
-      width: 100%; 
-      max-width: 600px; 
-      background: var(--surface); 
-      border-radius: var(--radius-lg); 
-      box-shadow: var(--shadow-lg); 
-      overflow: hidden; 
-      border: 1px solid var(--border); 
-    }
-    
-    .app-topbar { 
-      background: linear-gradient(135deg, #1e3a8a, #2563eb); 
-      color: white; 
-      padding: calc(16px + env(safe-area-inset-top, 0px)) 20px 16px 20px; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-    }
+    .app-shell { width: 100%; max-width: 600px; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); overflow: hidden; border: 1px solid var(--border); }
+    .app-topbar { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
 
     .user-info { display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(8px); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+    .user-avatar { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.2); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
     .user-name { font-size: 15px; font-weight: 700; }
     .topbar-actions { display: flex; align-items: center; gap: 8px; }
     .btn-icon-top { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.25); color: white; width: 38px; height: 38px; border-radius: var(--radius-full); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
@@ -225,12 +123,12 @@
     .val-inc { color: var(--income); } .val-exp { color: var(--expense); } .val-bal { color: var(--text); }
 
     .nav-tabs { display: flex; padding: 12px 16px 0 16px; gap: 6px; border-bottom: 1px solid var(--border); overflow-x: auto; }
-    .nav-tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; text-align: center; white-space: nowrap; }
+    .nav-tab-btn { flex: 1; padding: 10px 4px; border: none; background: transparent; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; text-align: center; white-space: nowrap; }
     .nav-tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
     .app-content { padding: 20px 16px; }
 
     .type-pill-group { display: flex; background: #f1f5f9; padding: 4px; border-radius: var(--radius-full); gap: 4px; margin-bottom: 20px; }
-    .type-pill { flex: 1; border: none; padding: 8px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+    .type-pill { flex: 1; border: none; padding: 8px; border-radius: var(--radius-full); font-size: 13px; font-weight: 700; background: transparent; color: var(--text-muted); cursor: pointer; }
     .type-pill.active[data-mode="income"] { background: var(--income); color: white; }
     .type-pill.active[data-mode="expense"] { background: var(--expense); color: white; }
     .type-pill.active[data-mode="loan"] { background: var(--loan); color: white; }
@@ -260,42 +158,14 @@
 
     /* MODALS */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); justify-content: center; align-items: center; z-index: 9999; padding: 16px; }
-    .modal-dialog {
-      background: var(--surface);
-      width: 100%;
-      max-width: 420px;
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      box-shadow: var(--shadow-lg);
-      max-height: 85vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #cbd5e1 transparent;
-    }
-    .modal-dialog::-webkit-scrollbar { width: 4px; }
-    .modal-dialog::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    
+    .modal-dialog { background: var(--surface); width: 100%; max-width: 420px; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-lg); max-height: 85vh; overflow-y: auto; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     .modal-header h3 { font-size: 17px; font-weight: 700; }
     .modal-close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 18px; cursor: pointer; }
 
     /* DISPLAY SETTINGS */
-    .display-settings-box {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      margin-bottom: 16px;
-    }
-    .display-check-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 0;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    .display-settings-box { background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px; margin-bottom: 16px; }
+    .display-check-item { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; font-size: 13px; font-weight: 600; cursor: pointer; }
     .display-check-item:not(:last-child) { border-bottom: 1px dashed #e2e8f0; }
     .display-check-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary); }
 
@@ -309,49 +179,14 @@
     .btn-dialog-confirm { flex: 1; padding: 12px; background: var(--primary); border: none; color: white; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; }
 
     /* REMINDER CARDS */
-    .reminder-card {
-      background: #fffbeb;
-      border: 1.5px solid #fde68a;
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .reminder-card.due-urgent {
-      background: #fef2f2;
-      border-color: #fca5a5;
-    }
+    .reminder-card { background: #fffbeb; border: 1.5px solid #fde68a; border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .reminder-card.due-urgent { background: #fef2f2; border-color: #fca5a5; }
     .reminder-title { font-weight: 700; font-size: 14px; margin-bottom: 2px; }
     .reminder-date { font-size: 11px; color: var(--text-muted); }
     .reminder-amt { font-weight: 800; font-size: 15px; color: var(--expense); }
-    
-    .btn-group-rem {
-      display: flex;
-      gap: 6px;
-      margin-top: 6px;
-    }
-    .btn-pay-now {
-      background: var(--income);
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .btn-postpone-now {
-      background: #475569;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: var(--radius-full);
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
+    .btn-group-rem { display: flex; gap: 6px; margin-top: 6px; }
+    .btn-pay-now { background: var(--income); color: white; border: none; padding: 5px 10px; border-radius: var(--radius-full); font-size: 11px; font-weight: 700; cursor: pointer; }
+    .btn-postpone-now { background: #475569; color: white; border: none; padding: 5px 10px; border-radius: var(--radius-full); font-size: 11px; font-weight: 700; cursor: pointer; }
 
     /* USER GUIDE */
     .guide-section { margin-bottom: 18px; }
@@ -387,16 +222,8 @@
     }
 
     @media (max-width: 480px) {
-      body { 
-        padding: 0; 
-        align-items: flex-start;
-        background-color: #1e3a8a; 
-      }
-      .app-shell, .auth-wrapper { 
-        border-radius: 0; 
-        min-height: 100vh; 
-        border: none; 
-      }
+      body { padding: 0; align-items: flex-start; background-color: #1e3a8a; }
+      .app-shell, .auth-wrapper { border-radius: 0; min-height: 100vh; border: none; }
     }
   </style>
 </head>
@@ -482,7 +309,7 @@
       </div>
     </div>
 
-    <!-- 🌟 TOP DUE ALERT BAR (Appears on home when payments are due) -->
+    <!-- 🌟 TOP DUE ALERT BAR -->
     <div class="top-due-alert-container" id="topDueAlertBox"></div>
 
     <!-- DASHBOARD -->
@@ -498,6 +325,28 @@
       <div class="metric-card">
         <div class="metric-label" data-i18n="dash_bal">ആകെ ബാക്കി തുക</div>
         <div class="metric-value val-bal" id="dashBal">0.00</div>
+      </div>
+    </div>
+
+    <!-- 🌟 HOME GRID MENU (Direct Access Buttons) -->
+    <div class="app-content" id="homeMenuView">
+      <div class="home-grid-menu">
+        <div class="grid-menu-card" onclick="switchView('entry')">
+          <i class="fa-solid fa-plus-circle"></i>
+          <span data-i18n="tab_add">ഇടപാട്</span>
+        </div>
+        <div class="grid-menu-card" onclick="switchView('report')">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span data-i18n="tab_report">റിപ്പോർട്ട്</span>
+        </div>
+        <div class="grid-menu-card" onclick="switchView('reminder')">
+          <i class="fa-solid fa-bell"></i>
+          <span data-i18n="tab_reminders">റിമൈൻഡർ</span>
+        </div>
+        <div class="grid-menu-card" onclick="switchView('vehicle')">
+          <i class="fa-solid fa-gas-pump"></i>
+          <span data-i18n="tab_vehicle">വാഹനം</span>
+        </div>
       </div>
     </div>
 
@@ -519,7 +368,7 @@
 
     <div class="app-content">
       <!-- 1. ENTRY SECTION -->
-      <div id="entrySection">
+      <div id="entrySection" style="display: none;">
         <div class="type-pill-group">
           <button type="button" class="type-pill active" data-mode="income" onclick="setMode('income')" data-i18n="type_inc">വരവ്</button>
           <button type="button" class="type-pill" data-mode="expense" onclick="setMode('expense')" data-i18n="type_exp">ചെലവ്</button>
@@ -577,20 +426,22 @@
           </div>
 
           <div class="form-actions-group">
-            <button type="button" class="btn-cancel-action" onclick="resetEntryForm()">
-              <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_cancel_entry">റദ്ദാക്കുക</span>
+            <button type="button" class="btn-cancel-action" onclick="switchView('home')">
+              <i class="fa-solid fa-arrow-left"></i> <span data-i18n="btn_back">മടങ്ങിപ്പോവുക</span>
             </button>
             <button type="submit" class="btn-main btn-save-action" id="saveSubmitBtn">
               <i class="fa-solid fa-paper-plane"></i> <span data-i18n="btn_save">രേഖപ്പെടുത്തുക</span>
             </button>
           </div>
         </form>
-
         <div id="formAlert" class="status-alert"></div>
       </div>
 
       <!-- 2. REPORT SECTION -->
       <div id="reportSection" style="display: none;">
+        <div style="margin-bottom: 12px;">
+          <button type="button" class="btn-cancel-action" style="padding: 8px 14px; width: auto;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> Back to Menu</button>
+        </div>
         <div id="printableReportArea">
           <div class="filter-grid">
             <div class="select-wrap">
@@ -632,6 +483,9 @@
 
       <!-- 3. REMINDER SECTION -->
       <div id="reminderSection" style="display: none;">
+        <div style="margin-bottom: 12px;">
+          <button type="button" class="btn-cancel-action" style="padding: 8px 14px; width: auto;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> Back to Menu</button>
+        </div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
           <h3 style="font-size: 15px; font-weight: 700;" data-i18n="title_upcoming_bills">വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ</h3>
           <button type="button" class="btn-main" style="width: auto; padding: 6px 14px; background: var(--reminder); font-size: 13px;" onclick="openAddReminderModal()">
@@ -644,8 +498,11 @@
         </div>
       </div>
 
-      <!-- 4. VEHICLE SECTION -->
+      <!-- 4. VEHICLE SECTION (WITH MAINTENANCE & REPAIRS) -->
       <div id="vehicleSection" style="display: none;">
+        <div style="margin-bottom: 12px;">
+          <button type="button" class="btn-cancel-action" style="padding: 8px 14px; width: auto;" onclick="switchView('home')"><i class="fa-solid fa-arrow-left"></i> Back to Menu</button>
+        </div>
         <div style="display: flex; gap: 8px; margin-bottom: 16px;">
           <div class="select-wrap" style="flex: 1;">
             <select id="activeVehicleSelect" class="input-box" onchange="onVehicleSelectChange()"></select>
@@ -673,26 +530,56 @@
           </div>
         </div>
 
+        <!-- SERVICE / FUEL ENTRY FORM -->
         <form id="fuelLogForm" onsubmit="handleFuelEntrySubmit(event)">
+          <div class="form-group">
+            <label>സേവന തരം (Service Type)</label>
+            <div class="select-wrap">
+              <select id="serviceTypeSelect" class="input-box" onchange="toggleServiceFields()">
+                <option value="Fuel">ഇന്ധനം നിറയ്ക്കൽ (Fuel Filling)</option>
+                <option value="OilChange">ഓയിൽ ചേഞ്ച് (Oil Change)</option>
+                <option value="Repair">റിപ്പയർ / മറ്റ് സർവീസ് (Repair & Maintenance)</option>
+              </select>
+            </div>
+          </div>
+
           <div class="form-group">
             <label data-i18n="lbl_date">തീയതി</label>
             <input type="date" id="fuelDate" class="input-box" required>
           </div>
+
           <div class="form-group">
             <label data-i18n="lbl_odo_reading">ഇപ്പോഴത്തെ മീറ്റർ റീഡിംഗ് (Odometer Km)</label>
             <input type="number" id="fuelOdo" class="input-box" placeholder="45200" required>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+
+          <div id="fuelSpecificFields">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="form-group">
+                <label data-i18n="lbl_fuel_price">ഇന്ധന വില (Price/Litre)</label>
+                <input type="number" step="0.01" id="fuelPricePerLiter" class="input-box" placeholder="105.50">
+              </div>
+              <div class="form-group">
+                <label data-i18n="lbl_amount">അടിച്ച ആകെ തുക</label>
+                <div class="amount-calc-wrap">
+                  <input type="number" step="0.01" id="fuelTotalAmount" class="input-box" placeholder="2000">
+                  <button type="button" class="btn-calc" onclick="openCalc('fuelTotalAmount')"><i class="fa-solid fa-calculator"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="maintenanceSpecificFields" style="display: none;">
             <div class="form-group">
-              <label data-i18n="lbl_fuel_price">ഇന്ധന വില (Price/Litre)</label>
-              <input type="number" step="0.01" id="fuelPricePerLiter" class="input-box" placeholder="105.50" required>
+              <label>മറ്റ് ചെലവ് തുക (Amount)</label>
+              <div class="amount-calc-wrap">
+                <input type="number" step="0.01" id="maintAmount" class="input-box" placeholder="1500">
+                <button type="button" class="btn-calc" onclick="openCalc('maintAmount')"><i class="fa-solid fa-calculator"></i></button>
+              </div>
             </div>
             <div class="form-group">
-              <label data-i18n="lbl_amount">അടിച്ച ആകെ തുക</label>
-              <div class="amount-calc-wrap">
-                <input type="number" step="0.01" id="fuelTotalAmount" class="input-box" placeholder="2000" required>
-                <button type="button" class="btn-calc" onclick="openCalc('fuelTotalAmount')"><i class="fa-solid fa-calculator"></i></button>
-              </div>
+              <label>ചെയ്ത പണിയുടെ വിവരണം (Description / Parts)</label>
+              <input type="text" id="maintDesc" class="input-box" placeholder="ഉദാ: ബ്രേക്ക് പാഡ് മാറ്റി, ജനറൽ സർവീസ്">
             </div>
           </div>
           
@@ -701,20 +588,20 @@
               <i class="fa-solid fa-rotate-left"></i> <span data-i18n="btn_cancel_entry">റദ്ദാക്കുക</span>
             </button>
             <button type="submit" class="btn-main btn-save-action" style="background: var(--vehicle);" id="saveFuelSubmitBtn">
-              <i class="fa-solid fa-gas-pump"></i> <span data-i18n="btn_save_fuel">ഇന്ധന വിവരങ്ങൾ സേവ് ചെയ്യുക</span>
+              <i class="fa-solid fa-gas-pump"></i> <span data-i18n="btn_save_fuel">വിവരങ്ങൾ സേവ് ചെയ്യുക</span>
             </button>
           </div>
         </form>
 
         <div id="fuelAlert" class="status-alert"></div>
 
-        <h4 style="margin: 20px 0 10px 0; font-size: 14px;" data-i18n="title_fuel_history">ഇന്ധന ചരിത്രം (Fuel History)</h4>
+        <h4 style="margin: 20px 0 10px 0; font-size: 14px;" data-i18n="title_fuel_history">വാഹന സർവീസ് & ഇന്ധന ചരിത്രം</h4>
         <div class="table-responsive">
           <table>
             <thead>
               <tr>
                 <th data-i18n="th_date">തീയതി</th>
-                <th>Km</th>
+                <th>വിവരം / Odo</th>
                 <th data-i18n="th_amount">തുക</th>
                 <th>Mileage</th>
                 <th style="text-align: right;">Action</th>
@@ -816,12 +703,8 @@
           </div>
         </div>
         <div class="form-actions-group">
-          <button type="button" class="btn-cancel-action" onclick="closeAddReminderModal()" data-i18n="btn_cancel">
-            റദ്ദാക്കുക
-          </button>
-          <button type="submit" class="btn-main btn-save-action" style="background: var(--reminder);" data-i18n="btn_save_reminder">
-            റിമൈൻഡർ സേവ് ചെയ്യുക
-          </button>
+          <button type="button" class="btn-cancel-action" onclick="closeAddReminderModal()" data-i18n="btn_cancel">റദ്ദാക്കുക</button>
+          <button type="submit" class="btn-main btn-save-action" style="background: var(--reminder);" data-i18n="btn_save_reminder">റിമൈൻഡർ സേവ് ചെയ്യുക</button>
         </div>
       </form>
     </div>
@@ -846,7 +729,6 @@
         <button type="button" class="modal-close-btn" onclick="closeSettingsModal()">✕</button>
       </div>
 
-      <!-- Language -->
       <div class="form-group">
         <label data-i18n="lbl_settings_lang">ഭാഷ (Language)</label>
         <div class="select-wrap">
@@ -858,7 +740,6 @@
         </div>
       </div>
 
-      <!-- Currency -->
       <div class="form-group">
         <label data-i18n="lbl_settings_currency">കറൻസി (Currency)</label>
         <div class="select-wrap">
@@ -877,9 +758,8 @@
         </div>
       </div>
 
-      <!-- DISPLAY SETTINGS -->
       <div class="form-group">
-        <label data-i18n="lbl_display_settings"><i class="fa-solid fa-sliders" style="margin-right: 6px;"></i>Display Settings (കാണിക്കേണ്ടവ തിരഞ്ഞെടുക്കുക)</label>
+        <label data-i18n="lbl_display_settings"><i class="fa-solid fa-sliders" style="margin-right: 6px;"></i>Display Settings</label>
         <div class="display-settings-box">
           <label class="display-check-item">
             <span data-i18n="tab_add">ഇടപാട് (New Entry)</span>
@@ -904,18 +784,15 @@
         </div>
       </div>
 
-      <!-- Display Name -->
       <div class="form-group">
         <label data-i18n="lbl_settings_name">പ്രൊഫൈൽ പേര്</label>
         <input type="text" id="settingsDisplayName" class="input-box" placeholder="Your Name">
       </div>
 
-      <!-- SAVE SETTINGS BUTTON -->
       <button type="button" class="btn-main" style="margin-top: 10px; background: linear-gradient(135deg, #1e40af, var(--primary));" onclick="handleSettingsSaveClick()">
         <i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn_save_settings">Save Settings</span>
       </button>
 
-      <!-- USER GUIDE BUTTON -->
       <div class="form-group" style="margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px;">
         <label data-i18n="lbl_guide_heading">ആപ്പ് ഉപയോഗ ക്രമം (User Guide)</label>
         <button type="button" class="btn-main" style="padding: 10px; background: #4f46e5;" onclick="openGuideModalDirectly()">
@@ -923,7 +800,6 @@
         </button>
       </div>
 
-      <!-- SHARE APP -->
       <div class="form-group" style="margin-top: 14px;">
         <label data-i18n="lbl_share_app">ആപ്പ് ഷെയർ ചെയ്യാൻ (Share App)</label>
         <button type="button" class="btn-main" style="padding: 10px; background: var(--whatsapp); color: white;" onclick="shareApplication()">
@@ -931,7 +807,6 @@
         </button>
       </div>
 
-      <!-- Print / Export PDF -->
       <div class="form-group" id="settingsPrintBlock" style="margin-top: 14px;">
         <label data-i18n="lbl_settings_print">റിപ്പോർട്ട് പ്രിന്റ് / PDF എടുക്കാൻ</label>
         <button type="button" class="btn-main" style="padding: 10px; background: #475569;" onclick="printReportFromSettings()">
@@ -939,7 +814,6 @@
         </button>
       </div>
 
-      <!-- Custom Categories Management -->
       <div class="form-group" style="border-top: 1px solid var(--border); padding-top: 14px; margin-top: 16px;">
         <label data-i18n="lbl_custom_cats">നിങ്ങൾ ചേർത്ത പുതിയ കാറ്റഗറികൾ</label>
         <div class="cat-chip-container" id="customCatChipContainer">
@@ -947,7 +821,6 @@
         </div>
       </div>
 
-      <!-- Send Password Reset Email -->
       <div class="form-group" style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px;">
         <label data-i18n="lbl_settings_pass">പാസ്‌വേഡ് മാറ്റാൻ</label>
         <button type="button" class="btn-main" style="padding: 10px; background: #334155;" onclick="sendSettingsResetMail()">
@@ -955,7 +828,6 @@
         </button>
       </div>
 
-      <!-- Install App -->
       <div class="form-group" style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px;">
         <label data-i18n="lbl_settings_install">ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ</label>
         <button type="button" class="btn-main" style="padding: 10px; background: var(--accent);" onclick="triggerPwaInstall()">
@@ -963,7 +835,6 @@
         </button>
       </div>
 
-      <!-- Reset All Data -->
       <div class="form-group" style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px;">
         <label style="color: var(--expense);" data-i18n="lbl_settings_reset">മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക</label>
         <button type="button" class="btn-main" style="padding: 10px; background: var(--expense);" onclick="promptResetAllData()">
@@ -1072,16 +943,12 @@
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      if (!currentUser) {
-        document.getElementById('pwaBanner').style.display = 'flex';
-      }
+      if (!currentUser) document.getElementById('pwaBanner').style.display = 'flex';
     });
 
     setTimeout(() => {
       const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      if (!isStandalone && !currentUser) {
-        document.getElementById('pwaBanner').style.display = 'flex';
-      }
+      if (!isStandalone && !currentUser) document.getElementById('pwaBanner').style.display = 'flex';
     }, 2000);
 
     function triggerPwaInstall() {
@@ -1092,28 +959,11 @@
           deferredPrompt = null;
         });
       } else {
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        if (isIOS) {
-          showAppConfirm({
-            icon: '<i class="fa-brands fa-apple"></i>',
-            title: "iOS Installation",
-            msg: "Safari ബ്രൗസറിൽ താഴെയുള്ള 'Share' ഐക്കൺ ക്ലിക്ക് ചെയ്ത് 'Add to Home Screen' തിരഞ്ഞെടുക്കുക.",
-            hideCancel: true
-          });
-        } else {
-          showAppConfirm({
-            icon: '<i class="fa-solid fa-download"></i>',
-            title: "App Installation",
-            msg: "ബ്രൗസർ മെനു (3 കുത്തുകൾ) ക്ലിക്ക് ചെയ്ത് 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' തിരഞ്ഞെടുക്കുക.",
-            hideCancel: true
-          });
-        }
+        showAppConfirm({ icon: '<i class="fa-solid fa-download"></i>', title: "App Installation", msg: "ബ്രൗസർ മെനു ക്ലിക്ക് ചെയ്ത് 'Install app' അല്ലെങ്കിൽ 'Add to Home screen' തിരഞ്ഞെടുക്കുക.", hideCancel: true });
       }
     }
-
     function closePwaBanner() { document.getElementById('pwaBanner').style.display = 'none'; }
 
-    // Firebase Init
     const firebaseConfig = {
       apiKey: "AIzaSyCFf3lvoWEBsEbFOFR5uKIuZDPEi_I12nE",
       authDomain: "my-ledgers-471e4.firebaseapp.com",
@@ -1134,7 +984,6 @@
     let isSignUp = false;
     let lang = localStorage.getItem('app_lang') || 'ml';
     let userCurrency = localStorage.getItem('app_currency') || '₹';
-    
     let displayConfig = JSON.parse(localStorage.getItem('app_display_config') || '{"entry":true,"report":true,"reminder":true,"vehicle":false,"print":true}');
 
     let currentMode = 'income';
@@ -1146,373 +995,76 @@
     let calcTargetInputId = 'entryAmount';
     let currentConfirmCallback = null;
 
-    let unsubSnapshot = null;
-    let unsubVehicles = null;
-    let unsubFuelHistory = null;
-    let unsubCustomCategories = null;
-    let unsubReminders = null;
+    let unsubSnapshot = null, unsubVehicles = null, unsubFuelHistory = null, unsubCustomCategories = null, unsubReminders = null;
 
     const dict = {
       ml: {
-        lbl_date: "തീയതി",
-        lbl_loan_type: "കടം ഇടപാട് തരം",
-        lbl_person: "ആരുമായി? (വ്യക്തിയുടെ പേര്)",
-        lbl_category: "വിഭാഗം (Category)",
-        lbl_new_category: "പുതിയ വിഭാഗത്തിന്റെ പേര്",
-        lbl_amount: "തുക",
-        lbl_description: "വിവരണം (കുറിപ്പ്)",
-        lbl_bill_name: "ബിൽ / ഇടപാടിന്റെ പേര്",
-        lbl_due_date: "നൽകേണ്ട തീയതി (Due Date)",
-        lbl_recurrence: "ആവർത്തനം (Recurrence)",
-        btn_save: "രേഖപ്പെടുത്തുക",
-        btn_cancel_entry: "റദ്ദാക്കുക",
-        btn_save_reminder: "റിമൈൻഡർ സേവ് ചെയ്യുക",
-        tab_add: "ഇടപാട്",
-        tab_report: "റിപ്പോർട്ട്",
-        tab_reminders: "റിമൈൻഡർ",
-        tab_vehicle: "വാഹനം",
-        type_inc: "വരവ്",
-        type_exp: "ചെലവ്",
-        type_loan: "കടം",
-        dash_inc: "ഈ മാസത്തെ വരവ്",
-        dash_exp: "ഈ മാസത്തെ ചെലവ്",
-        dash_bal: "ആകെ ബാക്കി തുക",
-        sum_inc: "വരവ്",
-        sum_exp: "ചെലവ്",
-        th_date: "തീയതി",
-        th_details: "വിവരണം",
-        th_amount: "തുക",
-        btn_print_pdf: "Print / Export PDF",
-        lbl_settings_print: "റിപ്പോർട്ട് പ്രിന്റ് / PDF എടുക്കാൻ",
-        success_save: "വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!",
-        select_placeholder: "തിരഞ്ഞെടുക്കുക...",
-        new_cat_opt: "+ പുതിയ കാറ്റഗറി ചേർക്കുക",
-        no_records: "ഇടപാടുകൾ ഒന്നുമില്ല.",
-        no_reminders: "റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല",
-        loan_borrowed: "കടം വാങ്ങിയത്",
-        loan_given: "കടം കൊടുത്തത്",
-        loan_repaid: "കടം തിരിച്ചു കൊടുത്തത്",
-        loan_received: "കടം തിരിച്ചു കിട്ടിയത്",
-        opt_all_months: "എല്ലാ മാസവും",
-        opt_this_month: "ഈ മാസം",
-        opt_all_types: "എല്ലാ ഇടപാടുകളും",
-        opt_inc_only: "വരവ് മാത്രം",
-        opt_exp_only: "ചെലവ് മാത്രം",
-        opt_loan_only: "കടം ഇടപാടുകൾ",
-        opt_once: "ഒരിക്കൽ മാത്രം (One Time)",
-        opt_monthly: "എല്ലാ മാസവും (Monthly)",
-        opt_yearly: "എല്ലാ വർഷവും (Yearly)",
-        settings_title: "Settings",
-        lbl_settings_currency: "കറൻസി (Currency)",
-        lbl_settings_lang: "ഭാഷ (Language)",
-        lbl_settings_name: "പ്രൊഫൈൽ പേര്",
-        btn_save_settings: "Save Settings",
-        lbl_settings_pass: "പാസ്‌വേഡ് മാറ്റാൻ",
-        btn_send_reset_mail: "റീസെറ്റ് ലിങ്ക് അയക്കുക",
-        lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ",
-        btn_install_app: "Install App",
-        lbl_settings_reset: "മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക",
-        btn_reset_data: "Clear All Data",
-        lbl_custom_cats: "നിങ്ങൾ ചേർത്ത പുതിയ കാറ്റഗറികൾ",
-        lbl_display_settings: "Display Settings (കാണിക്കേണ്ടവ തിരഞ്ഞെടുക്കുക)",
-        lbl_share_app: "ആപ്പ് ഷെയർ ചെയ്യാൻ (Share App)",
-        btn_share_whatsapp: "Share via WhatsApp",
-        lbl_guide_heading: "ആപ്പ് ഉപയോഗ ക്രമം (User Guide)",
-        btn_user_guide: "ഉപയോഗ ക്രമം കാണുക",
-        title_upcoming_bills: "വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ",
-        btn_add_reminder: "പുതിയ റിമൈൻഡർ",
-        title_edit_tx: "ഇടപാട് എഡിറ്റ് ചെയ്യുക",
-        btn_update: "അപ്‌ഡേറ്റ് ചെയ്യുക",
-        title_add_veh: "പുതിയ വാഹനം ചേർക്കുക",
-        lbl_veh_type: "വാഹന തരം",
-        lbl_veh_name: "വാഹനത്തിന്റെ പേര് / മോഡൽ",
-        lbl_veh_num: "വാഹന നമ്പർ (Reg. Number)",
-        lbl_fuel_type: "ഇന്ധന തരം (Fuel Type)",
-        btn_save_veh: "വാഹനം സേവ് ചെയ്യുക",
-        btn_add_veh: "വാഹനം",
-        lbl_veh_mileage: "വാഹനത്തിന്റെ മൈലേജ്:",
-        lbl_running_cost: "ഒരു Km ഓടാനുള്ള ചെലവ്:",
-        lbl_last_odo: "അവസാനം അടിച്ച ഓഡോമീറ്റർ:",
-        lbl_odo_reading: "ഇപ്പോഴത്തെ മീറ്റർ റീഡിംഗ് (Odometer Km)",
-        lbl_fuel_price: "ഇന്ധന വില (Price/Litre)",
-        btn_save_fuel: "ഇന്ധന വിവരങ്ങൾ സേവ് ചെയ്യുക",
-        title_fuel_history: "ഇന്ധന ചരിത്രം (Fuel History)",
-        btn_cancel: "റദ്ദാക്കുക",
-        btn_yes: "അതെ (Yes)"
+        lbl_date: "തീയതി", lbl_loan_type: "കടം ഇടപാട് തരം", lbl_person: "ആരുമായി? (വ്യക്തിയുടെ പേര്)", lbl_category: "വിഭാഗം (Category)",
+        lbl_new_category: "പുതിയ വിഭാഗത്തിന്റെ പേര്", lbl_amount: "തുക", lbl_description: "വിവരണം (കുറിപ്പ്)", lbl_bill_name: "ബിൽ / ഇടപാടിന്റെ പേര്",
+        lbl_due_date: "നൽകേണ്ട തീയതി (Due Date)", lbl_recurrence: "ആവർത്തനം (Recurrence)", btn_save: "രേഖപ്പെടുത്തുക", btn_cancel_entry: "റദ്ദാക്കുക",
+        btn_save_reminder: "റിമൈൻഡർ സേവ് ചെയ്യുക", tab_add: "ഇടപാട്", tab_report: "റിപ്പോർട്ട്", tab_reminders: "റിമൈൻഡർ", tab_vehicle: "വാഹനം",
+        type_inc: "വരവ്", type_exp: "ചെലവ്", type_loan: "കടം", dash_inc: "ഈ മാസത്തെ വരവ്", dash_exp: "ഈ മാസത്തെ ചെലവ്", dash_bal: "ആകെ ബാക്കി തുക",
+        sum_inc: "വരവ്", sum_exp: "ചെലവ്", th_date: "തീയതി", th_details: "വിവരണം", th_amount: "തുക", btn_print_pdf: "Print / Export PDF",
+        lbl_settings_print: "റിപ്പോർട്ട് പ്രിന്റ് / PDF എടുക്കാൻ", success_save: "വിവരങ്ങൾ വിജയകരമായി രേഖപ്പെടുത്തി!", select_placeholder: "തിരഞ്ഞെടുക്കുക...",
+        new_cat_opt: "+ പുതിയ കാറ്റഗറി ചേർക്കുക", no_records: "ഇടപാടുകൾ ഒന്നുമില്ല.", no_reminders: "റിമൈൻഡറുകൾ ഒന്നും ചേർത്തിട്ടില്ല",
+        settings_title: "Settings", lbl_settings_currency: "കറൻസി (Currency)", lbl_settings_lang: "ഭാഷ (Language)", lbl_settings_name: "പ്രൊഫൈൽ പേര്",
+        btn_save_settings: "Save Settings", lbl_settings_pass: "പാസ്‌വേഡ് മാറ്റാൻ", btn_send_reset_mail: "റീസെറ്റ് ലിങ്ക് അയക്കുക",
+        lbl_settings_install: "ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യാൻ", btn_install_app: "Install App", lbl_settings_reset: "മുഴുവൻ ഡാറ്റയും ഡിലീറ്റ് ചെയ്യുക",
+        btn_reset_data: "Clear All Data", lbl_custom_cats: "നിങ്ങൾ ചേർത്ത പുതിയ കാറ്റഗറികൾ", lbl_display_settings: "Display Settings",
+        lbl_share_app: "ആപ്പ് ഷെയർ ചെയ്യാൻ", btn_share_whatsapp: "Share via WhatsApp", lbl_guide_heading: "ആപ്പ് ഉപയോഗ ക്രമം", btn_user_guide: "ഉപയോഗ ക്രമം കാണുക",
+        title_upcoming_bills: "വരാനിരിക്കുന്ന ബില്ലുകൾ & റിമൈൻഡറുകൾ", btn_add_reminder: "പുതിയ റിമൈൻഡർ", title_edit_tx: "ഇടപാട് എഡിറ്റ് ചെയ്യുക", btn_update: "അപ്‌ഡേറ്റ് ചെയ്യുക",
+        title_add_veh: "പുതിയ വാഹനം ചേർക്കുക", lbl_veh_type: "വാഹന തരം", lbl_veh_name: "വാഹനത്തിന്റെ പേര് / മോഡൽ", lbl_veh_num: "വാഹന നമ്പർ (Reg. Number)",
+        lbl_fuel_type: "ഇന്ധന തരം (Fuel Type)", btn_save_veh: "വാഹനം സേവ് ചെയ്യുക", btn_add_veh: "വാഹനം", lbl_veh_mileage: "വാഹനത്തിന്റെ മൈലേജ്:",
+        lbl_running_cost: "ഒരു Km ഓടാനുള്ള ചെലവ്:", lbl_last_odo: "അവസാനം അടിച്ച ഓഡോമീറ്റർ:", lbl_odo_reading: "ഇപ്പോഴത്തെ മീറ്റർ റീഡിംഗ് (Odometer Km)",
+        lbl_fuel_price: "ഇന്ധന വില (Price/Litre)", btn_save_fuel: "വിവരങ്ങൾ സേവ് ചെയ്യുക", title_fuel_history: "വാഹന സർവീസ് ചരിത്രം", btn_cancel: "റദ്ദാക്കുക", btn_yes: "അതെ"
       },
       en: {
-        lbl_date: "Date",
-        lbl_loan_type: "Transaction Type",
-        lbl_person: "Person Name",
-        lbl_category: "Category",
-        lbl_new_category: "New Category Name",
-        lbl_amount: "Amount",
-        lbl_description: "Description",
-        lbl_bill_name: "Bill / Payment Name",
-        lbl_due_date: "Due Date",
-        lbl_recurrence: "Recurrence",
-        btn_save: "Save Entry",
-        btn_cancel_entry: "Cancel / Clear",
-        btn_save_reminder: "Save Reminder",
-        tab_add: "New Entry",
-        tab_report: "Reports",
-        tab_reminders: "Reminders",
-        tab_vehicle: "Vehicles",
-        type_inc: "Income",
-        type_exp: "Expense",
-        type_loan: "Loan / Debt",
-        dash_inc: "This Month Income",
-        dash_exp: "This Month Expense",
-        dash_bal: "Total Balance",
-        sum_inc: "Income",
-        sum_exp: "Expense",
-        th_date: "Date",
-        th_details: "Details",
-        th_amount: "Amount",
-        btn_print_pdf: "Print / Export PDF",
-        lbl_settings_print: "Print / Export Report",
-        success_save: "Transaction saved successfully!",
-        select_placeholder: "Select Category...",
-        new_cat_opt: "+ Add New Category",
-        no_records: "No transactions recorded.",
-        no_reminders: "No active reminders",
-        loan_borrowed: "Borrowed Loan",
-        loan_given: "Given Loan",
-        loan_repaid: "Repaid Loan",
-        loan_received: "Received Loan Repayment",
-        opt_all_months: "All Months",
-        opt_this_month: "This Month",
-        opt_all_types: "All Transactions",
-        opt_inc_only: "Income Only",
-        opt_exp_only: "Expense Only",
-        opt_loan_only: "Loans / Debts",
-        opt_once: "One Time",
-        opt_monthly: "Monthly",
-        opt_yearly: "Yearly",
-        settings_title: "Settings",
-        lbl_settings_currency: "Currency",
-        lbl_settings_lang: "Language",
-        lbl_settings_name: "Profile Display Name",
-        btn_save_settings: "Save Settings",
-        lbl_settings_pass: "Change Password",
-        btn_send_reset_mail: "Send Reset Link",
-        lbl_settings_install: "Install Application",
-        btn_install_app: "Install App",
-        lbl_settings_reset: "Reset All Data",
-        btn_reset_data: "Clear All Data",
-        lbl_custom_cats: "Your Custom Categories",
-        lbl_display_settings: "Display Settings (Choose visible modules)",
-        lbl_share_app: "Share Application",
-        btn_share_whatsapp: "Share via WhatsApp",
-        lbl_guide_heading: "Application User Guide",
-        btn_user_guide: "View User Guide",
-        title_upcoming_bills: "Upcoming Bills & Reminders",
-        btn_add_reminder: "New Reminder",
-        title_edit_tx: "Edit Transaction",
-        btn_update: "Update Entry",
-        title_add_veh: "Add New Vehicle",
-        lbl_veh_type: "Vehicle Type",
-        lbl_veh_name: "Vehicle Name / Model",
-        lbl_veh_num: "Reg. Number",
-        lbl_fuel_type: "Fuel Type",
-        btn_save_veh: "Save Vehicle",
-        btn_add_veh: "Vehicle",
-        lbl_veh_mileage: "Vehicle Mileage:",
-        lbl_running_cost: "Running Cost / Km:",
-        lbl_last_odo: "Last Odometer:",
-        lbl_odo_reading: "Current Odometer (Km)",
-        lbl_fuel_price: "Fuel Price/Litre",
-        btn_save_fuel: "Save Fuel Log",
-        title_fuel_history: "Fuel Log History",
-        btn_cancel: "Cancel",
-        btn_yes: "Yes"
+        lbl_date: "Date", lbl_loan_type: "Transaction Type", lbl_person: "Person Name", lbl_category: "Category", lbl_new_category: "New Category Name",
+        lbl_amount: "Amount", lbl_description: "Description", lbl_bill_name: "Bill Name", lbl_due_date: "Due Date", lbl_recurrence: "Recurrence",
+        btn_save: "Save Entry", btn_cancel_entry: "Cancel / Clear", btn_save_reminder: "Save Reminder", tab_add: "New Entry", tab_report: "Reports",
+        tab_reminders: "Reminders", tab_vehicle: "Vehicles", type_inc: "Income", type_exp: "Expense", type_loan: "Loan / Debt",
+        dash_inc: "This Month Income", dash_exp: "This Month Expense", dash_bal: "Total Balance", sum_inc: "Income", sum_exp: "Expense",
+        th_date: "Date", th_details: "Details", th_amount: "Amount", btn_print_pdf: "Print / Export PDF", lbl_settings_print: "Print / Export Report",
+        success_save: "Transaction saved successfully!", select_placeholder: "Select Category...", new_cat_opt: "+ Add New Category",
+        no_records: "No transactions recorded.", no_reminders: "No active reminders", settings_title: "Settings", lbl_settings_currency: "Currency",
+        lbl_settings_lang: "Language", lbl_settings_name: "Profile Name", btn_save_settings: "Save Settings", lbl_settings_pass: "Change Password",
+        btn_send_reset_mail: "Send Reset Link", lbl_settings_install: "Install Application", btn_install_app: "Install App", lbl_settings_reset: "Reset All Data",
+        btn_reset_data: "Clear All Data", lbl_custom_cats: "Custom Categories", lbl_display_settings: "Display Settings", lbl_share_app: "Share Application",
+        btn_share_whatsapp: "Share via WhatsApp", lbl_guide_heading: "User Guide", btn_user_guide: "View User Guide", title_upcoming_bills: "Upcoming Bills & Reminders",
+        btn_add_reminder: "New Reminder", title_edit_tx: "Edit Transaction", btn_update: "Update Entry", title_add_veh: "Add New Vehicle",
+        lbl_veh_type: "Vehicle Type", lbl_veh_name: "Vehicle Name", lbl_veh_num: "Reg. Number", lbl_fuel_type: "Fuel Type", btn_save_veh: "Save Vehicle",
+        btn_add_veh: "Vehicle", lbl_veh_mileage: "Vehicle Mileage:", lbl_running_cost: "Running Cost / Km:", lbl_last_odo: "Last Odometer:",
+        lbl_odo_reading: "Current Odometer (Km)", lbl_fuel_price: "Fuel Price/Litre", btn_save_fuel: "Save Log", title_fuel_history: "Service History", btn_cancel: "Cancel", btn_yes: "Yes"
       },
       ar: {
-        lbl_date: "التاريخ",
-        lbl_loan_type: "نوع المعاملة",
-        lbl_person: "اسم الشخص",
-        lbl_category: "الفئة",
-        lbl_new_category: "اسم الفئة الجديدة",
-        lbl_amount: "المبلغ",
-        lbl_description: "الوصف",
-        lbl_bill_name: "اسم الفاتورة / الالتزام",
-        lbl_due_date: "تاريخ الاستحقاق",
-        lbl_recurrence: "التكرار",
-        btn_save: "حفظ المعاملة",
-        btn_cancel_entry: "إلغاء / مسح",
-        btn_save_reminder: "حفظ التذكير",
-        tab_add: "إضافة",
-        tab_report: "التقارير",
-        tab_reminders: "التذكيرات",
-        tab_vehicle: "المركبات",
-        type_inc: "دخل",
-        type_exp: "مصروف",
-        type_loan: "ديون / قروض",
-        dash_inc: "دخل هذا الشهر",
-        dash_exp: "مصروف هذا الشهر",
-        dash_bal: "الرصيد الإجمالي",
-        sum_inc: "الدخل",
-        sum_exp: "المصروف",
-        th_date: "التاريخ",
-        th_details: "التفاصيل",
-        th_amount: "المبلغ",
-        btn_print_pdf: "طباعة / تصدير PDF",
-        lbl_settings_print: "طباعة / تصدير التقرير",
-        success_save: "تم الحفظ بنجاح!",
-        select_placeholder: "اختر الفئة...",
-        new_cat_opt: "+ إضافة فئة جديدة",
-        no_records: "لا توجد معاملات مسجلة.",
-        no_reminders: "لا توجد تذكيرات مسجلة",
-        loan_borrowed: "اقتراض دين",
-        loan_given: "إعطاء دين",
-        loan_repaid: "سداد دين",
-        loan_received: "استرداد دين",
-        opt_all_months: "جميع الأشهر",
-        opt_this_month: "هذا الشهر",
-        opt_all_types: "جميع المعاملات",
-        opt_inc_only: "الدخل فقط",
-        opt_exp_only: "المصروفات فقط",
-        opt_loan_only: "الديون والقروض",
-        opt_once: "مرة واحدة فقط",
-        opt_monthly: "شهرياً",
-        opt_yearly: "سنوياً",
-        settings_title: "الإعدادات",
-        lbl_settings_currency: "العملة",
-        lbl_settings_lang: "اللغة",
-        lbl_settings_name: "اسم المستخدم",
-        btn_save_settings: "حفظ الإعدادات",
-        lbl_settings_pass: "تغيير كلمة المرور",
-        btn_send_reset_mail: "إرسال رابط التعيين",
-        lbl_settings_install: "تثبيت التطبيق",
-        btn_install_app: "تثبيت التطبيق",
-        lbl_settings_reset: "حذف جميع البيانات",
-        btn_reset_data: "مسح كافة البيانات",
-        lbl_custom_cats: "الفئات المخصصة",
-        lbl_display_settings: "إعدادات العرض (تخصيص الواجهة)",
-        lbl_share_app: "مشاركة التطبيق",
-        btn_share_whatsapp: "مشاركة عبر واتساب",
-        lbl_guide_heading: "دليل الاستخدام",
-        btn_user_guide: "عرض دليل الاستخدام",
-        title_upcoming_bills: "الفواتير القادمة والتذكيرات",
-        btn_add_reminder: "إضافة تذكير",
-        title_edit_tx: "تعديل المعاملة",
-        btn_update: "تحديث",
-        title_add_veh: "إضافة مركبة جديدة",
-        lbl_veh_type: "نوع المركبة",
-        lbl_veh_name: "اسم / موديل المركبة",
-        lbl_veh_num: "رقم اللوحة",
-        lbl_fuel_type: "نوع الوقود",
-        btn_save_veh: "حفظ المركبة",
-        btn_add_veh: "مركبة",
-        lbl_veh_mileage: "معدل الاستهلاك:",
-        lbl_running_cost: "تكلفة الكيلومتر:",
-        lbl_last_odo: "آخر قراءة عداد:",
-        lbl_odo_reading: "قراءة العداد الحالية (كم)",
-        lbl_fuel_price: "سعر اللتر",
-        btn_save_fuel: "حفظ تعبئة الوقود",
-        title_fuel_history: "سجل الوقود",
-        btn_cancel: "إلغاء",
-        btn_yes: "نعم"
+        lbl_date: "التاريخ", lbl_loan_type: "نوع المعاملة", lbl_person: "اسم الشخص", lbl_category: "الفئة", lbl_new_category: "اسم الفئة الجديدة",
+        lbl_amount: "المبلغ", lbl_description: "الوصف", lbl_bill_name: "اسم الفاتورة", lbl_due_date: "تاريخ الاستحقاق", lbl_recurrence: "التكرار",
+        btn_save: "حفظ المعاملة", btn_cancel_entry: "إلغاء", btn_save_reminder: "حفظ التذكير", tab_add: "إضافة", tab_report: "التقارير", tab_reminders: "التذكيرات",
+        tab_vehicle: "المركبات", type_inc: "دخل", type_exp: "مصروف", type_loan: "ديون", dash_inc: "دخل هذا الشهر", dash_exp: "مصروف هذا الشهر",
+        dash_bal: "الرصيد الإجمالي", sum_inc: "الدخل", sum_exp: "المصروف", th_date: "التاريخ", th_details: "التفاصيل", th_amount: "المبلغ",
+        btn_print_pdf: "طباعة PDF", lbl_settings_print: "طباعة التقرير", success_save: "تم الحفظ بنجاح!", select_placeholder: "اختر الفئة...",
+        new_cat_opt: "+ إضافة فئة جديدة", no_records: "لا توجد معاملات مسجلة.", no_reminders: "لا توجد تذكيرات", settings_title: "الإعدادات",
+        lbl_settings_currency: "العملة", lbl_settings_lang: "اللغة", lbl_settings_name: "اسم المستخدم", btn_save_settings: "حفظ الإعدادات",
+        lbl_settings_pass: "تغيير كلمة المرور", btn_send_reset_mail: "إرسال الرابط", lbl_settings_install: "تثبيت التطبيق", btn_install_app: "תثبيت",
+        lbl_settings_reset: "حذف البيانات", btn_reset_data: "مسح البيانات", lbl_custom_cats: "الفئات المخصصة", lbl_display_settings: "إعدادات العرض",
+        lbl_share_app: "مشاركة التطبيق", btn_share_whatsapp: "واتساب", lbl_guide_heading: "دليل الاستخدام", btn_user_guide: "عرض الدليل",
+        title_upcoming_bills: "الفواتير القادمة", btn_add_reminder: "إضافة تذكير", title_edit_tx: "تعديل", btn_update: "تحديث", title_add_veh: "إضافة مركبة",
+        lbl_veh_type: "نوع المركبة", lbl_veh_name: "اسم المركبة", lbl_veh_num: "رقم اللوحة", lbl_fuel_type: "نوع الوقود", btn_save_veh: "حفظ المركبة",
+        btn_add_veh: "مركبة", lbl_veh_mileage: "معدل الاستهلاك:", lbl_running_cost: "تكلفة كم:", lbl_last_odo: "آخر عداد:", lbl_odo_reading: "قراءة العداد الحالية",
+        lbl_fuel_price: "سعر اللتر", btn_save_fuel: "حفظ", title_fuel_history: "سجل الخدمات", btn_cancel: "إلغاء", btn_yes: "نعم"
       }
     };
 
     const guideData = {
-      ml: `
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-wallet"></i> 1. വരവ്-ചെലവുകൾ രേഖപ്പെടുത്തൽ</h4>
-          <p>വരവ് (Income), ചെലവ് (Expense), കടം ഇടപാടുകൾ (Loans) എന്നിവ തിരഞ്ഞെടുത്ത് തീയതി, വിഭാഗം, തുക എന്നിവ നൽകി രേഖപ്പെടുത്താം. തുക കണക്കുകൂട്ടാൻ കാൽക്കുലേറ്റർ ഐക്കൺ ഉപയോഗിക്കാം. തെറ്റിയാൽ 'റദ്ദാക്കുക' ക്ലിക്ക് ചെയ്ത് ഫോം ക്ലിയർ ചെയ്യാം.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-folder-plus"></i> 2. പുതിയ കാറ്റഗറി ചേർക്കൽ</h4>
-          <p>വിഭാഗം ഡ്രോപ്പ്ഡൗണിൽ നിന്ന് '+ പുതിയ കാറ്റഗറി ചേർക്കുക' തിരഞ്ഞെടുത്ത് പേര് നൽകിയാൽ അത് നിങ്ങളുടെ അക്കൗണ്ടിൽ സ്ഥിരമായി സേവ് ആകും.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-chart-pie"></i> 3. റിപ്പോർട്ടുകളും PDF പ്രിന്റും</h4>
-          <p>മാസം തിരിച്ചോ ഇടപാട് തരം തിരിച്ചോ ഫിൽറ്റർ ചെയ്യാം. ഓരോ ഇടപാടും എഡിറ്റ് ചെയ്യാനും ഡിലീറ്റ് ചെയ്യാനും സാധിക്കും. Settings-ൽ നിന്ന് PDF ആയി പ്രിന്റ് എടുക്കാം.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-bell"></i> 4. ബിൽ റിമൈൻഡറുകൾ (Reminders)</h4>
-          <p>മാസാന്ത ബില്ലുകൾ, വാടക, സ്കൂൾ ഫീസ് എന്നിവ നിശ്ചിത തീയതിയും കാറ്റഗറിയും നൽകി റിമൈൻഡർ സെറ്റ് ചെയ്യാം. അടച്ചു കഴിഞ്ഞാൽ 'Mark as Paid' ക്ലിക്ക് ചെയ്താൽ അത് തനിയെ ചെലവ് ലിസ്റ്റിലേക്ക് മാറും. അടയ്ക്കാൻ കഴിഞ്ഞില്ലെങ്കിൽ 'Postpone' വഴി തീയതി മാറ്റാം.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-gas-pump"></i> 5. വാഹന ട്രാക്കർ & മൈലേജ്</h4>
-          <p>നിങ്ങളുടെ കാർ/ബൈക്ക് രജിസ്റ്റർ ചെയ്ത് ഇന്ധനം അടിക്കുമ്പോൾ ഓഡോമീറ്റർ റീഡിംഗ് നൽകുക. ആപ്പ് തനിയെ വാഹനത്തിന്റെ മൈലേജും ഒരു കിലോമീറ്ററിന് വരുന്ന ചെലവും കണക്കാക്കും. തെറ്റിയാൽ 'റദ്ദാക്കുക' വഴി ഫോം ക്ലിയർ ചെയ്യാം.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-sliders"></i> 6. ഡിസ്‌പ്ലേ സെറ്റിങ്സ്</h4>
-          <p>Settings-ലെ Display Settings വഴി നിങ്ങൾക്ക് ആവശ്യമുള്ള ടാബുകൾ മാത്രം ഓൺ ചെയ്ത് വെക്കാവുന്നതാണ്.</p>
-        </div>
-      `,
-      en: `
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-wallet"></i> 1. Recording Transactions</h4>
-          <p>Select Income, Expense, or Loan transaction. Enter Date, Category, and Amount. Use the calculator icon for calculations or click 'Cancel / Clear' to reset the form.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-folder-plus"></i> 2. Custom Categories</h4>
-          <p>Select '+ Add New Category' from the dropdown. Once saved, it permanently becomes available for your future entries.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-chart-pie"></i> 3. Reports, Edit & PDF Export</h4>
-          <p>Filter entries by month or type. Edit or delete any entry using action icons. Export or print clean PDF statements from Settings.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-bell"></i> 4. Bill & Payment Reminders</h4>
-          <p>Set recurring or one-time payment reminders with designated categories. Click 'Mark as Paid' to automatically log it into expenses, or 'Postpone' to reschedule.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-gas-pump"></i> 5. Vehicle Fuel & Mileage Tracker</h4>
-          <p>Register your vehicles. Log odometer reading and fuel cost. The app automatically calculates mileage (Km/L) and running cost per Km.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-sliders"></i> 6. Display Settings & Customization</h4>
-          <p>Configure which modules (Entry, Reports, Reminders, Vehicles) appear on your dashboard through Settings > Display Settings.</p>
-        </div>
-      `,
-      ar: `
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-wallet"></i> ١. تسجيل المعاملات</h4>
-          <p>اختر نوع المعاملة (دخل، مصروف، ديون)، أدخل التاريخ، الفئة، والمبلغ. يمكنك استخدام الآلة الحاسبة المدمجة أو مسح الحقول بزر الإلغاء.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-folder-plus"></i> ٢. الفئات المخصصة</h4>
-          <p>اختر '+ إضافة فئة جديدة' من القائمة لكتابة وحفظ فئاتك الخاصة بشكل دائم في حسابك.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-chart-pie"></i> ٣. التقارير وتصدير PDF</h4>
-          <p>قم بفرز المعاملات حسب الشهر أو النوع، وتعديل أو حذف المعاملات، وطباعة تقرير PDF من الإعدادات.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-bell"></i> ٤. تذكير الفواتير</h4>
-          <p>أضف تذكيرات بمواعيد الإيجار أو الفواتير مع تحديد الفئة. عند السداد، اضغط 'تم الدفع' لتحويلها للمصروفات، أو 'تأجيل' لإعادة الجدولة.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-gas-pump"></i> ٥. متتبع وقود واستهلاك المركبات</h4>
-          <p>سجل مركباتك وقم بتدوين قراءة العداد وتكلفة الوقود عند التعبئة ليقوم التطبيق بحساب معدل الاستهلاك والتكلفة لكل كم تلقائياً.</p>
-        </div>
-        <div class="guide-section">
-          <h4><i class="fa-solid fa-sliders"></i> ٦. إعدادات العرض</h4>
-          <p>خصص واجهة التطبيق عن طريق تفعيل أو إخفاء التبويبات حسب رغبتك من صفحة الإعدادات.</p>
-        </div>
-      `
+      ml: `<div class="guide-section"><h4><i class="fa-solid fa-wallet"></i> 1. വരവ്-ചെലവുകൾ</h4><p>വരവ്, ചെലവ്, കടം ഇടപാടുകൾ രേഖപ്പെടുത്താം.</p></div>`,
+      en: `<div class="guide-section"><h4><i class="fa-solid fa-wallet"></i> 1. Transactions</h4><p>Record income, expenses and loans easily.</p></div>`,
+      ar: `<div class="guide-section"><h4><i class="fa-solid fa-wallet"></i> 1. المعاملات</h4><p>تسجيل الدخل والمصروفات بكل سهولة.</p></div>`
     };
 
     const defaultCategories = {
-      ml: {
-        income: ["ശമ്പളം / വരുമാനം", "ബിസിനസ്സ്", "കൃഷി / വിൽപന", "സമ്മാനം", "മറ്റുള്ളവ"],
-        expense: ["പലചരക്ക് / ഭക്ഷണം", "പഠനം / സ്കൂൾ", "യാത്ര / ഇന്ധനം", "ആരോഗ്യം / മരുന്ന്", "വീട്ടുചെലവുകൾ", "ഷോപ്പിംഗ്", "റീചാർജ് / നെറ്റ്", "കറന്റ് / വെള്ളം", "മറ്റുള്ളവ"],
-        loan: ["കടം ഇടപാടുകൾ"]
-      },
-      en: {
-        income: ["Salary / Income", "Business", "Sales", "Gift", "Others"],
-        expense: ["Groceries / Food", "Education", "Travel / Fuel", "Medical / Health", "Home / Rent", "Shopping", "Bills / Recharge", "Others"],
-        loan: ["Loan Transactions"]
-      },
-      ar: {
-        income: ["راتب / دخل", "تجارة", "مبيعات", "هدية", "أخرى"],
-        expense: ["بقالة / طعام", "تعليم / دراسة", "سفر / وقود", "صحة / دواء", "مصاريف منزل", "تسوق", "فواتير / إنترنت", "أخرى"],
-        loan: ["معاملات الديون"]
-      }
+      ml: { income: ["ശമ്പളം / വരുമാനം", "ബിസിനസ്സ്", "മറ്റുള്ളവ"], expense: ["പലചരക്ക് / ഭക്ഷണം", "യാത്ര / ഇന്ധനം", "വീട്ടുചെലവുകൾ", "മറ്റുള്ളവ"], loan: ["കടം ഇടപാടുകൾ"] },
+      en: { income: ["Salary", "Business", "Others"], expense: ["Food", "Travel", "Rent", "Others"], loan: ["Loan Transactions"] },
+      ar: { income: ["راتب", "تجارة", "أخرى"], expense: ["طعام", "سفر", "إيجار", "أخرى"], loan: ["ديون"] }
     };
 
     const d = new Date();
@@ -1528,11 +1080,10 @@
         document.getElementById('userNameLabel').innerText = name;
         document.getElementById('avatarInitial').innerText = name.charAt(0).toUpperCase();
         document.getElementById('settingsDisplayName').value = user.displayName || "";
-        
         closePwaBanner();
-
         document.getElementById('authView').style.display = 'none';
         document.getElementById('mainAppView').style.display = 'block';
+        switchView('home');
         setMode('income');
         bindUserTransactions(user.uid);
         bindCustomCategories(user.uid);
@@ -1562,33 +1113,20 @@
       document.getElementById('confirmDialogIcon').innerHTML = icon;
       document.getElementById('confirmDialogTitle').innerText = title;
       document.getElementById('confirmDialogMsg').innerText = msg;
-      
-      const cancelBtn = document.querySelector('.btn-dialog-cancel');
-      cancelBtn.style.display = hideCancel ? 'none' : 'block';
-
+      document.querySelector('.btn-dialog-cancel').style.display = hideCancel ? 'none' : 'block';
       currentConfirmCallback = onConfirm;
       document.getElementById('customConfirmModal').style.display = 'flex';
     }
-
     function closeConfirmModal(isConfirmed) {
       document.getElementById('customConfirmModal').style.display = 'none';
-      if (isConfirmed && typeof currentConfirmCallback === 'function') {
-        currentConfirmCallback();
-      }
+      if (isConfirmed && typeof currentConfirmCallback === 'function') currentConfirmCallback();
       currentConfirmCallback = null;
     }
-
     function togglePassVisibility(inputId, iconEl) {
       const input = document.getElementById(inputId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        iconEl.classList.replace('fa-eye', 'fa-eye-slash');
-      } else {
-        input.type = 'password';
-        iconEl.classList.replace('fa-eye-slash', 'fa-eye');
-      }
+      if (input.type === 'password') { input.type = 'text'; iconEl.classList.replace('fa-eye', 'fa-eye-slash'); }
+      else { input.type = 'password'; iconEl.classList.replace('fa-eye-slash', 'fa-eye'); }
     }
-
     function toggleAuthMode() {
       isSignUp = !isSignUp;
       const heading = document.getElementById('authHeading');
@@ -1598,24 +1136,14 @@
       const prompt = document.getElementById('switchPrompt');
       const btn = document.getElementById('switchBtn');
       document.getElementById('authAlert').style.display = 'none';
-
       if (isSignUp) {
-        heading.innerText = "Create New Account";
-        nameGroup.style.display = 'block';
-        confirmGroup.style.display = 'block';
-        btnText.innerText = "Register";
-        prompt.innerText = "Already have an account?";
-        btn.innerText = "Login";
+        heading.innerText = "Create New Account"; nameGroup.style.display = 'block'; confirmGroup.style.display = 'block';
+        btnText.innerText = "Register"; prompt.innerText = "Already have an account?"; btn.innerText = "Login";
       } else {
-        heading.innerText = "Login to your account";
-        nameGroup.style.display = 'none';
-        confirmGroup.style.display = 'none';
-        btnText.innerText = "Login";
-        prompt.innerText = "Don't have an account?";
-        btn.innerText = "Create New Account";
+        heading.innerText = "Login to your account"; nameGroup.style.display = 'none'; confirmGroup.style.display = 'none';
+        btnText.innerText = "Login"; prompt.innerText = "Don't have an account?"; btn.innerText = "Create New Account";
       }
     }
-
     function handleAuth(e) {
       e.preventDefault();
       const email = document.getElementById('authEmail').value.trim();
@@ -1624,101 +1152,21 @@
       const name = document.getElementById('authName').value.trim();
       const btn = document.getElementById('authSubmitBtn');
       const alertBox = document.getElementById('authAlert');
-
-      btn.disabled = true;
-      alertBox.style.display = 'none';
-
+      btn.disabled = true; alertBox.style.display = 'none';
       if (isSignUp) {
-        if (pass !== confirmPass) {
-          alertBox.className = "status-alert status-error";
-          alertBox.innerText = "Passwords do not match!";
-          alertBox.style.display = 'block';
-          btn.disabled = false;
-          return;
-        }
-
-        auth.createUserWithEmailAndPassword(email, pass)
-          .then((cred) => {
-            if (name) cred.user.updateProfile({ displayName: name });
-          })
-          .catch(err => {
-            alertBox.className = "status-alert status-error";
-            alertBox.innerText = err.message;
-            alertBox.style.display = 'block';
-            btn.disabled = false;
-          });
+        if (pass !== confirmPass) { alertBox.className = "status-alert status-error"; alertBox.innerText = "Passwords do not match!"; alertBox.style.display = 'block'; btn.disabled = false; return; }
+        auth.createUserWithEmailAndPassword(email, pass).then((cred) => { if (name) cred.user.updateProfile({ displayName: name }); }).catch(err => { alertBox.className = "status-alert status-error"; alertBox.innerText = err.message; alertBox.style.display = 'block'; btn.disabled = false; });
       } else {
-        auth.signInWithEmailAndPassword(email, pass)
-          .catch(err => {
-            alertBox.className = "status-alert status-error";
-            alertBox.innerHTML = `
-              <div>Incorrect email or password!</div>
-              <button type="button" style="margin-top:8px; background:none; border:none; color:var(--primary); font-weight:700; text-decoration:underline; cursor:pointer;" onclick="triggerPasswordResetWithConfirm('${email}')">Forgot password? Send Reset Link</button>
-            `;
-            alertBox.style.display = 'block';
-            btn.disabled = false;
-          });
+        auth.signInWithEmailAndPassword(email, pass).catch(err => { alertBox.className = "status-alert status-error"; alertBox.innerHTML = `<div>Incorrect email or password!</div>`; alertBox.style.display = 'block'; btn.disabled = false; });
       }
     }
-
-    function triggerPasswordResetWithConfirm(email) {
-      if (!email) {
-        showAppConfirm({
-          icon: '<i class="fa-solid fa-envelope"></i>',
-          title: "Notice",
-          msg: "Please enter your email address first!",
-          hideCancel: true
-        });
-        return;
-      }
-
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-envelope" style="color:var(--primary);"></i>',
-        title: "Password Reset",
-        msg: `Send password reset link to ${email}?`,
-        onConfirm: () => {
-          auth.sendPasswordResetEmail(email).then(() => {
-            const alertBox = document.getElementById('authAlert');
-            alertBox.className = "status-alert status-success";
-            alertBox.innerText = `Password reset link sent to ${email}!`;
-            alertBox.style.display = "block";
-          });
-        }
-      });
-    }
-
     function confirmLogout() {
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-arrow-right-from-bracket" style="color:var(--expense);"></i>',
-        title: (lang === 'ml') ? "ലോഗൗട്ട് ചെയ്യുക" : (lang === 'ar' ? "تسجيل الخروج" : "Logout"),
-        msg: (lang === 'ml') ? "നിങ്ങൾക്ക് അക്കൗണ്ടിൽ നിന്ന് ലോഗൗട്ട് ചെയ്യണമെന്ന് ഉറപ്പാണോ?" : (lang === 'ar' ? "هل أنت متأكد أنك تريد تسجيل الخروج؟" : "Are you sure you want to log out?"),
-        onConfirm: () => {
-          auth.signOut();
-        }
-      });
+      showAppConfirm({ icon: '<i class="fa-solid fa-arrow-right-from-bracket" style="color:var(--expense);"></i>', title: "Logout", msg: "Are you sure you want to log out?", onConfirm: () => { auth.signOut(); } });
     }
-
-    function handleLogout() { confirmLogout(); }
-
-    function openSettingsModal() {
-      document.getElementById('settingsModal').style.display = 'flex';
-      document.getElementById('settingsAlert').style.display = 'none';
-      if (currentUser) document.getElementById('settingsDisplayName').value = currentUser.displayName || "";
-      document.getElementById('settingsLangSelect').value = lang;
-      document.getElementById('settingsCurrencySelect').value = userCurrency;
-      loadDisplaySettingsToCheckboxes();
-    }
+    function openSettingsModal() { document.getElementById('settingsModal').style.display = 'flex'; document.getElementById('settingsAlert').style.display = 'none'; }
     function closeSettingsModal() { document.getElementById('settingsModal').style.display = 'none'; }
-
-    function openGuideModalDirectly() {
-      closeSettingsModal();
-      setTimeout(() => {
-        document.getElementById('guideContentBody').innerHTML = guideData[lang] || guideData.en;
-        document.getElementById('guideModal').style.display = 'flex';
-      }, 100);
-    }
+    function openGuideModalDirectly() { closeSettingsModal(); setTimeout(() => { document.getElementById('guideContentBody').innerHTML = guideData[lang] || guideData.en; document.getElementById('guideModal').style.display = 'flex'; }, 100); }
     function closeGuideModal() { document.getElementById('guideModal').style.display = 'none'; }
-
     function loadDisplaySettingsToCheckboxes() {
       document.getElementById('displayCheckEntry').checked = displayConfig.entry !== false;
       document.getElementById('displayCheckReport').checked = displayConfig.report !== false;
@@ -1726,145 +1174,54 @@
       document.getElementById('displayCheckVehicle').checked = displayConfig.vehicle === true;
       document.getElementById('displayCheckPrint').checked = displayConfig.print !== false;
     }
-
     function handleSettingsSaveClick() {
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-floppy-disk" style="color:var(--primary);"></i>',
-        title: (lang === 'ml') ? "സെറ്റിങ്സ് സേവ് ചെയ്യുക" : (lang === 'ar' ? "حفظ الإعدادات" : "Save Settings"),
-        msg: (lang === 'ml') ? "സെറ്റിങ്സിലെ മാറ്റങ്ങൾ സേവ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?" : (lang === 'ar' ? "هل أنت متأكد من حفظ التغييرات؟" : "Are you sure you want to apply these settings?"),
-        onConfirm: () => {
-          const newLang = document.getElementById('settingsLangSelect').value;
-          const newCurr = document.getElementById('settingsCurrencySelect').value;
-          const newName = document.getElementById('settingsDisplayName').value.trim();
-
-          displayConfig = {
-            entry: document.getElementById('displayCheckEntry').checked,
-            report: document.getElementById('displayCheckReport').checked,
-            reminder: document.getElementById('displayCheckReminder').checked,
-            vehicle: document.getElementById('displayCheckVehicle').checked,
-            print: document.getElementById('displayCheckPrint').checked
-          };
-          localStorage.setItem('app_display_config', JSON.stringify(displayConfig));
-
-          lang = newLang;
-          localStorage.setItem('app_lang', lang);
-          applyLanguage(lang);
-
-          userCurrency = newCurr;
-          localStorage.setItem('app_currency', userCurrency);
-
-          if (currentUser && newName && newName !== currentUser.displayName) {
-            currentUser.updateProfile({ displayName: newName }).then(() => {
-              document.getElementById('userNameLabel').innerText = newName;
-              document.getElementById('avatarInitial').innerText = newName.charAt(0).toUpperCase();
-            });
-          }
-
-          applyDisplayPreferences();
-          updateCategoryList();
-          updateReminderCategoryDropdown();
-          bindUserTransactions(currentUser.uid);
-          if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
-
-          closeSettingsModal();
-        }
-      });
+      lang = document.getElementById('settingsLangSelect').value;
+      userCurrency = document.getElementById('settingsCurrencySelect').value;
+      const newName = document.getElementById('settingsDisplayName').value.trim();
+      displayConfig = {
+        entry: document.getElementById('displayCheckEntry').checked,
+        report: document.getElementById('displayCheckReport').checked,
+        reminder: document.getElementById('displayCheckReminder').checked,
+        vehicle: document.getElementById('displayCheckVehicle').checked,
+        print: document.getElementById('displayCheckPrint').checked
+      };
+      localStorage.setItem('app_display_config', JSON.stringify(displayConfig));
+      localStorage.setItem('app_lang', lang);
+      localStorage.setItem('app_currency', userCurrency);
+      applyLanguage(lang);
+      if (currentUser && newName) currentUser.updateProfile({ displayName: newName });
+      applyDisplayPreferences();
+      closeSettingsModal();
     }
-
     function applyDisplayPreferences() {
       document.getElementById('tabEntryBtn').style.display = displayConfig.entry !== false ? 'block' : 'none';
       document.getElementById('tabReportBtn').style.display = displayConfig.report !== false ? 'block' : 'none';
       document.getElementById('tabReminderBtn').style.display = displayConfig.reminder !== false ? 'block' : 'none';
       document.getElementById('tabVehicleBtn').style.display = displayConfig.vehicle ? 'block' : 'none';
-      document.getElementById('settingsPrintBlock').style.display = displayConfig.print !== false ? 'block' : 'none';
-
-      if (displayConfig.entry !== false) switchView('entry');
-      else if (displayConfig.report !== false) switchView('report');
-      else if (displayConfig.reminder !== false) switchView('reminder');
-      else if (displayConfig.vehicle) switchView('vehicle');
     }
-
     function shareApplication() {
       const shareUrl = window.location.href;
-      const shareText = (lang === 'ml') ? 
-        `വരവ്-ചെലവുകളും ബിൽ റിമൈൻഡറുകളും വാഹന ഇന്ധനച്ചെലവുകളും ട്രാക്ക് ചെയ്യാൻ ഞാൻ ഉപയോഗിക്കുന്ന 'My Ledgers' ആപ്പ് പരീക്ഷിച്ചു നോക്കൂ:\n${shareUrl}` : 
-        (lang === 'ar' ? `جرب تطبيق My Ledgers لتتبع المصاريف، الفواتير والوقود بكل سهولة:\n${shareUrl}` : `Check out My Ledgers app to manage personal expenses, bill reminders and fuel tracking:\n${shareUrl}`);
-
-      if (navigator.share) {
-        navigator.share({
-          title: 'My Ledgers App',
-          text: shareText,
-          url: shareUrl
-        }).catch(() => {});
-      } else {
-        const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-        window.open(whatsappUrl, '_blank');
-      }
+      if (navigator.share) { navigator.share({ title: 'My Ledgers App', text: shareUrl, url: shareUrl }); }
+      else { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareUrl)}`, '_blank'); }
     }
-
-    function printReportFromSettings() {
-      closeSettingsModal();
-      switchView('report');
-      setTimeout(() => { window.print(); }, 400);
-    }
-
+    function printReportFromSettings() { closeSettingsModal(); switchView('report'); setTimeout(() => { window.print(); }, 400); }
     function applyLanguage(l) {
       document.documentElement.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
-      
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[l][key]) el.innerText = dict[l][key];
-      });
-      document.querySelectorAll('[data-i18n-opt]').forEach(el => {
-        const key = el.getAttribute('data-i18n-opt');
-        if (dict[l][key]) el.innerText = dict[l][key];
-      });
+      document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.getAttribute('data-i18n'); if (dict[l][key]) el.innerText = dict[l][key]; });
+      document.querySelectorAll('[data-i18n-opt]').forEach(el => { const key = el.getAttribute('data-i18n-opt'); if (dict[l][key]) el.innerText = dict[l][key]; });
     }
-
-    function sendSettingsResetMail() {
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-envelope" style="color:var(--primary);"></i>',
-        title: (lang === 'ml') ? "പാസ്‌വേഡ് റീസെറ്റ്" : (lang === 'ar' ? "إعادة تعيين كلمة المرور" : "Password Reset"),
-        msg: (lang === 'ml') ? `പാസ്‌വേഡ് മാറ്റാനുള്ള ലിങ്ക് ${currentUser.email}-ലേക്ക് അയക്കണോ?` : (lang === 'ar' ? `هل تريد إرسال رابط التعيين إلى ${currentUser.email}؟` : `Send password reset link to ${currentUser.email}?`),
-        onConfirm: () => {
-          auth.sendPasswordResetEmail(currentUser.email).then(() => {
-            showAppConfirm({
-              icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
-              title: "Success",
-              msg: (lang === 'ml') ? `ലിങ്ക് ഇമെയിലിലേക്ക് അയച്ചു!` : (lang === 'ar' ? `تم إرسال الرابط بنجاح!` : `Reset link sent successfully!`),
-              hideCancel: true
-            });
-          });
-        }
-      });
-    }
-
+    function sendSettingsResetMail() { auth.sendPasswordResetEmail(currentUser.email).then(() => alert("Reset link sent!")); }
     function promptResetAllData() {
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-triangle-exclamation" style="color:var(--expense);"></i>',
-        title: (lang === 'ml') ? "ശ്രദ്ധിക്കുക!" : (lang === 'ar' ? "تحذير!" : "Warning!"),
-        msg: (lang === 'ml') ? "നിങ്ങളുടെ എല്ലാ ഇടപാടുകളും എന്നെന്നേക്കുമായി ഡിലീറ്റ് ചെയ്യപ്പെടും. തുടരണോ?" : (lang === 'ar' ? "سيتم حذف جميع المعاملات نهائياً. هل أنت متأكد؟" : "All transactions will be permanently deleted. Continue?"),
-        onConfirm: () => {
-          showAppConfirm({
-            icon: '<i class="fa-solid fa-trash-can" style="color:var(--expense);"></i>',
-            title: (lang === 'ml') ? "അന്തിമ സ്ഥിരീകരണം" : (lang === 'ar' ? "تأكيد أخير" : "Final Confirmation"),
-            msg: (lang === 'ml') ? "ഈ മാറ്റം ഒരിക്കലും തിരിച്ചെടുക്കാൻ കഴിയില്ല. ഡിലീറ്റ് ചെയ്യട്ടെ?" : (lang === 'ar' ? "لا يمكن التراجع عن هذا الإجراء أبداً. تأكيد الحذف؟" : "This action cannot be undone. Clear all?"),
-            onConfirm: () => {
-              const txRef = db.collection("users").doc(currentUser.uid).collection("transactions");
-              txRef.get().then((snap) => {
-                const batch = db.batch();
-                snap.forEach((doc) => batch.delete(doc.ref));
-                return batch.commit();
-              }).then(() => {
-                closeSettingsModal();
-              });
-            }
-          });
-        }
-      });
+      showAppConfirm({ icon: '<i class="fa-solid fa-triangle-exclamation" style="color:var(--expense);"></i>', title: "Warning", msg: "Delete all transactions?", onConfirm: () => {
+        db.collection("users").doc(currentUser.uid).collection("transactions").get().then((snap) => {
+          const batch = db.batch(); snap.forEach(doc => batch.delete(doc.ref)); return batch.commit();
+        }).then(() => closeSettingsModal());
+      }});
     }
 
+    /* 🌟 VIEW SWITCHER WITH HOME GRID MENU SUPPORT */
     function switchView(view) {
+      document.getElementById('homeMenuView').style.display = (view === 'home') ? 'block' : 'none';
       document.getElementById('entrySection').style.display = (view === 'entry') ? 'block' : 'none';
       document.getElementById('reportSection').style.display = (view === 'report') ? 'block' : 'none';
       document.getElementById('reminderSection').style.display = (view === 'reminder') ? 'block' : 'none';
@@ -1882,173 +1239,62 @@
       currentMode = m;
       document.querySelectorAll('.type-pill').forEach(p => p.classList.remove('active'));
       document.querySelector(`[data-mode="${m}"]`).classList.add('active');
-
       document.getElementById('loanGroupField').style.display = (m === 'loan') ? 'block' : 'none';
       document.getElementById('personGroupField').style.display = (m === 'loan') ? 'block' : 'none';
-
-      if (m === 'expense') document.getElementById('entryType').value = (lang === 'ml') ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Expense');
-      else if (m === 'income') document.getElementById('entryType').value = (lang === 'ml') ? 'വരവ്' : (lang === 'ar' ? 'دخل' : 'Income');
+      if (m === 'expense') document.getElementById('entryType').value = 'ചെലവ്';
+      else if (m === 'income') document.getElementById('entryType').value = 'വരവ്';
       else if (m === 'loan') updateEntryType();
-
       updateCategoryList();
       document.getElementById('customCatGroup').style.display = 'none';
     }
-
     function updateEntryType() { document.getElementById('entryType').value = document.getElementById('loanSubtype').value; }
-
-    function resetEntryForm() {
-      document.getElementById('entryAmount').value = '';
-      document.getElementById('entryDesc').value = '';
-      document.getElementById('entryPerson').value = '';
-      document.getElementById('customCategoryInput').value = '';
-      document.getElementById('customCatGroup').style.display = 'none';
-      updateCategoryList();
-    }
-
-    function resetFuelForm() {
-      document.getElementById('fuelOdo').value = '';
-      document.getElementById('fuelPricePerLiter').value = '';
-      document.getElementById('fuelTotalAmount').value = '';
-    }
+    function resetEntryForm() { document.getElementById('entryAmount').value = ''; document.getElementById('entryDesc').value = ''; document.getElementById('entryPerson').value = ''; }
+    function resetFuelForm() { document.getElementById('fuelOdo').value = ''; document.getElementById('fuelPricePerLiter').value = ''; document.getElementById('fuelTotalAmount').value = ''; document.getElementById('maintAmount').value = ''; document.getElementById('maintDesc').value = ''; }
 
     function bindCustomCategories(uid) {
       if (unsubCustomCategories) unsubCustomCategories();
       unsubCustomCategories = db.collection("users").doc(uid).collection("categories").onSnapshot((snapshot) => {
         userCustomCategories = [];
-        snapshot.forEach(doc => {
-          userCustomCategories.push({ id: doc.id, ...doc.data() });
-        });
-        updateCategoryList();
-        updateReminderCategoryDropdown();
-        renderCustomCategoryChipsInSettings();
+        snapshot.forEach(doc => userCustomCategories.push({ id: doc.id, ...doc.data() }));
+        updateCategoryList(); updateReminderCategoryDropdown();
       });
     }
-
-    function renderCustomCategoryChipsInSettings() {
-      const container = document.getElementById('customCatChipContainer');
-      if (userCustomCategories.length === 0) {
-        container.innerHTML = `<span style="font-size: 12px; color: var(--text-muted);">${lang === 'ml' ? 'കാറ്റഗറികൾ ഒന്നും ചേർത്തിട്ടില്ല' : (lang === 'ar' ? 'لا توجد فئات مخصصة' : 'No custom categories')}</span>`;
-        return;
-      }
-      container.innerHTML = '';
-      userCustomCategories.forEach(cat => {
-        const chip = document.createElement('div');
-        chip.className = 'cat-chip';
-        chip.innerHTML = `
-          <span>${cat.name} (${cat.type === 'income' ? (lang === 'ml' ? 'വരവ്' : (lang === 'ar' ? 'دخل' : 'Inc')) : (lang === 'ml' ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Exp'))})</span>
-          <span class="cat-chip-del" onclick="promptDeleteCustomCategory('${cat.id}', '${cat.name}')" title="Delete">✕</span>
-        `;
-        container.appendChild(chip);
-      });
-    }
-
-    function promptDeleteCustomCategory(catDocId, catName) {
-      if (!currentUser) return;
-
-      const isUsed = rawData.some(r => r.category.toLowerCase() === catName.toLowerCase());
-
-      if (isUsed) {
-        showAppConfirm({
-          icon: '<i class="fa-solid fa-triangle-exclamation" style="color:var(--reminder);"></i>',
-          title: "Cannot Delete Category",
-          msg: (lang === 'ml') ? `"${catName}" എന്ന കാറ്റഗറിയിൽ ഇതിനകം ഇടപാടുകൾ രേഖപ്പെടുത്തിയിട്ടുണ്ട്! ഡാറ്റ നഷ്ടപ്പെടാതിരിക്കാൻ ഈ കാറ്റഗറി ഡിലീറ്റ് ചെയ്യാൻ സാധിക്കില്ല.` : 
-               (lang === 'ar' ? `هناك معاملات مرتبطة بهذه الفئة "${catName}". لا يمكن حذفها لتجنب فقدان البيانات.` : 
-               `Transactions already exist under "${catName}". To prevent data loss, this category cannot be deleted.`),
-          hideCancel: true
-        });
-        return;
-      }
-
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-trash" style="color:var(--expense);"></i>',
-        title: (lang === 'ml') ? "കാറ്റഗറി ഒഴിവാക്കൽ" : (lang === 'ar' ? "حذف الفئة" : "Delete Category"),
-        msg: (lang === 'ml') ? `"${catName}" എന്ന കാറ്റഗറി സ്ഥിരമായി ഒഴിവാക്കണോ?` : (lang === 'ar' ? `هل تريد حذف الفئة "${catName}"؟` : `Delete category "${catName}"?`),
-        onConfirm: () => {
-          db.collection("users").doc(currentUser.uid).collection("categories").doc(catDocId).delete();
-        }
-      });
-    }
-
     function updateCategoryList() {
       const select = document.getElementById('entryCategory');
       select.innerHTML = `<option value="" disabled selected>${dict[lang].select_placeholder}</option>`;
-      
-      defaultCategories[lang][currentMode].forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat;
-        opt.innerText = cat;
-        select.appendChild(opt);
-      });
-
-      const customForMode = userCustomCategories.filter(c => c.type === currentMode);
-      customForMode.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.name;
-        opt.innerText = c.name + " ✦";
-        select.appendChild(opt);
-      });
-
-      const newOpt = document.createElement('option');
-      newOpt.value = 'NEW_CAT';
-      newOpt.innerText = dict[lang].new_cat_opt;
-      select.appendChild(newOpt);
+      defaultCategories[lang][currentMode].forEach(cat => select.appendChild(new Option(cat, cat)));
+      userCustomCategories.filter(c => c.type === currentMode).forEach(c => select.appendChild(new Option(c.name + " ✦", c.name)));
+      select.appendChild(new Option(dict[lang].new_cat_opt, 'NEW_CAT'));
     }
-
     function updateReminderCategoryDropdown() {
       const select = document.getElementById('remindCategory');
-      if (!select) return;
-      select.innerHTML = '';
-
-      defaultCategories[lang]['expense'].forEach(cat => {
-        select.appendChild(new Option(cat, cat));
-      });
-      userCustomCategories.filter(c => c.type === 'expense').forEach(c => {
-        select.appendChild(new Option(c.name + " ✦", c.name));
-      });
+      if (!select) return; select.innerHTML = '';
+      defaultCategories[lang]['expense'].forEach(cat => select.appendChild(new Option(cat, cat)));
     }
-
     function handleCategoryChange(sel) {
       const customGroup = document.getElementById('customCatGroup');
-      if (sel.value === 'NEW_CAT') {
-        customGroup.style.display = 'block';
-        document.getElementById('customCategoryInput').required = true;
-        document.getElementById('customCategoryInput').focus();
-      } else {
-        customGroup.style.display = 'none';
-        document.getElementById('customCategoryInput').required = false;
-      }
+      if (sel.value === 'NEW_CAT') { customGroup.style.display = 'block'; document.getElementById('customCategoryInput').required = true; }
+      else { customGroup.style.display = 'none'; document.getElementById('customCategoryInput').required = false; }
     }
 
     function bindUserTransactions(uid) {
       if (unsubSnapshot) unsubSnapshot();
       unsubSnapshot = db.collection("users").doc(uid).collection("transactions").onSnapshot((snapshot) => {
-        let mInc = 0, mExp = 0, tInc = 0, tExp = 0;
-        rawData = [];
-        const now = new Date();
-        const currM = now.getMonth(), currY = now.getFullYear();
-
+        let mInc = 0, mExp = 0, tInc = 0, tExp = 0; rawData = [];
+        const now = new Date(), currM = now.getMonth(), currY = now.getFullYear();
         snapshot.forEach((doc) => {
-          const data = doc.data();
-          const amt = parseFloat(data.amount) || 0;
+          const data = doc.data(); const amt = parseFloat(data.amount) || 0;
           let rowDate = new Date();
-          if (data.date) {
-            const parts = data.date.split('-');
-            if (parts.length === 3) rowDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-          }
-          const isInc = (data.type === "വരവ്" || data.type === "Income" || data.type === "دخل" || data.type === "കടം തിരിച്ചു കിട്ടിയത്" || data.type === "കടം വാങ്ങിയത്" || data.type === "Borrowed Loan" || data.type === "Received Loan Repayment");
+          if (data.date) { const p = data.date.split('-'); if (p.length === 3) rowDate = new Date(p[0], p[1] - 1, p[2]); }
+          const isInc = (data.type === "വരവ്" || data.type === "Income" || data.type === "دخل" || data.type.includes("Loan"));
           if (isInc) tInc += amt; else tExp += amt;
-          if (rowDate.getMonth() === currM && rowDate.getFullYear() === currY) {
-            if (isInc) mInc += amt; else mExp += amt;
-          }
+          if (rowDate.getMonth() === currM && rowDate.getFullYear() === currY) { if (isInc) mInc += amt; else mExp += amt; }
           rawData.push({ id: doc.id, ...data, parsedDate: rowDate });
         });
-
         document.getElementById('dashInc').innerText = userCurrency + mInc.toFixed(2);
         document.getElementById('dashExp').innerText = userCurrency + mExp.toFixed(2);
-        const bal = tInc - tExp;
-        const balEl = document.getElementById('dashBal');
-        balEl.innerText = userCurrency + bal.toFixed(2);
-        balEl.className = 'metric-value ' + (bal < 0 ? 'val-exp' : 'val-inc');
+        const bal = tInc - tExp; const balEl = document.getElementById('dashBal');
+        balEl.innerText = userCurrency + bal.toFixed(2); balEl.className = 'metric-value ' + (bal < 0 ? 'val-exp' : 'val-inc');
         renderReport();
       });
     }
@@ -2056,419 +1302,181 @@
     function renderReport() {
       const mFilter = document.getElementById('filterMonth').value;
       const tFilter = document.getElementById('filterType').value;
-      const now = new Date();
-      const currM = now.getMonth(), currY = now.getFullYear();
-
+      const now = new Date(), currM = now.getMonth(), currY = now.getFullYear();
       let list = rawData.filter(i => {
         if (mFilter === "THIS_MONTH" && (i.parsedDate.getMonth() !== currM || i.parsedDate.getFullYear() !== currY)) return false;
-        if (tFilter === "INCOME") return (i.type === "വരവ്" || i.type === "Income" || i.type === "دخل");
-        if (tFilter === "EXPENSE") return (i.type === "ചെലവ്" || i.type === "Expense" || i.type === "مصروف");
-        if (tFilter === "LOAN") return (i.type.includes("കടം") || i.type.includes("Loan") || i.type.includes("دين"));
+        if (tFilter === "INCOME") return i.type.includes("വരവ്") || i.type.includes("Income");
+        if (tFilter === "EXPENSE") return i.type.includes("ചെലവ്") || i.type.includes("Expense");
+        if (tFilter === "LOAN") return i.type.includes("കടം") || i.type.includes("Loan");
         return true;
       });
-
       list.sort((a, b) => b.parsedDate - a.parsedDate);
-      let sumI = 0, sumE = 0;
-      const tbody = document.getElementById('reportTableRows');
-      tbody.innerHTML = '';
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:24px; color:var(--text-muted);">${dict[lang].no_records}</td></tr>`;
-      } else {
+      let sumI = 0, sumE = 0; const tbody = document.getElementById('reportTableRows'); tbody.innerHTML = '';
+      if (list.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:24px; color:var(--text-muted);">${dict[lang].no_records}</td></tr>`; }
+      else {
         list.forEach(r => {
           const amt = parseFloat(r.amount) || 0;
-          const isInc = (r.type === "വരവ്" || r.type === "Income" || r.type === "دخل" || r.type === "കടം തിരിച്ചു കിട്ടിയത്" || r.type === "കടം വാങ്ങിയത്" || r.type === "Borrowed Loan" || r.type === "Received Loan Repayment");
+          const isInc = r.type.includes("വരവ്") || r.type.includes("Income") || r.type.includes("Borrowed");
           if (isInc) sumI += amt; else sumE += amt;
-
-          const d = r.parsedDate;
-          const dtStr = String(d.getDate()).padStart(2, '0') + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + d.getFullYear();
-
+          const dtStr = `${String(r.parsedDate.getDate()).padStart(2, '0')}-${String(r.parsedDate.getMonth() + 1).padStart(2, '0')}-${r.parsedDate.getFullYear()}`;
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td style="color:var(--text-muted);">${dtStr}</td>
-            <td><strong>${r.category}</strong><br><small style="color:var(--text-muted);">${r.description && r.description !== '-' ? r.description : ''} ${r.person && r.person !== '-' ? '('+r.person+')' : ''}</small></td>
+            <td><strong>${r.category}</strong><br><small style="color:var(--text-muted);">${r.description || ''}</small></td>
             <td class="badge-amt" style="color:${isInc ? 'var(--income)' : 'var(--expense)'};">${isInc ? '+' : '-'}${userCurrency}${amt.toFixed(2)}</td>
             <td class="action-icons">
-              <i class="fa-solid fa-pen-to-square icon-edit" onclick="openEditModal('${r.id}')" title="Edit"></i>
-              <i class="fa-solid fa-trash icon-del" onclick="promptDeleteTransaction('${r.id}')" title="Delete"></i>
-            </td>
-          `;
+              <i class="fa-solid fa-pen-to-square icon-edit" onclick="openEditModal('${r.id}')"></i>
+              <i class="fa-solid fa-trash icon-del" onclick="promptDeleteTransaction('${r.id}')"></i>
+            </td>`;
           tbody.appendChild(tr);
         });
       }
-
       document.getElementById('repIncSum').innerText = userCurrency + sumI.toFixed(2);
       document.getElementById('repExpSum').innerText = userCurrency + sumE.toFixed(2);
     }
 
     function openEditModal(docId) {
-      const item = rawData.find(r => r.id === docId);
-      if (!item) return;
-
+      const item = rawData.find(r => r.id === docId); if (!item) return;
       document.getElementById('editDocId').value = item.id;
       document.getElementById('editDate').value = item.date;
       document.getElementById('editCategory').value = item.category;
       document.getElementById('editAmount').value = item.amount;
-      document.getElementById('editDesc').value = item.description === '-' ? '' : item.description;
-
+      document.getElementById('editDesc').value = item.description;
       document.getElementById('editModal').style.display = 'flex';
     }
-
     function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
-
     function handleEditSubmit(e) {
       e.preventDefault();
-      if (!currentUser) return;
-      const docId = document.getElementById('editDocId').value;
-      const updated = {
-        date: document.getElementById('editDate').value,
-        category: document.getElementById('editCategory').value.trim(),
-        amount: parseFloat(document.getElementById('editAmount').value) || 0,
-        description: document.getElementById('editDesc').value.trim() || "-"
-      };
-
-      db.collection("users").doc(currentUser.uid).collection("transactions").doc(docId).update(updated)
-        .then(() => {
-          closeEditModal();
-        });
+      db.collection("users").doc(currentUser.uid).collection("transactions").doc(document.getElementById('editDocId').value).update({
+        date: document.getElementById('editDate').value, category: document.getElementById('editCategory').value,
+        amount: parseFloat(document.getElementById('editAmount').value), description: document.getElementById('editDesc').value
+      }).then(() => closeEditModal());
     }
-
     function promptDeleteTransaction(docId) {
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-trash" style="color:var(--expense);"></i>',
-        title: (lang === 'ml') ? "ഡിലീറ്റ് ചെയ്യുക" : (lang === 'ar' ? "حذف" : "Delete"),
-        msg: (lang === 'ml') ? "ഈ ഇടപാട് ഡിലീറ്റ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?" : (lang === 'ar' ? "هل تريد حذف هذه المعاملة؟" : "Delete this transaction?"),
-        onConfirm: () => {
-          db.collection("users").doc(currentUser.uid).collection("transactions").doc(docId).delete();
-        }
-      });
+      showAppConfirm({ icon: '<i class="fa-solid fa-trash" style="color:var(--expense);"></i>', title: "Delete", msg: "Delete transaction?", onConfirm: () => {
+        db.collection("users").doc(currentUser.uid).collection("transactions").doc(docId).delete();
+      }});
     }
 
     function handleTransactionSubmit(e) {
       e.preventDefault();
-      if (!currentUser) return;
-      const btn = document.getElementById('saveSubmitBtn');
-      const alert = document.getElementById('formAlert');
       const amt = parseFloat(document.getElementById('entryAmount').value) || 0;
-      
       let cat = document.getElementById('entryCategory').value;
-      let isNewCat = (cat === 'NEW_CAT');
-      if (isNewCat) {
-        cat = document.getElementById('customCategoryInput').value.trim();
-      }
-
-      if (!cat) return;
-
-      const proceedSave = () => {
-        btn.disabled = true;
-
-        const payload = {
-          date: document.getElementById('entryDate').value,
-          type: document.getElementById('entryType').value,
-          category: cat,
-          amount: amt,
-          description: document.getElementById('entryDesc').value || "-",
-          person: document.getElementById('entryPerson').value || "-",
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        };
-
-        db.collection("users").doc(currentUser.uid).collection("transactions").add(payload).then(() => {
-          alert.className = "status-alert status-success";
-          alert.innerText = dict[lang].success_save;
-          alert.style.display = "block";
-          resetEntryForm();
-          
-          setTimeout(() => alert.style.display = "none", 3000);
-          btn.disabled = false;
-        }).catch(err => {
-          alert.className = "status-alert status-error";
-          alert.innerText = err.message;
-          alert.style.display = "block";
-          btn.disabled = false;
-        });
-      };
-
-      if (isNewCat && currentMode !== 'loan') {
-        const alreadyExists = userCustomCategories.some(c => c.name.toLowerCase() === cat.toLowerCase() && c.type === currentMode);
-        if (!alreadyExists) {
-          showAppConfirm({
-            icon: '<i class="fa-solid fa-folder-plus" style="color:var(--primary);"></i>',
-            title: (lang === 'ml') ? "പുതിയ കാറ്റഗറി" : (lang === 'ar' ? "فئة جديدة" : "New Category"),
-            msg: (lang === 'ml') ? `"${cat}" എന്ന പുതിയ കാറ്റഗറി നിങ്ങളുടെ ലിസ്റ്റിൽ സ്ഥിരമായി ചേർക്കണോ?` : (lang === 'ar' ? `هل تريد حفظ الفئة "${cat}" في قائمتك؟` : `Save "${cat}" to your category list?`),
-            onConfirm: () => {
-              db.collection("users").doc(currentUser.uid).collection("categories").add({
-                name: cat,
-                type: currentMode,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-              });
-              proceedSave();
-            }
-          });
-          return;
-        }
-      }
-
-      proceedSave();
+      if (cat === 'NEW_CAT') cat = document.getElementById('customCategoryInput').value.trim();
+      db.collection("users").doc(currentUser.uid).collection("transactions").add({
+        date: document.getElementById('entryDate').value, type: document.getElementById('entryType').value,
+        category: cat, amount: amt, description: document.getElementById('entryDesc').value || "-", person: document.getElementById('entryPerson').value || "-",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => { resetEntryForm(); switchView('home'); });
     }
 
-    /* 🌟 REMINDERS SYSTEM WITH TOP DUE NOTIFICATION & POSTPONE */
-    function openAddReminderModal() {
-      updateReminderCategoryDropdown();
-      document.getElementById('addReminderModal').style.display = 'flex';
-    }
+    /* REMINDERS */
+    function openAddReminderModal() { document.getElementById('addReminderModal').style.display = 'flex'; }
     function closeAddReminderModal() { document.getElementById('addReminderModal').style.display = 'none'; }
-
     function handleNewReminderSubmit(e) {
       e.preventDefault();
-      if (!currentUser) return;
-      const remData = {
-        title: document.getElementById('remindTitle').value.trim(),
-        category: document.getElementById('remindCategory').value,
-        dueDate: document.getElementById('remindDueDate').value,
-        amount: parseFloat(document.getElementById('remindAmount').value) || 0,
-        frequency: document.getElementById('remindFrequency').value,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-
-      db.collection("users").doc(currentUser.uid).collection("reminders").add(remData).then(() => {
-        closeAddReminderModal();
-        document.getElementById('remindTitle').value = '';
-        document.getElementById('remindAmount').value = '';
-      });
+      db.collection("users").doc(currentUser.uid).collection("reminders").add({
+        title: document.getElementById('remindTitle').value, category: document.getElementById('remindCategory').value,
+        dueDate: document.getElementById('remindDueDate').value, amount: parseFloat(document.getElementById('remindAmount').value),
+        frequency: document.getElementById('remindFrequency').value, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => closeAddReminderModal());
     }
-
     function bindUserReminders(uid) {
       if (unsubReminders) unsubReminders();
       unsubReminders = db.collection("users").doc(uid).collection("reminders").orderBy("dueDate", "asc").onSnapshot((snap) => {
-        userReminders = [];
-        snap.forEach(doc => userReminders.push({ id: doc.id, ...doc.data() }));
-        renderRemindersList();
-        renderTopDueAlerts();
+        userReminders = []; snap.forEach(doc => userReminders.push({ id: doc.id, ...doc.data() }));
+        renderRemindersList(); renderTopDueAlerts();
       });
     }
-
-    // 🌟 RENDER TOP RED ALERT FOR DUE BILLS ON APP HOME
     function renderTopDueAlerts() {
-      const alertBox = document.getElementById('topDueAlertBox');
-      const todayDate = new Date().toISOString().split('T')[0];
+      const alertBox = document.getElementById('topDueAlertBox'); const todayDate = new Date().toISOString().split('T')[0];
       const dueList = userReminders.filter(r => r.dueDate <= todayDate);
-
-      if (dueList.length === 0) {
-        alertBox.style.display = 'none';
-        alertBox.innerHTML = '';
-        return;
-      }
-
-      alertBox.style.display = 'block';
-      alertBox.innerHTML = '';
-
+      if (dueList.length === 0) { alertBox.style.display = 'none'; return; }
+      alertBox.style.display = 'block'; alertBox.innerHTML = '';
       dueList.forEach(rem => {
-        const item = document.createElement('div');
-        item.className = 'top-due-item';
-        item.innerHTML = `
-          <div>
-            <span class="due-tag">DUE</span>
-            <strong style="font-size:13px; color:#991b1b;">${rem.title}</strong>
-            <span style="font-size:12px; font-weight:700; color:var(--text); margin-left:6px;">${userCurrency}${parseFloat(rem.amount).toFixed(2)}</span>
-          </div>
-          <div style="display:flex; gap:6px;">
-            <button type="button" class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')"><i class="fa-solid fa-check"></i> Paid</button>
-            <button type="button" class="btn-postpone-now" onclick="openPostponeModal('${rem.id}', '${rem.dueDate}')"><i class="fa-solid fa-calendar-days"></i></button>
-          </div>
-        `;
+        const item = document.createElement('div'); item.className = 'top-due-item';
+        item.innerHTML = `<div><span class="due-tag">DUE</span><strong>${rem.title}</strong> (${userCurrency}${rem.amount})</div>
+        <div><button class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')">Paid</button></div>`;
         alertBox.appendChild(item);
       });
     }
-
     function renderRemindersList() {
-      const container = document.getElementById('remindersListContainer');
-      if (userReminders.length === 0) {
-        container.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px;">${dict[lang].no_reminders}</p>`;
-        return;
-      }
-
-      container.innerHTML = '';
-      const todayDate = new Date().toISOString().split('T')[0];
-
+      const container = document.getElementById('remindersListContainer'); container.innerHTML = '';
+      if (userReminders.length === 0) { container.innerHTML = `<p style="text-align:center; color:var(--text-muted);">${dict[lang].no_reminders}</p>`; return; }
       userReminders.forEach(rem => {
-        const isUrgent = rem.dueDate <= todayDate;
-        const card = document.createElement('div');
-        card.className = `reminder-card ${isUrgent ? 'due-urgent' : ''}`;
-        
-        let freqText = '';
-        if (rem.frequency === 'monthly') freqText = lang === 'ml' ? 'മാസം' : (lang === 'ar' ? 'شهري' : 'Monthly');
-        else if (rem.frequency === 'yearly') freqText = lang === 'ml' ? 'വർഷം' : (lang === 'ar' ? 'سنوي' : 'Yearly');
-        else freqText = lang === 'ml' ? 'ഒരിക്കൽ' : (lang === 'ar' ? 'مرة واحدة' : 'Once');
-
-        card.innerHTML = `
-          <div>
-            <div class="reminder-title">${rem.title} <small style="font-weight:normal; color:var(--primary-dark);">(${rem.category || 'General'})</small></div>
-            <div class="reminder-date"><i class="fa-solid fa-clock"></i> Due: ${rem.dueDate} (${freqText})</div>
-            <div class="btn-group-rem">
-              <button type="button" class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')"><i class="fa-solid fa-check"></i> Paid</button>
-              <button type="button" class="btn-postpone-now" onclick="openPostponeModal('${rem.id}', '${rem.dueDate}')"><i class="fa-solid fa-calendar-days"></i> Postpone</button>
-            </div>
-          </div>
-          <div style="text-align: right;">
-            <div class="reminder-amt">${userCurrency}${parseFloat(rem.amount).toFixed(2)}</div>
-            <i class="fa-solid fa-trash icon-del" style="margin-top: 8px; display: inline-block;" onclick="promptDeleteReminder('${rem.id}')" title="Delete"></i>
-          </div>
-        `;
+        const card = document.createElement('div'); card.className = 'reminder-card';
+        card.innerHTML = `<div><div class="reminder-title">${rem.title}</div><div class="reminder-date">Due: ${rem.dueDate}</div>
+        <button class="btn-pay-now" onclick="markReminderAsPaid('${rem.id}')">Paid</button></div>
+        <div style="text-align: right;"><div class="reminder-amt">${userCurrency}${rem.amount}</div></div>`;
         container.appendChild(card);
       });
     }
-
-    // 🌟 POSTPONE REMINDER MODAL LOGIC
-    function openPostponeModal(remId, currentDate) {
-      document.getElementById('postponeRemId').value = remId;
-      document.getElementById('postponeNewDate').value = currentDate;
-      document.getElementById('postponeModal').style.display = 'flex';
-    }
-    function closePostponeModal() { document.getElementById('postponeModal').style.display = 'none'; }
-
-    function handlePostponeSubmit(e) {
-      e.preventDefault();
-      if (!currentUser) return;
-      const remId = document.getElementById('postponeRemId').value;
-      const newDate = document.getElementById('postponeNewDate').value;
-
-      db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({
-        dueDate: newDate
-      }).then(() => {
-        closePostponeModal();
-      });
-    }
-
     function markReminderAsPaid(remId) {
-      const rem = userReminders.find(r => r.id === remId);
-      if (!rem || !currentUser) return;
-
-      const catToSave = rem.category || (defaultCategories[lang]['expense'][0]);
-
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
-        title: "Mark as Paid",
-        msg: (lang === 'ml') ? `"${rem.title}" അടച്ചു എന്ന് രേഖപ്പെടുത്തി '${catToSave}' വിഭാഗത്തിൽ ചെലവായി സേവ് ചെയ്യണോ?` : 
-             (lang === 'ar' ? `هل تريد تسجيل "${rem.title}" كمدفوع وحفظه في فئة '${catToSave}'؟` : 
-             `Record "${rem.title}" as paid and save under category '${catToSave}'?`),
-        onConfirm: () => {
-          db.collection("users").doc(currentUser.uid).collection("transactions").add({
-            date: todayFormatted,
-            type: (lang === 'ml') ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Expense'),
-            category: catToSave,
-            amount: rem.amount,
-            description: `${rem.title} (Bill Paid)`,
-            person: "-",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          if (rem.frequency === 'monthly') {
-            const nextD = new Date(rem.dueDate);
-            nextD.setMonth(nextD.getMonth() + 1);
-            const nextDueDateStr = nextD.toISOString().split('T')[0];
-            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({ dueDate: nextDueDateStr });
-          } else if (rem.frequency === 'yearly') {
-            const nextD = new Date(rem.dueDate);
-            nextD.setFullYear(nextD.getFullYear() + 1);
-            const nextDueDateStr = nextD.toISOString().split('T')[0];
-            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).update({ dueDate: nextDueDateStr });
-          } else {
-            db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).delete();
-          }
-
-          showAppConfirm({
-            icon: '<i class="fa-solid fa-circle-check" style="color:var(--income);"></i>',
-            title: "Success",
-            msg: (lang === 'ml') ? "ചെലവിലേക്ക് വിജയകരമായി രേഖപ്പെടുത്തി!" : "Successfully recorded in Expenses!",
-            hideCancel: true
-          });
-        }
+      const rem = userReminders.find(r => r.id === remId); if (!rem) return;
+      db.collection("users").doc(currentUser.uid).collection("transactions").add({
+        date: todayFormatted, type: 'ചെലവ്', category: rem.category || 'മറ്റുള്ളവ', amount: rem.amount, description: `${rem.title} (Bill Paid)`
       });
+      db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).delete();
     }
 
-    function promptDeleteReminder(remId) {
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-trash" style="color:var(--expense);"></i>',
-        title: "Delete Reminder",
-        msg: (lang === 'ml') ? "ഈ റിമൈൻഡർ ഒഴിവാക്കണമെന്ന് ഉറപ്പാണോ?" : "Are you sure you want to delete this reminder?",
-        onConfirm: () => {
-          db.collection("users").doc(currentUser.uid).collection("reminders").doc(remId).delete();
-        }
-      });
+    /* VEHICLE & MAINTENANCE LOGIC */
+    function toggleServiceFields() {
+      const val = document.getElementById('serviceTypeSelect').value;
+      document.getElementById('fuelSpecificFields').style.display = (val === 'Fuel') ? 'block' : 'none';
+      document.getElementById('maintenanceSpecificFields').style.display = (val !== 'Fuel') ? 'block' : 'none';
     }
-
-    /* VEHICLE LOGIC */
     function openAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'flex'; }
     function closeAddVehicleModal() { document.getElementById('addVehicleModal').style.display = 'none'; }
-
     function handleNewVehicleSubmit(e) {
       e.preventDefault();
-      if (!currentUser) return;
-      const vehData = {
-        type: document.getElementById('newVehType').value,
-        name: document.getElementById('newVehName').value.trim(),
-        number: document.getElementById('newVehNumber').value.trim() || "-",
-        fuelType: document.getElementById('newVehFuelType').value,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-
-      db.collection("users").doc(currentUser.uid).collection("vehicles").add(vehData).then(() => {
-        closeAddVehicleModal();
-        document.getElementById('newVehName').value = '';
-        document.getElementById('newVehNumber').value = '';
-      });
+      db.collection("users").doc(currentUser.uid).collection("vehicles").add({
+        type: document.getElementById('newVehType').value, name: document.getElementById('newVehName').value,
+        number: document.getElementById('newVehNumber').value || "-", fuelType: document.getElementById('newVehFuelType').value
+      }).then(() => closeAddVehicleModal());
     }
-
     function bindUserVehicles(uid) {
       if (unsubVehicles) unsubVehicles();
       unsubVehicles = db.collection("users").doc(uid).collection("vehicles").onSnapshot((snap) => {
-        userVehicles = [];
-        const select = document.getElementById('activeVehicleSelect');
-        select.innerHTML = '';
-
-        snap.forEach(doc => {
-          userVehicles.push({ id: doc.id, ...doc.data() });
-        });
-
-        const btnDelVeh = document.getElementById('btnDeleteCurrentVeh');
-
-        if (userVehicles.length === 0) {
-          select.innerHTML = `<option value="">${lang === 'ml' ? 'വാഹനങ്ങൾ ചേർത്തിട്ടില്ല' : 'No vehicles added'}</option>`;
-          activeVehicleId = null;
-          if (btnDelVeh) btnDelVeh.style.display = 'none';
-          document.getElementById('vehicleStatsBox').style.display = 'none';
-          document.getElementById('fuelHistoryTableRows').innerHTML = `<tr><td colspan="5" style="text-align:center; padding:16px;">${lang === 'ml' ? 'വാഹനങ്ങൾ ചേർക്കുക' : 'Add Vehicles'}</td></tr>`;
-        } else {
-          if (btnDelVeh) btnDelVeh.style.display = 'inline-flex';
-          userVehicles.forEach(v => {
-            const opt = document.createElement('option');
-            opt.value = v.id;
-            opt.innerText = `${v.name} (${v.number !== '-' ? v.number : v.fuelType})`;
-            select.appendChild(opt);
-          });
-          activeVehicleId = userVehicles[0].id;
-          loadVehicleFuelHistory(activeVehicleId);
+        userVehicles = []; const select = document.getElementById('activeVehicleSelect'); select.innerHTML = '';
+        snap.forEach(doc => userVehicles.push({ id: doc.id, ...doc.data() }));
+        if (userVehicles.length === 0) { select.innerHTML = `<option value="">No vehicles added</option>`; activeVehicleId = null; }
+        else {
+          userVehicles.forEach(v => select.appendChild(new Option(`${v.name} (${v.number})`, v.id)));
+          activeVehicleId = userVehicles[0].id; loadVehicleFuelHistory(activeVehicleId);
         }
       });
     }
+    function onVehicleSelectChange() { activeVehicleId = document.getElementById('activeVehicleSelect').value; if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId); }
+    function promptDeleteCurrentVehicle() { if (activeVehicleId) db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).delete(); }
 
-    function onVehicleSelectChange() {
-      activeVehicleId = document.getElementById('activeVehicleSelect').value;
-      if (activeVehicleId) loadVehicleFuelHistory(activeVehicleId);
-    }
+    function handleFuelEntrySubmit(e) {
+      e.preventDefault();
+      if (!activeVehicleId) { alert("Select a vehicle first!"); return; }
+      const serviceType = document.getElementById('serviceTypeSelect').value;
+      const odo = parseFloat(document.getElementById('fuelOdo').value);
+      let amt = 0, desc = "";
 
-    function promptDeleteCurrentVehicle() {
-      if (!currentUser || !activeVehicleId) return;
-      const vehObj = userVehicles.find(v => v.id === activeVehicleId);
-      const vehName = vehObj ? vehObj.name : "Vehicle";
+      if (serviceType === 'Fuel') {
+        amt = parseFloat(document.getElementById('fuelTotalAmount').value);
+        desc = `Fuel Filling (${odo} Km)`;
+      } else if (serviceType === 'OilChange') {
+        amt = parseFloat(document.getElementById('maintAmount').value);
+        desc = `Oil Change - ${document.getElementById('maintDesc').value || 'Routine'} (${odo} Km)`;
+      } else {
+        amt = parseFloat(document.getElementById('maintAmount').value);
+        desc = `Repair/Service - ${document.getElementById('maintDesc').value} (${odo} Km)`;
+      }
 
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-trash-can" style="color:var(--expense);"></i>',
-        title: (lang === 'ml') ? "വാഹനം നീക്കം ചെയ്യുക" : "Delete Vehicle",
-        msg: (lang === 'ml') ? `"${vehName}" എന്ന വാഹനവും അതിന്റെ മുഴുവൻ ഇന്ധന വിവരങ്ങളും ഡിലീറ്റ് ചെയ്യണമെന്ന് ഉറപ്പാണോ?` : `Are you sure you want to delete vehicle "${vehName}" and all its logs?`,
-        onConfirm: () => {
-          db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).delete();
-        }
+      const payload = {
+        date: document.getElementById('fuelDate').value, serviceType: serviceType, odometer: odo,
+        amount: amt, description: desc, pricePerLiter: parseFloat(document.getElementById('fuelPricePerLiter').value) || 0
+      };
+
+      db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).collection("fuel_logs").add(payload).then(() => {
+        db.collection("users").doc(currentUser.uid).collection("transactions").add({
+          date: payload.date, type: 'ചെലവ്', category: 'യാത്ര / ഇന്ധനം', amount: amt, description: desc
+        });
+        resetFuelForm(); alert("Successfully saved!");
       });
     }
 
@@ -2476,154 +1484,40 @@
       if (unsubFuelHistory) unsubFuelHistory();
       unsubFuelHistory = db.collection("users").doc(currentUser.uid).collection("vehicles").doc(vehId).collection("fuel_logs")
         .orderBy("odometer", "desc").onSnapshot((snap) => {
-          const logs = [];
-          snap.forEach(doc => logs.push({ id: doc.id, ...doc.data() }));
-
-          const tbody = document.getElementById('fuelHistoryTableRows');
-          tbody.innerHTML = '';
-
-          if (logs.length === 0) {
-            document.getElementById('vehicleStatsBox').style.display = 'none';
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:16px; color:var(--text-muted);">${lang === 'ml' ? 'ഇന്ധന വിവരങ്ങൾ രേഖപ്പെടുത്തിയിട്ടില്ല' : 'No fuel logs recorded'}</td></tr>`;
-            return;
-          }
-
+          const logs = []; snap.forEach(doc => logs.push({ id: doc.id, ...doc.data() }));
+          const tbody = document.getElementById('fuelHistoryTableRows'); tbody.innerHTML = '';
+          if (logs.length === 0) { document.getElementById('vehicleStatsBox').style.display = 'none'; tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No records</td></tr>`; return; }
           document.getElementById('vehicleStatsBox').style.display = 'block';
           document.getElementById('statLastOdo').innerText = logs[0].odometer + ' Km';
 
-          if (logs.length >= 2) {
-            const latest = logs[0];
-            const prev = logs[1];
-            const dist = latest.odometer - prev.odometer;
-            const liters = latest.amount / latest.pricePerLiter;
-
+          const fuelOnlyLogs = logs.filter(l => l.serviceType === 'Fuel' || !l.serviceType);
+          if (fuelOnlyLogs.length >= 2) {
+            const dist = fuelOnlyLogs[0].odometer - fuelOnlyLogs[1].odometer;
+            const liters = fuelOnlyLogs[0].amount / fuelOnlyLogs[0].pricePerLiter;
             if (dist > 0 && liters > 0) {
-              const mileage = (dist / liters).toFixed(2);
-              const costPerKm = (latest.amount / dist).toFixed(2);
-              document.getElementById('statMileage').innerText = `${mileage} Km/L`;
-              document.getElementById('statRunningCost').innerText = `${userCurrency}${costPerKm} / Km`;
+              document.getElementById('statMileage').innerText = `${(dist / liters).toFixed(2)} Km/L`;
+              document.getElementById('statRunningCost').innerText = `${userCurrency}${(fuelOnlyLogs[0].amount / dist).toFixed(2)} / Km`;
             }
-          } else {
-            document.getElementById('statMileage').innerText = lang === 'ml' ? 'അടുത്ത എൻട്രിയിൽ കണക്കാക്കും' : 'Pending next entry';
-            document.getElementById('statRunningCost').innerText = '-';
           }
 
-          logs.forEach((log, idx) => {
-            let mBadge = '-';
-            if (idx < logs.length - 1) {
-              const nextLog = logs[idx + 1];
-              const d = log.odometer - nextLog.odometer;
-              const l = log.amount / log.pricePerLiter;
-              if (d > 0 && l > 0) mBadge = `${(d / l).toFixed(1)} Km/L`;
-            }
-
+          logs.forEach(log => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${log.date}</td>
-              <td>${log.odometer}</td>
-              <td style="font-weight:700;">${userCurrency}${log.amount}</td>
-              <td style="color:var(--vehicle); font-weight:700;">${mBadge}</td>
-              <td style="text-align: right;">
-                <i class="fa-solid fa-trash icon-del" onclick="promptDeleteFuelLog('${log.id}')" title="Delete Log"></i>
-              </td>
-            `;
+            tr.innerHTML = `<td>${log.date}</td><td><strong>${log.serviceType || 'Fuel'}</strong><br><small>${log.description || ''}</small></td>
+            <td style="font-weight:700;">${userCurrency}${log.amount}</td><td style="color:var(--vehicle);">-</td>
+            <td style="text-align: right;"><i class="fa-solid fa-trash icon-del" onclick="deleteServiceLog('${log.id}')"></i></td>`;
             tbody.appendChild(tr);
           });
         });
     }
+    function deleteServiceLog(logId) { db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).collection("fuel_logs").doc(logId).delete(); }
 
-    function promptDeleteFuelLog(logId) {
-      if (!currentUser || !activeVehicleId) return;
-
-      showAppConfirm({
-        icon: '<i class="fa-solid fa-trash" style="color:var(--expense);"></i>',
-        title: (lang === 'ml') ? "എൻട്രി ഒഴിവാക്കുക" : "Delete Fuel Log",
-        msg: (lang === 'ml') ? "ഈ ഇന്ധന എൻട്രി ഒഴിവാക്കണമെന്ന് ഉറപ്പാണോ?" : "Delete this fuel log record?",
-        onConfirm: () => {
-          db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).collection("fuel_logs").doc(logId).delete();
-        }
-      });
-    }
-
-    function handleFuelEntrySubmit(e) {
-      e.preventDefault();
-      if (!currentUser || !activeVehicleId) {
-        showAppConfirm({
-          icon: '<i class="fa-solid fa-car" style="color:var(--vehicle);"></i>',
-          title: "Notice",
-          msg: "ദയവായി ആദ്യം ഒരു വാഹനം തിരഞ്ഞെടുക്കുക!",
-          hideCancel: true
-        });
-        return;
-      }
-
-      const odo = parseFloat(document.getElementById('fuelOdo').value);
-      const price = parseFloat(document.getElementById('fuelPricePerLiter').value);
-      const amt = parseFloat(document.getElementById('fuelTotalAmount').value);
-      const alertBox = document.getElementById('fuelAlert');
-
-      const payload = {
-        date: document.getElementById('fuelDate').value,
-        odometer: odo,
-        pricePerLiter: price,
-        amount: amt,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-
-      db.collection("users").doc(currentUser.uid).collection("vehicles").doc(activeVehicleId).collection("fuel_logs").add(payload)
-        .then(() => {
-          const vehObj = userVehicles.find(v => v.id === activeVehicleId);
-          const vehName = vehObj ? vehObj.name : "Vehicle";
-          
-          db.collection("users").doc(currentUser.uid).collection("transactions").add({
-            date: payload.date,
-            type: (lang === 'ml') ? 'ചെലവ്' : (lang === 'ar' ? 'مصروف' : 'Expense'),
-            category: (lang === 'ml') ? 'യാത്ര / ഇന്ധനം' : (lang === 'ar' ? 'سفر / وقود' : 'Travel / Fuel'),
-            amount: amt,
-            description: `${vehName} - Fuel (${odo} Km)`,
-            person: "-",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          alertBox.className = "status-alert status-success";
-          alertBox.innerText = dict[lang].success_save;
-          alertBox.style.display = "block";
-          resetFuelForm();
-          setTimeout(() => alertBox.style.display = "none", 3000);
-        });
-    }
-
-    /* POPUP CALCULATOR */
+    /* CALCULATOR */
     let expr = "";
-    function openCalc(targetInputId) {
-      calcTargetInputId = targetInputId;
-      const val = document.getElementById(targetInputId).value;
-      expr = val ? val.toString() : "";
-      document.getElementById('calcScreen').value = expr || "0";
-      document.getElementById('calcPopup').style.display = "flex";
-    }
-    function closeCalc() {
-      document.getElementById('calcPopup').style.display = "none";
-    }
-    function calcPush(ch) {
-      if (expr === "0" && ch !== ".") expr = ch; else expr += ch;
-      document.getElementById('calcScreen').value = expr;
-    }
-    function calcClear() {
-      expr = "";
-      document.getElementById('calcScreen').value = "0";
-    }
-    function calcFinish() {
-      try {
-        if (!expr) { closeCalc(); return; }
-        const res = Function('"use strict";return (' + expr + ')')();
-        document.getElementById(calcTargetInputId).value = parseFloat(res).toFixed(2);
-        closeCalc();
-      } catch {
-        document.getElementById('calcScreen').value = "Error";
-        expr = "";
-      }
-    }
+    function openCalc(id) { calcTargetInputId = id; expr = document.getElementById(id).value || ""; document.getElementById('calcScreen').value = expr || "0"; document.getElementById('calcPopup').style.display = "flex"; }
+    function closeCalc() { document.getElementById('calcPopup').style.display = "none"; }
+    function calcPush(ch) { expr = (expr === "0" && ch !== ".") ? ch : expr + ch; document.getElementById('calcScreen').value = expr; }
+    function calcClear() { expr = ""; document.getElementById('calcScreen').value = "0"; }
+    function calcFinish() { try { document.getElementById(calcTargetInputId).value = parseFloat(Function('"use strict";return (' + expr + ')')()).toFixed(2); closeCalc(); } catch { expr = ""; } }
   </script>
 </body>
 </html>
