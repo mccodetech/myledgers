@@ -357,7 +357,7 @@
       e.preventDefault();
       const email = document.getElementById('authEmail').value;
       const pass = document.getElementById('authPass').value;
-      auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.message));
+      auth.signInWithEmailAndPassword(email, pass).catch(err => alert(err.name + ": " + err.message));
     }
 
     function switchView(view) {
